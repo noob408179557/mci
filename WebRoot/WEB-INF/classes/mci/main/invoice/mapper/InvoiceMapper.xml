@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mci.main.invoice.mapper.InvoiceMapper">
+	<resultMap id="invoiceAll" type="invoice">
+		<id property="id" column="id" />
+		<result property="desc" column="desc" />
+		<result property="workerNum" column="workerNum" />
+		<result property="billingRate" column="billingRate" />
+		<result property="cost" column="cost" />
+		
+		<result property="total" column="total" />
+		<result property="state" column="state" />
+		<result property="createDate" column="createdate" />
+		<result property="cp" column="contact" />
+		<result property="remark" column="remark" />
+		<result property="term" column="paymentterms" />
+		<result property="type" column="type" />
+		<result property="pic" column="pic" />
+		<result property="pic2" column="pic2" />
+		<result property="commission" column="commission" />
+		<result property="creditNotes" column="creditnotes" />
+		<association property="picObject" javaType="mci.main.user.pojo.User">
+			<id property="id" column="pic" />
+			<result property="realName" column="realname" />
+			<result property="username" column="username" />
+		</association>
+		<association property="pic2Object" javaType="mci.main.user.pojo.User">
+			<id property="id" column="pic2" />
+			<result property="realName" column="realname2" />
+			<result property="username" column="username2" />
+		</association>
+		<association property="clientObject" javaType="mci.main.client.pojo.Client">
+			<id property="id" column="client" />
+			<result property="companyName" column="companyname" />
+		</association>
+	</resultMap>
+	<resultMap type="user" id="user1">
+		<id property="id" column="id" />
+		<result property="realName" column="realname" />
+		<result property="username" column="username" />
+	</resultMap>
+
+	<resultMap type="invoiceHistory" id="invoiceHistoryAll">
+		<id property="id" column="id" />
+		<result property="invoice" column="invoice" />
+		<result property="lastdate" column="lastdate" />
+		<association property="userObject" javaType="mci.main.user.pojo.User">
+			<id property="id" column="id" />
+			<result property="realName" column="realname" />
+		</association>
+		<association property="invoiceObject" javaType="mci.main.invoice.pojo.Invoice">
+			<id property="id" column="id" />
+			<result property="type" column="type" />
+		</association>
+	</resultMap>
+	<sql id="QueryInvoice">
+		<if test="startDate!=null and startDate!=''">
+			and i.`createdate` >= #{startDate}
+		</if>
+		<if test="endDate!=null and endDate!=''">
+			and #{endDate} >= i.`createdate`
+		</if>
+		<if test="pic!=null and pic!=''">
+			and u.`realname` like concat('%',#{pic},'%')
+		</if>
+		<if test="state!=null and state!=''">
+			and i.`state`=#{state}
+		</if>
+		<if test="clientName!=null and clientName!=''">
+			and c.`companyname` like concat('%',#{clientName},'%')
+		</if>
+		<if test="type!=null and type!=''">
+			and i.`type`=#{type}
+		</if>
+		<if test="id!=null and id!=''">
+			and i.`id` like concat('%',#{id},'%')
+		</if>
+	</sql>
+	<sql id="activeInvoice">
+		<if test="startDate!=null and startDate!=''">
+			and i.`createdate` > #{startDate}
+		</if>
+		<if test="endDate!=null and endDate!=''">
+			and #{endDate} > i.`createdate`
+		</if>
+
+	</sql>
+	<sql id="invoiceQ1">
+		<if test="utype==flag">
+			and i.`pic`=#{upic}
+		</if>
+	</sql>
+	<select id="getInvoiceHistory" parameterType="invoiceHistory"
+		resultMap="invoiceHistoryAll">
+		select * from mci_invoice_history history,mci_invoice
+		invoice,mci_user user
+		where
+		history.invoice=#{invoice} and
+		invoice.id=history.invoice and
+		user.id=history.user
+		order by
+		history.lastdate desc
+	</select>
+	<select id="commission" parameterType="invoice" resultType="invoice">
+		select * from mci_invoice where `id`=#{id}
+	</select>
+	<update id="activeInvoice">
+		update mci_invoice set `state`='2' where `id`=#{id}
+	</update>
+	<sql id="updateIn">
+		<if test="client!=null and client!=''">
+			,`client`=#{client}
+		</if>
+		<if test="cp!=null and cp!=''">
+			,`contact`=#{cp}
+		</if>
+		<if test="state!=null and state!=''">
+			,`state`=#{state}
+		</if>
+		<if test="pic!=null and pic!=''">
+			,`pic`=#{pic}
+		</if>
+		<if test="pic2!=null and pic2!=''">
+			,`pic2`=#{pic2}
+		</if>
+		<if test="createDate!=null and createDate!=''">
+			,`createdate`=#{createDate}
+		</if>
+		<if test="term!=null and term!=''">
+			,`paymentterms`=#{term}
+		</if>
+		<if test="residual!=null and residual!=''">
+			,`residual`=#{residual}
+		</if>
+		<if test="total!=null and total!=''">
+			,`total`=#{total}
+		</if>
+		<if test="creditNotes!=null and creditNotes!=''">
+			,`creditnotes`=#{creditNotes}
+		</if>
+		<if test="desc!=null and desc!=''">
+			,`desc`=#{desc}
+		</if>
+		<if test="workerNum!=null and workerNum!=''">
+			,`workerNum`=#{workerNum}
+		</if>
+		<if test="billingRate!=null and billingRate!=''">
+			,`billingRate`=#{billingRate}
+		</if>
+		<if test="cost!=null and cost!=''">
+			,`cost`=#{cost}
+		</if>
+		,`AmountpayblewithGST`=#{AmountpayblewithGST}
+		,`Cashpayment`=#{Cashpayment}
+		,`ChequePayment`=#{ChequePayment}
+		,`Creditnotespayment`=#{Creditnotespayment}
+		,`Overtimes10X`=#{Overtimes10X}
+		,`Overtimes15X`=#{Overtimes15X}
+		,`Overtimes20X`=#{Overtimes20X}
+		,`CPF`=#{CPF}
+		,`SDF`=#{SDF}
+		,`WICA2`=#{WICA2}
+		,`MedicalCoverageFee2`=#{MedicalCoverageFee2}
+		,`AdminFee`=#{AdminFee}
+		,`TransportAllowance`=#{TransportAllowance}
+		,`LaundryAllowance`=#{LaundryAllowance}
+		,`AfternoonShiftAllowance`=#{AfternoonShiftAllowance}
+		,`MedicalReimbursement`=#{MedicalReimbursement}
+		,`MileageERPReimbursement`=#{MileageERPReimbursement}
+		,`LessUnpaidLeave`=#{LessUnpaidLeave}
+		,`TransportReimbursement`=#{TransportReimbursement}
+		,`MealAllowance`=#{MealAllowance}
+		,`AttendanceAllowance`=#{AttendanceAllowance}
+		,`Allowance`=#{Allowance}
+		,`PublicHolidayOT`=#{PublicHolidayOT}
+		,`Lateness`=#{Lateness}
+		,`AnnualLeaveEncashment`=#{AnnualLeaveEncashment}
+		,`Bonus`=#{Bonus}
+		,`CompletionBonus`=#{CompletionBonus}
+		,`Incentive`=#{Incentive}
+		,`BackPaySalary`=#{BackPaySalary}
+		,`BackPayOvertimes`=#{BackPayOvertimes}
+		,`AdjustmentSalary`=#{AdjustmentSalary}
+		,`AdjustmentOvertimes`=#{AdjustmentOvertimes}
+		,`SalaryInLieu`=#{SalaryInLieu}
+		,`PaidAnnualLeave`=#{PaidAnnualLeave}
+		,`LessMidMonthSalary`=#{LessMidMonthSalary}
+		,`PaidMedicalLeave`=#{PaidMedicalLeave}
+		,`PaidChildcareLeave`=#{PaidChildcareLeave}
+		,`ApplicationfeeforWP`=#{ApplicationfeeforWP}
+		,`ApplicationfeeforSP`=#{ApplicationfeeforSP}
+		,`EissueforWP`=#{EissueforWP}
+		,`PurchaseofsecurityBond`=#{PurchaseofsecurityBond}
+		,`EissueforSP`=#{EissueforSP}
+
+	</sql>
+	<update id="updateInvoice" parameterType="invoice">
+		update mci_invoice set `lastdate`=now()
+		<include refid="updateIn"></include>
+		where `id`=#{id}
+	</update>
+	<sql id="invoiceQ">
+		<if test="utype==flag">
+			and (i.`pic`=#{pic} or i.`pic2`=#{pic})
+		</if>
+	</sql>
+	<sql id="pic2">
+		<if test="pic2!=null and pic2!=''">
+			,
+			(SELECT user2.realname AS realname2,user2.username as username2 FROM
+			mci_invoice i ,mci_user user2 WHERE user2.id=#{pic2}) r2
+		</if>
+	</sql>
+	<select id="loadInvoice" parameterType="invoiceQuery" resultMap="invoiceAll">
+		SELECT *
+		FROM (mci_invoice i ,mci_client client
+		)
+		WHERE client.id=i.client
+		<include refid="invoiceQ"></include>
+		order by
+		i.id desc
+		limit #{startIndex},#{pageSize}
+	</select>
+	<select id="loadInvoiceForPrint" parameterType="invoiceQuery" resultType="invoice">
+	SELECT *
+		FROM (mci_invoice i ,mci_client client
+		)
+		WHERE client.id=i.client
+		<include refid="invoiceQ"></include>
+		order by
+		i.id desc
+		limit #{startIndex},#{pageSize}
+	</select>
+	<select id="getPic" parameterType="invoice" resultMap="invoiceAll">
+		select * from (mci_invoice i,(SELECT user1.realname AS
+		realname,user1.username as username FROM mci_user user1 WHERE
+		user1.id=#{pic}) r1
+		<include refid="pic2"></include>
+		)
+		where i.id=#{id}
+	</select>
+	<select id="getaInvoice" parameterType="invoice" resultType="invoice">
+		select * from mci_invoice where `id`=#{id}
+	</select>
+	<select id="loadInvoiceCount" parameterType="invoiceQuery"
+		resultType="int">
+		select count(*) from
+		mci_invoice i where i.`id`!='0'
+		<include refid="invoiceQ"></include>
+	</select>
+	<!-- 创建ItemF -->
+	<insert id="createItemF" parameterType="itemF">
+		INSERT INTO
+		mci_item_f
+		(`description`)
+		VALUES
+		(`description`);
+		<selectKey keyProperty="id" resultType="String" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<select id="getCP" parameterType="string" resultType="contactPerson">
+		select *
+		from mci_contactperson where companyid=#{id}
+	</select>
+	<insert id="addInvoice" parameterType="invoice">
+		insert into mci_invoice
+		(`client`,`pic`,`createdate`,`paymentterms`,`type`,`contact`,`state`,`lastdate`)
+		values
+		(#{client},#{pic},#{createDate},#{term},#{type},#{cp},'1',now())
+		<selectKey keyProperty="id" resultType="String" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<select id="getClient" parameterType="string" resultType="client">
+		select
+		* from mci_client where id=#{id}
+	</select>
+	<select id="getaCP" parameterType="string" resultType="contactPerson">
+		select *
+		from mci_contactperson where id=#{id}
+	</select>
+	<!-- invoice F -->
+	<update id="addInvoicefFK" parameterType="invoiceKey">
+		update mci_item_f set
+		`invoice`=#{invoice} where `id`=#{item}
+	</update>
+	<update id="clearItemF">
+		delete * from mci_item_f where 'state'=''
+	</update>
+	<update id="addInvoiceRemark" parameterType="invoice">
+		update mci_invoice
+		set
+		`remark`=#{remark} where `id`=#{id}
+	</update>
+	<update id="updateItemF">
+		update mci_item_f set
+		`description`=#{description},`number`=#{number},`billingrate`=#{billingrate},`cost`=#{cost},`itemName`=#{itemName},`itemCost`=#{itemCost},`itemRate`=#{itemRate}
+		where id=#{id}
+	</update>
+	<update id="removeItemF" parameterType="string">
+		delete from mci_item_f
+		where id=#{id}
+	</update>
+	<insert id="createItemP" parameterType="itemP">
+		INSERT INTO
+		mci_item_p
+		(`description`)
+		VALUES
+		(`description`);
+		<selectKey keyProperty="id" resultType="String" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<update id="addInvoicepFK" parameterType="invoiceKey">
+		update mci_item_p set
+		`invoice`=#{invoice} where `id`=#{item}
+	</update>
+	<update id="updateItemP" parameterType="itemP">
+		update  mci_item_p  set
+		`description`=#{description},`payment`=#{amount},`date`=#{date} where
+		id=#{id}
+	</update>
+	<update id="addInvoiceTotal" parameterType="invoice">
+		update mci_invoice
+		set `total`=#{total},`residual`=#{total} where id=#{id}
+	</update>
+	<insert id="addWorkerC" parameterType="workerC">
+		insert into mci_worker_c (`invoice`) values (#{invoice})
+		<selectKey keyProperty="id" resultType="String" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<insert id="addItemC" parameterType="ItemC">
+		insert into mci_item_c (`worker`,`invoice`) values
+		(#{worker},#{invoice})
+		<selectKey keyProperty="id" resultType="String" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<update id="removeItemC" parameterType="itemC">
+		delete from mci_item_c
+		where id=#{id}
+	</update>
+	<update id="removeWorkerC" parameterType="workerC">
+		delete from
+		mci_worker_c where `id`=#{id}
+	</update>
+	<update id="removeItemOfWorkerC" parameterType="workerC">
+		delete from
+		mci_item_c where `worker`=#{id}
+	</update>
+	<select id="loadInvoiceItemC" parameterType="invoice"
+		resultType="itemC">
+		select * from mci_item_c where `invoice`=#{id}
+	</select>
+	<update id="updateItemC" parameterType="itemC">
+		update mci_item_c set
+		`desc`=#{desc},`amount`=#{amount},`cost`=#{cost} where
+		`id`=#{id}
+	</update>
+	<update id="updateWorkerC" parameterType="workerC">
+		update mci_worker_c set
+		`remark`=#{remark},`position`=#{position},`name`=#{name},`nric`=#{nric},`employee`=#{employee},`employer`=#{employer},`dob`=#{dob},`salary`=#{salary},`cost`=#{cost}
+		where `id`=#{id}
+	</update>
+	<insert id="addItemT" parameterType="ItemT">
+		insert into mci_item_t (`worker`,`invoice`) values
+		(#{worker},#{invoice})
+		<selectKey keyProperty="id" resultType="String" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<insert id="addWorkerT" parameterType="workerC">
+		insert into mci_worker_t (`invoice`) values (#{invoice})
+		<selectKey keyProperty="id" resultType="String" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<update id="removeItemT" parameterType="itemT">
+		delete from mci_item_t
+		where id=#{id}
+	</update>
+	<update id="removeWorkerT" parameterType="workerC">
+		delete from
+		mci_worker_t where `id`=#{id}
+	</update>
+	<update id="removeItemOfWorkerT" parameterType="workerC">
+		delete from
+		mci_item_t where `worker`=#{id}
+	</update>
+	<update id="updateItemT" parameterType="itemT">
+		update mci_item_t set
+		`hours`=#{hours},`desc`=#{desc},`amount`=#{amount},`cost`=#{cost}
+		where `id`=#{id}
+	</update>
+	<update id="updateWorkerT" parameterType="workerC">
+		update mci_worker_t set
+		`remark`=#{remark},`position`=#{position},`hours`=#{hours},`name`=#{name},`nric`=#{nric},`employee`=#{employee},`employer`=#{employer},`dob`=#{dob},`salary`=#{salary},`cost`=#{cost}
+		where `id`=#{id}
+	</update>
+	<select id="getEditInvoice" parameterType="invoice" resultMap="invoiceAll">
+		select * from mci_invoice invoice,mci_client client,mci_user user
+		where invoice.id=#{id}
+		and client.id=invoice.client and invoice.pic=user.id
+	</select>
+	<select id="getEditWorkersC" parameterType="string" resultType="workerC">
+		select * from mci_worker_c where invoice=#{invoiceid} order by id asc
+	</select>
+	<select id="getEditItemC" parameterType="string" resultType="itemC">
+		select * from mci_item_c where worker=#{str} order by id asc
+	</select>
+	<select id="getaPIC" parameterType="string" resultType="user">
+		select *
+		from mci_user where id=#{id}
+	</select>
+	<select id="getEditWorkersT" parameterType="string" resultType="workerC">
+		select * from mci_worker_t where invoice=#{invoiceid} order by id asc
+	</select>
+	<select id="getEditItemT" parameterType="string" resultType="ItemT">
+		select * from mci_item_t where worker=#{id}
+	</select>
+	<select id="getEditItemF" parameterType="string" resultType="ItemF">
+		select * from mci_item_f where invoice=#{id}
+	</select>
+	<select id="getEditItemP" parameterType="string" resultType="ItemP">
+		select * from mci_item_p where invoice=#{id}
+	</select>
+	<update id="removeItemP" parameterType="string">
+		delete from mci_item_p
+		where `id`=#{id}
+	</update>
+	<update id="deleteInvoice" parameterType="string">
+		delete from mci_invoice
+		where `id`=#{id}
+	</update>
+	<update id="removeItemFOfInvoice" parameterType="string">
+		delete from
+		mci_item_f where `invoice`=#{id}
+	</update>
+	<update id="removeItemPOfInvoice" parameterType="string">
+		delete from
+		mci_item_p where `invoice`=#{id}
+	</update>
+	<select id="autoConsultantList" resultType="user">
+		select * from
+		mci_user
+	</select>
+	<select id="searchInvoice" parameterType="invoice" resultMap="invoiceAll">
+		select * from mci_invoice i,mci_user u,mci_client c
+		where i.pic=u.id
+		and i.client=c.id
+		<include refid="QueryInvoice"></include>
+		<include refid="invoiceQ1"></include>
+		order by i.`id` desc
+	</select>
+	<select id="searchInvoiceForPrint" parameterType="invoice" resultType="invoice">
+		select * from mci_invoice i,mci_user u,mci_client c
+		where i.pic=u.id
+		and i.client=c.id
+		<include refid="QueryInvoice"></include>
+		<include refid="invoiceQ1"></include>
+		order by i.`id` desc
+	</select>
+	<insert id="addInvoiceHistory" parameterType="invoiceHistory">
+		insert into
+		mci_invoice_history (`invoice`,`user`) values
+		(#{invoice},#{user})
+	</insert>
+	<update id="cancelInvoice" parameterType="invoice">
+		update mci_invoice set
+		`state`='5' where id=#{id}
+	</update>
+	<update id="confirmInvoice" parameterType="invoice">
+		update mci_invoice set
+		`state`='1' where id=#{id}
+	</update>
+	<select id="getCPOI" parameterType="invoice" resultType="contactPerson">
+		select *
+		from mci_contactperson cp,mci_invoice invoice where
+		cp.id=invoice.contact and invoice.id=#{id}
+	</select>
+	<update id="getCommission" parameterType="invoice">
+		update mci_invoice set
+		`state`='6' where id=#{id}
+	</update>
+	<insert id="createCheque" parameterType="cheque">
+		insert into
+		mci_cheque
+		(`invoice`,`amount`,`bank`,`number`) values
+		(#{invoice},#{amount},#{bank},#{number})
+	</insert>
+	<insert id="addPayHistory" parameterType="payHistory">
+		insert into mci_pay_history
+		(`invoice`,`amount`,`mode`,`time`,`bank`,`number`) values
+		(#{invoice},#{amount},#{mode},now(),#{bank},#{number})
+	</insert>
+	<update id="clearInvoice">
+		delete from mci_invoice where total is null
+	</update>
+	<select id="getWorkerTHours" parameterType="itemT" resultType="string">
+		select w.id from (select * from mci_item_t where id=#{id})
+		i,mci_worker_t w where w.id=i.worker
+	</select>
+	<select id="getPayHistory" parameterType="invoice" resultType="payHistory">
+		select * from mci_pay_history where invoice=#{id} order by id desc
+	</select>
+	<update id="setCommission" parameterType="invoice">
+		update mci_invoice set `commission`=#{commission} where `id`=#{id}
+	</update>
+	<select id="setItemTotalF" parameterType="ItemTotal" resultType="string">
+		SELECT SUM(`itemRate`)
+		FROM
+		mci_item_f WHERE `invoice`=#{invoiceId} AND `itemName`=#{itemName}
+	</select>
+	<select id="setItemTotalC" parameterType="ItemTotal" resultType="string">
+		SELECT SUM(`amount`)
+		FROM
+		mci_item_c WHERE `invoice`=#{invoiceId} AND `desc`=#{itemName}
+	</select>
+	<select id="setItemTotalT" parameterType="ItemTotal" resultType="string">
+		SELECT SUM(`amount`)
+		FROM
+		mci_item_t WHERE `invoice`=#{invoiceId} AND `desc`=#{itemName}
+	</select>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mci.main.user.mapper.UserMapper">
+	<select id="login" parameterType="string" resultType="user">
+		select * from mci_user where email=#{email} and password=#{password}
+	</select>
+	<update id="createUser" parameterType="user" >
+	insert into mci_user (`email`,`password`,`type`,`state`,`realname`,`user_type`) 
+	values 
+	(#{email},#{password},#{type},'1',#{realName},#{type})
+	</update>
+	<select id="getUserList" parameterType="userQuery" resultType="user">
+	select * from mci_user where state='1' limit #{startIndex},#{pageSize}
+	</select>
+	<select id="getUserPage" parameterType="userQuery" resultType="int">
+	select count(*) from mci_user  where state='1'
+	</select>
+	<select id="getUserPage1" parameterType="userQuery" resultType="int">
+	select count(*) from mci_user  where state='0'
+	</select>
+	<select id="getUsers"  resultType="user">
+	select * from mci_user
+	</select>
+	<select id="getaUser" parameterType="string" resultType="user">
+	select * from mci_user where id=#{userid}
+	</select>
+	<update id="updateUser" parameterType="user" >
+	update
+	mci_user set
+	`email`=#{email},
+	`realname`=#{realName},
+	`password`=#{password},
+	`type`=#{type},
+	`user_type`=#{type}
+	where id=#{id}
+	</update>
+	<update id="blockUser" parameterType="user">
+	update mci_user set state='0' where id=#{id}
+	</update>
+	<update id="activeUser" parameterType="user">
+	update mci_user set state='1' where id=#{id}
+	</update>
+	<update id="resetPassword" parameterType="string">
+	update mci_user set password='12' where id=#{userid}
+	</update>
+	<select id="getUserList2" parameterType="userQuery" resultType="user">
+	select * from mci_user where state='0' limit #{startIndex},#{pageSize}
+	</select>
+</mapper>

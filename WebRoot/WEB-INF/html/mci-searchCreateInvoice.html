@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Coderthemes">
+<link rel="shortcut icon" href="assets/images/favicon_1.ico">
+<title>MCI-CreateInvoice</title>
+<link href="assets/plugins/sweetalert/dist/sweetalert.css"
+	rel="stylesheet" type="text/css">
+<link href="assets/plugins/custombox/dist/custombox.min.css"
+	rel="stylesheet">
+<link
+	href="assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css"
+	rel="stylesheet" />
+<link href="assets/plugins/switchery/dist/switchery.min.css"
+	rel="stylesheet" />
+<link
+	href="assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"
+	rel="stylesheet">
+<link href="assets/plugins/multiselect/css/multi-select.css"
+	rel="stylesheet" type="text/css" />
+<link href="assets/plugins/select2/select2.css" rel="stylesheet"
+	type="text/css" />
+<link href="assets/plugins/dropzone/dist/dropzone.css" rel="stylesheet"
+	type="text/css" />
+<link
+	href="assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css"
+	rel="stylesheet" />
+<link
+	href="assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css"
+	rel="stylesheet" />
+
+<link rel="stylesheet"
+	href="assets/plugins/magnific-popup/dist/magnific-popup.css" />
+<link rel="stylesheet"
+	href="assets/plugins/jquery-datatables-editable/datatables.css" />
+<link href="assets/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css" />
+<link href="assets/css/core.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/components.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/pages.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
+<link href="assets/plugins/jquery.bigautocomplete.css" rel="stylesheet"
+	type="text/css" />
+<style type="text/css">
+	
+.actions a {
+	padding: 5px;
+}
+</style>
+
+<!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+<script src="assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="fixed-left">
+
+	<!-- Begin page -->
+	<div id="wrapper">
+
+		<!-- Top Bar Start -->
+		<div class="topbar">
+
+			<!-- LOGO -->
+			<div class="topbar-left">
+				<div class="text-center" style="background:#594f8d">
+					<a href="#" class="waves-effect"></i><span align="middle"><h1><font color="#fff">MCI</font></h1>
+							</span> </a>
+				</div>
+			</div>
+
+			<!-- Button mobile view to collapse sidebar menu -->
+
+		</div>
+		<!-- Top Bar End -->
+
+
+		<!-- ========== Left Sidebar Start ========== -->
+
+		<div class="left side-menu " style="background:#594f8d">
+			<div class="sidebar-inner slimscrollleft">
+				<!--- Divider -->
+				<div id="sidebar-menu">
+					<ul>
+						<li style="background:#92cf5c" >
+						 <a id="currUser" style="cursor: pointer;">
+						         <i class="glyphicon glyphicon-user"></i> </a>
+							<ul class="list-unstyled" style="display: none;">
+									<li><a href="mci-profile.do"><i class="ti-user m-r-5"></i>Profile</a></li>
+								<li><a href="#"><i
+										class="ti-settings m-r-5"></i>Settings </a>
+								</li>
+								<li><a style="cursor: pointer;" onclick="logout()"><i class="ti-power-off m-r-5"></i>Logout</a>
+								</li>
+							</ul>
+							</li>
+							
+						<li class="" onclick="location.href='mci-dashboard.do'"><a href="#" class="waves-effect"><font color="#fff"><i
+								class="md md-remove-red-eye"></i><span>Dashboard</font></span> </a>
+						</li>
+						<li class="has_sub"  onclick="location.href='mci-staffInvoice.do'"><a 
+							class="waves-effect"><font color="#fff"><i class="md md-event-note"></i> <span>Invoice</font>
+							</span> </a>
+						</li>
+						<li class="has_sub" onclick="location.href='mci-staffClient.do'"><a  class="waves-effect"><font color="#fff">
+								<i class="md md-people"></i>Client</font> </span> </a>
+						</li>
+						<li class="has_sub"  id="register"><a class="waves-effect" onclick="location.href='mci-register.do'"> <font
+								color="#fff"><i class="glyphicon glyphicon-plus"></i> Register</font>
+						</a></li>
+						<li id="user" class="has_sub"  onclick="location.href='mci-user.do'"><a class="waves-effect"
+							> <font color="#fff"><i
+									class="glyphicon glyphicon-list-alt"></i>User</font> </a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<!-- Left Sidebar End -->
+
+		<!-- ============================================================== -->
+		<!-- Start right Content here -->
+		<!-- ============================================================== -->
+		<div class="content-page">
+			<!-- Start content -->
+			<div class="content header">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card-box table-responsive">
+								<table class="table table-hover " border="0px">
+									<thead>
+										<tr>
+											<th style='text-align:left;vertical-align : middle;'
+												colspan="10" bgcolor="#F5F5F5">
+												<h4>
+													<strong>Search Client</strong>
+												</h4>
+											</th>
+										</tr>
+										<tr>
+												<th style="text-align:left;vertical-align : middle; ">Name:</th>
+													<th>
+														<div class="bootstrap-tagsinput" >
+													<input type="text" id="searchName">
+													</div>
+												</th>
+													<th>
+													<div class="btn btn-warning waves-effect waves-light btn-lg" id="searchbtn">
+									<i class="glyphicon glyphicon-search"></i> Search
+								</div>
+								<div class="btn btn-danger waves-effect waves-light btn-lg" id="createClient">
+									<i class="fa fa-plus"></i> New Client
+								</div>
+												</th>
+												<th colspan="10">
+												
+												</th>
+										</tr> 
+									</thead>
+								</table>
+								
+								<table class="table table-bordered table-hover" >
+										<tr bgcolor="#F5F5F5">
+										    <th style='text-align:left;vertical-align : middle; width:60px'></th>
+											<th style='text-align:left;vertical-align : middle; width:60px'>
+												<h4><strong>ID</strong></h4></th> 
+											<th style='text-align:left;vertical-align : middle; width:377px'>
+												<h4><strong>Company Name</strong></h4></th>
+											<th style='text-align:left;vertical-align : middle; width:201px'>
+												<h4><strong>PIC</strong></h4></th>
+											<th style='text-align:left;vertical-align : middle; width:242px'>
+											    <h4><strong>Contact Person</strong></h4></th>
+											
+											<th style='text-align:left;vertical-align : middle; width:245px'>
+											    <h4><strong>Email</strong></h4></th>
+											<th style='text-align:left;vertical-align : middle;width:390px '>
+											    <h4><strong>Action</strong></h4></th>
+										</tr>
+									
+									
+									
+										
+										
+									<tbody id="invoiceList">
+
+									</tbody>
+								</table>
+								<!-- 分页button -->
+								<div align="middle">
+								<div class="btn btn-primary waves-effect waves-light btn-lg"  data-toggle="modal" id="firstPage">
+										<i class="glyphicon glyphicon-fast-backward"></i>
+								</div>
+								<div class="btn btn-primary waves-effect waves-light btn-lg"  data-toggle="modal" id="previousPage">
+										<i class="ion-arrow-left-a"></i>
+								</div>
+								<div class="btn btn-primary btn-lg "  data-toggle="modal" id="pageProgress">
+									
+								</div>
+								<div class="btn btn-primary waves-effect waves-light btn-lg"  data-toggle="modal" id="nextPage">
+										<i class="ion-arrow-right-a"></i>
+								</div>
+								<div class="btn btn-primary waves-effect waves-light btn-lg" data-toggle="modal" id="lastPage">
+										<i class="glyphicon glyphicon-fast-forward"></i>
+								</div>
+								</div>
+							
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- container -->
+		</div>
+		
+		<!-- content -->
+	</div>
+	<!-- ============================================================== -->
+	<!-- End Right content here -->
+	<!-- ============================================================== -->
+	<div id="edit0" class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+			<h3>
+			Invoice information</h3>
+			
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="control-label">Invoice Type</label>
+								<div class="form-group"> 
+								<select	class="selectpicker" data-style="btn-white" id="addType">
+									<option value="C">C</option>
+									<option value="F">F</option>
+									<option value="P">P</option>
+									<option value="T">T</option>
+								</select>
+								<!-- 隐藏的Client主键 -->
+								<input  type="hidden" id="addClient" value="">
+							</div>
+							</div>
+						</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<label for="" class="control-label">Invoice Date</label> 
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="mm/dd/yyyy" id="datepicker-autoclose">
+							<span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
+							</div>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="cTrade" class="control-label">Payment Terms</label> 
+								<select class="selectpicker" data-style="btn-white" id="addTerm">
+									<option value="15">15</option>
+									<option value="30">30</option>
+									<option value="45">45</option>
+									<option value="60">60</option>
+								</select>
+						</div>
+					</div>
+				</div>
+				<div class="row"> 
+					<div class="col-md-6">
+						<div class="form-group">
+								<label for="effectiveDate" class="control-label">Contact　Person</label> 
+								<div class="form-group"> 
+								<select  data-style="btn-white" id="addCP">
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" type="button" class="btn btn-success waves-effect waves-light btn-lg" id="next">
+						<i class="fa fa-plus"></i>Next
+					</button>
+				</div>
+				<input value="1" type="hidden" id="pageIndex"/>
+			</div>
+		</div>
+	</div>
+	<script>
+		var resizefunc = [];
+	</script>
+
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/detect.js"></script>
+	<script src="assets/js/fastclick.js"></script>
+	<script src="assets/js/jquery.slimscroll.js"></script>
+	<script src="assets/js/jquery.blockUI.js"></script>
+	<script src="assets/js/waves.js"></script>
+	<script src="assets/js/wow.min.js"></script>
+	<script src="assets/js/jquery.nicescroll.js"></script>
+	<script src="assets/js/jquery.scrollTo.min.js"></script>
+
+	<script
+		src="assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+	<script src="assets/plugins/switchery/dist/switchery.min.js"></script>
+	<script type="text/javascript"
+		src="assets/plugins/multiselect/js/jquery.multi-select.js"></script>
+	<script type="text/javascript"
+		src="assets/plugins/jquery-quicksearch/jquery.quicksearch.js"></script>
+	<script src="assets/plugins/select2/select2.min.js"
+		type="text/javascript"></script>
+	<script
+		src="assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"
+		type="text/javascript"></script>
+	<script
+		src="assets/plugins/bootstrap-filestyle/src/bootstrap-filestyle.min.js"
+		type="text/javascript"></script>
+	<script
+		src="assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"
+		type="text/javascript"></script>
+	<script
+		src="assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"
+		type="text/javascript"></script>
+
+	<script src="assets/js/jquery.core.js"></script>
+	<script src="assets/js/jquery.app.js"></script>
+	<!-- Examples -->
+	<script
+		src="assets/plugins/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+	<script
+		src="assets/plugins/jquery-datatables-editable/jquery.dataTables.js"></script>
+	<script src="assets/plugins/datatables/dataTables.bootstrap.js"></script>
+	<script src="assets/plugins/tiny-editable/numeric-input-example.js"></script>
+	<script src="assets/pages/datatables.editable.init.js"></script>
+	<script src="assets/plugins/moment/moment.js"></script>
+	<script src="assets/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+	<script
+		src="assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	<script src="assets/plugins/custombox/dist/custombox.min.js"></script>
+	<script src="assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="assets/plugins/custombox/dist/legacy.min.js"></script>
+	<script  src="js/invoice/searchCreateInvoice.js"></script>
+	<script type="text/javascript"
+		src="assets/plugins/jquery.bigautocomplete.js"></script>
+	 <script>
+			jQuery(document).ready(function() {
+			
+
+                // Date Picker
+                jQuery('#datepicker-autoclose').datepicker({
+                	autoclose: true,
+                	todayHighlight: true
+                	})
+                });
+				
+		</script>
+</body>
+</html>

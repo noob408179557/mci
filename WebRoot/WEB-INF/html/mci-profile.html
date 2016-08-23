@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Coderthemes">
+<link rel="shortcut icon" href="assets/images/favicon_1.ico">
+<title>MCI-Profile</title>
+<link href="assets/plugins/sweetalert/dist/sweetalert.css"
+	rel="stylesheet" type="text/css">
+<link href="assets/plugins/custombox/dist/custombox.min.css"
+	rel="stylesheet">
+<link
+	href="assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css"
+	rel="stylesheet" />
+<link href="assets/plugins/switchery/dist/switchery.min.css"
+	rel="stylesheet" />
+<link href="assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" 
+    rel="stylesheet">
+<link href="assets/plugins/multiselect/css/multi-select.css"
+	rel="stylesheet" type="text/css" />
+<link href="assets/plugins/select2/select2.css" rel="stylesheet"
+	type="text/css" />
+<link href="assets/plugins/dropzone/dist/dropzone.css" rel="stylesheet"
+	type="text/css" />
+<link
+	href="assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css"
+	rel="stylesheet" />
+<link
+	href="assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css"
+	rel="stylesheet" />
+
+<link rel="stylesheet"
+	href="assets/plugins/magnific-popup/dist/magnific-popup.css" />
+<link rel="stylesheet"
+	href="assets/plugins/jquery-datatables-editable/datatables.css" />
+<link href="assets/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css" />
+<link href="assets/css/core.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/components.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/pages.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
+<link href="assets/plugins/jquery.bigautocomplete.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.actions a {
+	padding: 5px;
+}
+</style>
+
+<!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+<script src="assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="fixed-left">
+
+	<!-- Begin page -->
+	<div id="wrapper">
+
+		<!-- Top Bar Start -->
+		<div class="topbar">
+
+			<!-- LOGO -->
+			<div class="topbar-left">
+				<div class="text-center" style="background:#594f8d">
+					<a href="#" class="waves-effect"></i><span align="middle"><h1>
+								<font color="#fff">MCI</font>
+							</h1> </span> </a>
+				</div>
+			</div>
+
+			<!-- Button mobile view to collapse sidebar menu -->
+
+		</div>
+		<!-- Top Bar End -->
+
+
+		<!-- ========== Left Sidebar Start ========== -->
+
+		<div class="left side-menu " style="background:#594f8d">
+			<div class="sidebar-inner slimscrollleft">
+				<!--- Divider -->
+				<div id="sidebar-menu">
+					<ul>
+						<li style="background:#92cf5c"> <a id="currUser" style="cursor: pointer;">
+						<input id="userId" type="hidden">
+						         <i class="glyphicon glyphicon-user"></i> </a>
+							<ul class="list-unstyled" style="display: none;">
+									<li><a href="mci-profile.do"><i class="ti-user m-r-5"></i>Profile</a></li>
+								<li><a href="#"><i class="ti-settings m-r-5"></i>Settings
+								</a>
+								</li>
+								<li><a style="cursor: pointer;" onclick="logout()"><i class="ti-power-off m-r-5"></i>Logout</a>
+								</li>
+							</ul>
+						</li>
+	                    <li class="" onclick="location.href='mci-dashboard.do'"><a href="#" class="waves-effect"><font
+								color="#fff"><i class="md md-remove-red-eye"></i><span>Dashboard
+								
+							</font></span> </a></li>
+						<li class="has_sub" onclick="location.href='mci-staffInvoice.do'"><a
+							class="waves-effect"><font color="#fff"><i
+									class="md md-event-note"></i> <span>Invoice
+							</font> </span> </a></li>
+
+						<li class="has_sub" onclick="location.href='mci-staffClient.do'"><a
+							href="#" class="waves-effect"><font color="#fff"> <i
+									class="md md-people"></i>Client</font> </a></li>
+									<li class="has_sub"  id="register"><a class="waves-effect" onclick="location.href='mci-register.do'"> <font
+								color="#fff"><i class="glyphicon glyphicon-plus"></i> Register</font>
+						</a></li>
+						<li id="user" class="has_sub"  onclick="location.href='mci-user.do'"><a class="waves-effect"
+							> <font color="#fff"><i
+									class="glyphicon glyphicon-list-alt"></i>User</font> </a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<!-- Left Sidebar End -->
+
+		<!-- ============================================================== -->
+		<!-- Start right Content here -->
+		<!-- ============================================================== -->
+		<div class="content-page">
+			<!-- Start content -->
+			<div class="content header">
+				<div class="container ">
+					
+					
+					<div class="modal-content">
+				<div class="modal-header ">
+				<table class="table table-hover " border="0px">
+									<thead>
+										<tr>
+										<th style="text-align:left;vertical-align : middle;" colspan="10" bgcolor="#F5F5F5">
+												<h4>
+													<strong>Profile</strong>
+												</h4></th>
+										</tr>
+										<tr>
+											<th style="text-align:left;vertical-align : middle; ">Email</th>
+											<th style="text-align:left;vertical-align : middle; ">
+												<div class="bootstrap-tagsinput">
+													<input type="text" size="30" id="email" readOnly="true">
+												</div></th>
+										</tr>
+										<tr>
+											<th style="text-align:left;vertical-align : middle; ">Real Name</th>
+											<th style="text-align:left;vertical-align : middle; ">
+												<div class="bootstrap-tagsinput">
+													<input type="text" size="30" id="realname" readOnly="true">
+												</div></th>
+										</tr>
+										<tr>
+											<th style="text-align:left;vertical-align : middle; ">Password</th>
+											<th style="text-align:left;vertical-align : middle; ">
+												<div class="bootstrap-tagsinput">
+													<input type="text" size="30" id="password" readOnly="true">
+												</div>
+											</th>
+										</tr>
+										<tr>
+											<th style="text-align:left;vertical-align : middle; ">User Type:</th>
+											<th style="text-align:left;vertical-align : middle; ">
+												<div style="width:331px">
+											<select class="selectpicker" data-style="btn-white"
+												id="userType" disabled="disabled"> 
+												<option value="1">User</option>
+												<option value="2">Administrator</option>
+											</select>
+										</div></th>
+										</tr>
+										<tr>
+									<td colspan="10">
+									<div style="float:right">
+								<button type="button" class="btn btn-success waves-effect waves-light save btn-lg" id="editUser">
+								Edit my account</button>
+								</div>
+									</td>
+									</tr>
+											</thead>
+											</table>
+				</div>
+			</div>
+				</div>
+			</div>
+			
+			
+			
+			
+			
+			
+			<!-- container -->
+		</div>
+		<!-- content -->
+	</div>
+	<!-- ============================================================== -->
+	<!-- End Right content here -->
+	<!-- ============================================================== -->
+
+	<!-- Modal Start-->
+	
+	<div id="assign0" class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h5 class="modal-title">Assign to another MCI PIC</h5>
+					<h4>
+						Client Name:<input width="100%" value="" id="userName"
+							readOnly="true">
+					</h4>
+					<h4>
+						PIC Name:<input width="100%" value="" id="picName" readOnly="true">
+					</h4>
+
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered table-hover">
+						<tbody>
+							<tr bgcolor="#F5F5F5">
+								<th style='text-align:left;vertical-align : middle; '></th>
+								<th style='text-align:left;vertical-align : middle; '>
+									<h4>
+										<strong>MCI PIC</strong>
+									</h4></th>
+							</tr>
+						</tbody>
+						<tbody id="userList">
+						</tbody>
+
+					</table>
+				</div>
+				<input value="1" type="hidden" id="userIndex" />
+				<div align="middle">
+					<div class="btn btn-primary waves-effect waves-light"
+						data-toggle="modal" id="firstUser">
+						<i class="glyphicon glyphicon-fast-backward"></i>
+					</div>
+					<div class="btn btn-primary waves-effect waves-light "
+						data-toggle="modal" id="previousUser">
+						<i class="ion-arrow-left-a"></i>
+					</div>
+					<div class="btn btn-primary " data-toggle="modal" id="pageUser"></div>
+					<div class="btn btn-primary waves-effect waves-light"
+						data-toggle="modal" id="nextUser">
+						<i class="ion-arrow-right-a"></i>
+					</div>
+					<div class="btn btn-primary waves-effect waves-light "
+						data-toggle="modal" id="lastUser">
+						<i class="glyphicon glyphicon-fast-forward"></i>
+					</div>
+					<div style="float:right"
+						class="btn btn-success waves-effect waves-light save btn-lg"
+						id="assignTo" data-dismiss="modal">Assign to PIC</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="account1" class="modal fade bs-example-modal-lg" tabindex="-1"
+		role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<div class="btn btn-primary waves-effect waves-light btn-lg"
+						data-toggle="modal" id="edit">
+						<i class="glyphicon glyphicon-edit"></i> Edit
+					</div>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered table-hover">
+						<tbody>
+							<tr bgcolor="#F5F5F5">
+								<td style='text-align:left;vertical-align : middle; '></td>
+								<td style='text-align:left;vertical-align : middle; '>
+									<h4>
+										<strong>Client</strong>
+									</h4></td>
+								<td style='text-align:left;vertical-align : middle; '>
+									<h4>
+										<strong>Amount</strong>
+									</h4></td>
+								<td style='text-align:left;vertical-align : middle; '>
+									<h4>
+										<strong>Remark</strong>
+									</h4></td>
+								<td style='text-align:left;vertical-align : middle; '>
+									<h4>
+										<strong>Date</strong>
+									</h4></td>
+							</tr>
+						</tbody>
+						<tbody id="accountList">
+						</tbody>
+
+					</table>
+					<input value="1" type="hidden" id="userIndex" />
+					<div align="middle">
+						<div class="btn btn-primary waves-effect waves-light"
+							data-toggle="modal" id="firstAccount">
+							<i class="glyphicon glyphicon-fast-backward"></i>
+						</div>
+						<div class="btn btn-primary waves-effect waves-light "
+							data-toggle="modal" id="previousAccount">
+							<i class="ion-arrow-left-a"></i>
+						</div>
+						<div class="btn btn-primary  btn-lg" data-toggle="modal"
+							id="pageAccount"></div>
+						<div class="btn btn-primary waves-effect waves-light "
+							data-toggle="modal" id="nextAccount">
+							<i class="ion-arrow-right-a"></i>
+						</div>
+						<div class="btn btn-primary waves-effect waves-light "
+							data-toggle="modal" id="lastAccount">
+							<i class="glyphicon glyphicon-fast-forward"></i>
+						</div>
+						<input id="accountPageIndex" value="1" style="display:none"/>
+						<div style="float:right"
+							class="btn btn-danger waves-effect waves-light save btn-lg"
+							id="closeAccount" data-dismiss="modal">close</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<script src="assets/js/jquery.min.js"></script>
+	<!-- Modal End -->
+
+
+	<!-- jQuery  -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/detect.js"></script>
+	<script src="assets/js/fastclick.js"></script>
+	<script src="assets/js/jquery.slimscroll.js"></script>
+	<script src="assets/js/jquery.blockUI.js"></script>
+	<script src="assets/js/waves.js"></script>
+	<script src="assets/js/wow.min.js"></script>
+	<script src="assets/js/jquery.nicescroll.js"></script>
+	<script src="assets/js/jquery.scrollTo.min.js"></script>
+
+	<script
+		src="assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+	<script src="assets/plugins/switchery/dist/switchery.min.js"></script>
+	<script type="text/javascript"
+		src="assets/plugins/multiselect/js/jquery.multi-select.js"></script>
+	<script type="text/javascript"
+		src="assets/plugins/jquery-quicksearch/jquery.quicksearch.js"></script>
+	<script src="assets/plugins/select2/select2.min.js"
+		type="text/javascript"></script>
+	<script
+		src="assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"
+		type="text/javascript"></script>
+	<script
+		src="assets/plugins/bootstrap-filestyle/src/bootstrap-filestyle.min.js"
+		type="text/javascript"></script>
+	<script
+		src="assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"
+		type="text/javascript"></script>
+	<script
+		src="assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"
+		type="text/javascript"></script>
+
+	<script src="assets/js/jquery.core.js"></script>
+	<script src="assets/js/jquery.app.js"></script>
+	<!-- Examples -->
+	<script
+		src="assets/plugins/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+	<script
+		src="assets/plugins/jquery-datatables-editable/jquery.dataTables.js"></script>
+	<script src="assets/plugins/datatables/dataTables.bootstrap.js"></script>
+	<script src="assets/plugins/tiny-editable/numeric-input-example.js"></script>
+	<script src="assets/pages/datatables.editable.init.js"></script>
+	<script src="assets/plugins/moment/moment.js"></script>
+	<script src="assets/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+	<script
+		src="assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	<script src="assets/plugins/custombox/dist/custombox.min.js"></script>
+	<script src="assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="assets/plugins/custombox/dist/legacy.min.js"></script>
+	<script type="text/javascript" src="assets/plugins/jquery.bigautocomplete.js"></script>
+	<script src="js/system/profile.js"></script>
+	<!-- 日期插件
+ -->
+	
+	<script>
+		var resizefunc = [];
+
+		jQuery(document).ready(function() {
+
+			// Date Picker
+			jQuery('#datepicker').datepicker();
+			jQuery('#datepicker').datepicker();
+			jQuery('#datepicker-autoclose').datepicker({
+
+				autoclose : true,
+				todayHighlight : true
+			})
+			jQuery('#datepicker-autoclose1').datepicker({
+				autoclose : true,
+				todayHighlight : true
+			})
+		});
+	</script>
+</body>
+</html>

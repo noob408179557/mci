@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mci.main.client.mapper.ClientMapper">
+   <resultMap id="invoiceAll" type="invoice">
+		<id property="id" column="id" />
+		<result property="total" column="total" />
+		<result property="state" column="state" />
+		<result property="createDate" column="createdate" />
+		<result property="cp" column="contact" />
+		<result property="remark" column="remark" />
+		<result property="term" column="paymentterms" />
+		<result property="type" column="type" />
+		<result property="pic" column="pic"/>
+		<association property="picObject" javaType="mci.main.user.pojo.User">
+			<id property="id" column="id" />
+			<result property="realName" column="realname" />
+			<result property="username" column="username" />
+			<result property="type" column="user_type"/>
+		</association>
+		<association property="clientObject" javaType="mci.main.client.pojo.Client">
+			<id property="id" column="id" />
+			<result property="companyName" column="companyname" />
+		</association>
+	</resultMap>
+	<resultMap id="clientAll" type="client">
+		<id property="id" column="id" />
+		<result property="companyName" column="companyname" />
+		<result property="webSite" column="website" />
+		<result property="lastDate" column="lastdate" />
+		<result property="trade" column="trade" />
+		<result property="days" column="days" />
+	    <result property="pic" column="pic" />
+		<result property="size" column="size" />
+		<result property="state" column="state" />
+		<result property="remark" column="remark" />
+		<result property="createDate" column="createdate" />
+		<result property="term" column="term" />
+		<association property="picObject" javaType="mci.main.user.pojo.User">
+			<id property="id" column="id" />
+			<result property="realName" column="realname" />
+			<result property="username" column="username" />
+			<result property="password" column="password" />
+		</association>
+	</resultMap>
+	<sql id="QueryClient">
+	    <if test="companyName != null">
+			and c.`companyname` like concat('%',#{companyName},'%')
+		</if>
+		<if test="startDate!=null and startDate!=''">
+			and c.`createdate` >= #{startDate}
+		</if>
+		<if test="endDate!=null and endDate!=''">
+			and  #{endDate} >=  c.`createdate`
+		</if>
+	    <if test="picName!=null">
+	       and u.`realname` like concat('%',#{picName},'%') 
+	    </if>
+	    <if test="trade!=null and trade!=''">
+	       and c.`trade`= #{trade}  
+	    </if>
+	    <if test="state!=null and state!=''">
+	       and c.`state`=#{state}
+	    </if>
+	    
+	 </sql>
+	<resultMap type="clientHistory" id="clientHistory">
+		<id property="id" column="id" />
+		<result property="client" column="client" />
+		<result property="lastdate" column="lastdate" />
+		<result property="type" column="type"/>
+		<result property="editRemark" column="editremark"/>
+		<association property="userObject" javaType="mci.main.user.pojo.User">
+			<id property="id" column="id" />
+			<result property="realName" column="realname" />
+		</association>
+		<association property="clientObject" javaType="mci.main.client.pojo.Client">
+			<id property="id" column="id" />
+			<result property="companyName" column="companyname" />
+		</association>
+	</resultMap>
+	<!-- active Client -->
+	<update id="activeClient" parameterType="client">
+		update mci_client set `state`='2'  where `id`=#{id}
+	</update>
+	<update id="createClient" parameterType="client">
+		update
+		mci_client set
+		`companyname`=#{companyName},
+		`website`=#{webSite},
+		`days`=#{days},
+		`size`=#{size},
+		`remark`=#{remark},
+		`trade`=#{trade},
+		`lastdate`=now(),
+		`term`=#{term}
+		
+		where id=#{id}
+	</update>
+	<!-- Update Client -->
+	<update id="updateClient" parameterType="client">
+		update
+		mci_client set
+		`companyname`=#{companyName},
+		`website`=#{webSite},
+		`days`=#{days},
+		`size`=#{size},
+		`remark`=#{remark},
+		`trade`=#{trade},
+		`lastdate`=now(),
+		`state`=#{state}
+		where id=#{id}
+	</update>
+	<insert id="addContactPerson" parameterType="contactPerson">
+		INSERT INTO
+		mci_contactperson
+		(`name`,`email`,`billaddress`,`position`,`postal`,`mobile`,`tel`,`companyid`,`status`)
+		VALUES
+		(#{name},#{email},#{billaddress},#{position},#{postal},#{mobile},#{tel},#{companyid},#{status});
+		<selectKey keyProperty="id" resultType="String" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<insert id="addClient" parameterType="client">
+		insert into
+		mci_client
+		(`companyname`,`website`,`days`,`size`,`state`,`remark`,`createdate`,`pic`,`trade`,`lastdate`,`term`)
+		values
+		(#{companyName},#{webSite},#{days},#{size},'1',#{remark},#{createDate},#{pic},#{trade},now(),#{term})
+		<selectKey keyProperty="id" resultType="String" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<select id="loadContactPerson" parameterType="String"
+		resultType="contactPerson">
+		select * from mci_contactperson where id=#{id}
+	</select>
+	<update id="deleteContactPerson" parameterType="String">
+		delete from
+		mci_contactperson where id=#{id}
+	</update>
+	<update id="updateContactPerson" parameterType="contactPerson">
+		update
+		mci_contactperson set
+		`name`=#{name},
+		`email`=#{email},
+		`billaddress`=#{billaddress},
+		`position`=#{position},
+		`postal`=#{postal},
+		`mobile`=#{mobile},
+		`tel`=#{tel},
+		`status`=#{status}
+		where id=#{id}
+	</update>
+	<update id="addCPFK" parameterType="contactPerson">
+		update mci_contactperson set
+		`companyid`=#{companyid} where `id`=#{id}
+	</update>
+	<!-- staffClient页面 -->
+	<sql id="loadClientQ">
+	     <if test="type=='1'.toString() and type!=null">
+			and c.`pic`=#{pic}
+		</if>
+	</sql>
+	<select id="loadClient" parameterType="clientQuery" resultMap="clientAll">
+		select * from mci_client c,mci_user user where c.pic=user.id 
+		<include refid="loadClientQ"></include>
+		order by
+		c.id desc
+		limit #{startIndex},#{pageSize}
+	</select>
+	<select id="loadClientCount" resultType="int" parameterType="clientQuery">
+		select count(*) from
+		mci_client c where id!='0'
+    <include refid="loadClientQ"></include>
+	</select>
+	<select id="loadFirstCP" parameterType="string" resultType="contactperson">
+		select * from mci_contactperson where companyid=#{id} limit 1
+	</select>
+	<update id="deleteClient" parameterType="String">
+		delete from
+		mci_client
+		where id=#{id}
+	</update>
+	<select id="editClient" parameterType="string" resultMap="clientAll">
+		select
+		* from mci_client client ,mci_user user where client.id=#{id} and
+		client.pic=user.id
+	</select>
+	<select id="loadAllContactPerson" parameterType="string"
+		resultType="contactPerson">
+		select * from mci_contactperson where companyid=#{id}
+	</select>
+	<!-- createInvoice -->
+	<select id="loadActivedClient" parameterType="clientQuery" resultMap="clientAll">
+		select * from mci_client c,mci_user user where c.pic=user.id
+		and (c.state='2'  or  c.state='3')
+		<include refid="loadClientQ"></include>
+		order by c.id desc
+		limit #{startIndex},#{pageSize}
+	</select>
+	
+	<select id="loadActivedClientCount" parameterType="clientQuery" resultType="int">
+		select count(*) from mci_client c, mci_user u where c.pic=u.id and (c.state="2"  OR c.state='3')
+		<include refid="loadClientQ"></include>
+	</select>
+	
+	
+	<!-- add client history -->
+	<insert id="addClientHistory" parameterType="clientHistory">
+		insert into mci_client_history
+		(`client`,`user`,`lastdate`,`type`,`editremark`) values
+		(#{client},#{user},now(),#{type},#{editRemark})
+	</insert>
+	<select id="getClientHistory" parameterType="clientHistory"
+		resultMap="clientHistory">
+		select * from mci_client_history history,mci_client client,mci_user user
+		where
+		history.client=#{client} and client.id=history.client and user.id=history.user
+		order by history.lastdate desc
+	</select>
+	<select id="getUser" parameterType="assignQuery" resultType="user">
+	select * from mci_user order by id desc limit #{startIndex},#{pageSize}
+	</select>
+	<select id="getUserCount" parameterType="assignQuery" resultType="int">
+	select count(*) from mci_user
+	</select>
+	<select id="getUserName" parameterType="user" resultMap="clientAll">
+	select * from mci_client client,mci_user user where client.id=#{id} and client.pic=user.id
+	</select>
+	<update id="assignToPic" parameterType="assign">
+	update mci_client set `pic`=#{user} where `id`=#{client}
+	</update>
+	<select id="getAccount" parameterType="client" resultMap="invoiceAll">
+	select * from mci_invoice i,mci_client c ,mci_user u where i.client=c.id and i.client=#{id} and i.pic=u.id order by i.id desc
+	</select>
+    <select id="searchClient" parameterType="client" resultMap="clientAll">
+		select * from mci_client c,mci_user u where c.pic=u.id
+		<include refid="QueryClient"></include>
+		<include refid="loadClientQ"></include>
+	     order by c.`id` desc
+	</select>
+	 <select id="staffSearchClient" parameterType="client" resultMap="clientAll">
+		select * from mci_client c,mci_user u where c.pic=u.id
+		<include refid="QueryClient"></include>
+		 and c.`pic`=#{pic}
+	     order by c.`id` desc
+	</select>
+	<select id="autoClientList" resultType="client">
+	select * from mci_client
+	</select>
+	<select id="autoCPList" resultType="contactPerson">
+	select * from mci_contactperson
+	</select>
+	<sql id="activeClient">
+		<if test="id!=null and id!=''">
+			` c.`id` like  concat('%',#{id},'%')
+		</if>
+		<if test="companyName!=null and companyName!=''">
+			and  c.`companyname` like  concat('%',#{companyName},'%')
+		</if>
+	</sql>
+	<select id="searchActiveClient" parameterType="clientQuery" resultMap="clientAll">
+	select * from mci_client c, mci_user u where c.pic=u.id and (c.state="2"  OR c.state='3')
+	<include refid="activeClient"></include>
+	<include refid="loadClientQ"></include>
+	 order by c.`id` desc
+	</select>
+	<select id="searchActiveClientCount" parameterType="clientQuery" resultType="int">
+	select count(*) from mci_client c, mci_user u where c.pic=u.id and (c.state="2"  OR c.state='3')
+	<include refid="activeClient"></include>
+	<include refid="loadClientQ"></include>
+	</select>
+	<select id="getCPcount" parameterType="client" resultType="int">
+	select count(*) from mci_contactperson  where companyid=#{id}
+	</select>
+	<update id="clearClient">
+	delete from mci_client where companyname=""
+	</update>
+	<update id="blockClient" parameterType="client">  
+	update mci_client set state="3" where id=#{id}
+	</update>
+	<select id="getLastInvoice" parameterType="client" resultType="invoice">
+	select * from mci_invoice i,mci_client c where i.client=#{id} order by i.id desc limit 1
+	</select>
+	<update id="inactiveClient" parameterType="client">
+	update mci_client set `state`='3' where `id`=#{id}
+	</update>
+	<select id="getaClient" parameterType="string" resultType="client">
+	select * from mci_client where id=#{id}
+	</select>
+	<select id="getRemark" parameterType="clientHistory" resultType="clientHistory">
+	select * from mci_client_history where id=#{id}
+	</select>
+	<update id="saveRemark" parameterType="clientHistory">
+	update mci_client_history set editremark=#{editRemark} where id=#{id}
+	</update>
+	<delete id="deleteRemark" parameterType="String" >
+	delete from mci_client_history where id=#{id}
+	</delete>
+</mapper>
