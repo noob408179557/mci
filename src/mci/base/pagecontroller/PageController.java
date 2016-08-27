@@ -183,4 +183,8 @@ public class PageController {
 	public String login() {
 		return "login";
 	}
+	@RequestMapping("newLogin")
+	public String newlogin() {
+		return "newLogin";
+	}
 }

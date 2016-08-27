@@ -65,7 +65,7 @@ public class UserController {
 			String userid = (String) session.getAttribute("editUserId");
 			User old=userServiceImpl.getaUser(userid);
 			user.setId(userid);
-			//user.setPassword(old.getPassword());
+			user.setPassword(old.getPassword());
 			userServiceImpl.updateUser(user);
 			return "0";
 		} catch (Exception e) {

@@ -212,7 +212,7 @@ function search(i) {
 													+ data[i].id
 													+ "</th>"
 													+ "<th style='text-align:left;vertical-align : middle; ' >"
-													+ data[i].total+"/"+(data[i].total*1.07).toFixed(1)
+													+ (data[i].total*1.07).toFixed(1)+"/"+data[i].total
 													+ "</th>"
 													+ "<th style='text-align:left;vertical-align : middle; '>"
 													+ data[i].creditNotes

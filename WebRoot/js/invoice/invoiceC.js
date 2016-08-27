@@ -246,7 +246,7 @@ function addItem(i) {
 											+ "<td></td>"
 											+ "<td colspan=2'>"
 											+ "<div style='padding-left:0px;width:254px;height:100px'>"
-											+ "<select class='selectpicker' data-style='btn-white'  id='desc"
+											+ "<select class='selectpicker' data-live-search='true' data-style='btn-white'  id='desc"
 											+ data
 											+ "'>"
 											+ "<option value='Overtimes10X'>Overtimes 1.0X</option>"

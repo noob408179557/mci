@@ -16,6 +16,7 @@ import mci.main.client.pojo.ContactPerson;
 import mci.main.client.service.ClientService;
 import mci.main.invoice.pojo.Invoice;
 import mci.main.system.Mss;
+import mci.main.system.service.SystemService;
 import mci.main.user.pojo.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class ClientController {
 
 	@Autowired
 	private ClientService clientServiceImpl;
+	
+	@Autowired
+	private SystemService systemServiceImpl;
 
 	@ResponseBody
 	@RequestMapping(value = "deleteRemark", method = RequestMethod.POST)
@@ -281,6 +285,7 @@ public class ClientController {
 	public String createClient(Client client) {
 		try {
 			clientServiceImpl.createClient(client);
+			systemServiceImpl.sendEmailToAdmin();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "1";

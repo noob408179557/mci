@@ -28,24 +28,24 @@ public class Sendmail {
 		         //connect第三个参数为授权码
 		         ts.connect("smtp.163.com", "13262908892@163.com", "ab197015");
 		         //4、创建邮件
-		         Message message = createSimpleMail(session);
+		         Message message = createClientMail(session,"");
 		         //5、发送邮件
 		         ts.sendMessage(message, message.getAllRecipients());
 		         ts.close();
 		     }
-		     public static MimeMessage createSimpleMail(Session session)
+		     public static MimeMessage createClientMail(Session session,String email)
 		             throws Exception {
 		         //创建邮件对象
 		         MimeMessage message = new MimeMessage(session);
 		         //指明邮件的发件人
 		         message.setFrom(new InternetAddress("13262908892@163.com"));
 		         //指明邮件的收件人，现在发件人和收件人是一样的，那就是自己给自己发
-		       // message.setRecipient(Message.RecipientType.TO, new InternetAddress("13262908892@163.com"));
-		       message.setRecipient(Message.RecipientType.TO, new InternetAddress("2669137757@qq.com"));
+		         // message.setRecipient(Message.RecipientType.TO, new InternetAddress("13262908892@163.com"));
+		         message.setRecipient(Message.RecipientType.TO, new InternetAddress("408179557@qq.com"));
 		         //邮件的标题
-		         message.setSubject("【京东】下单成功！");
+		         message.setSubject("Notification of create new client!");
 		         //邮件的文本内容
-		         message.setContent("京东已收到您的订单【11767810811】，欢迎您随时关注订单状态", "text/html;charset=UTF-8");
+		         message.setContent("", "text/html;charset=UTF-8");
 		        //返回创建好的邮件对象
 		         return message;
 }

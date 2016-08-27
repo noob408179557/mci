@@ -100,4 +100,5 @@ public interface ClientMapper {
     
     void deleteRemark(@Param("id")String id);
     
+    Client getLastClient();
 }
