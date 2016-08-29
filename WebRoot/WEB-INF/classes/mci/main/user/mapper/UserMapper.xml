@@ -9,14 +9,12 @@
 	values 
 	(#{email},#{password},#{type},'1',#{realName},#{type})
 	</update>
-	<select id="getUserList" parameterType="userQuery" resultType="user">
-	select * from mci_user where state='1' limit #{startIndex},#{pageSize}
-	</select>
+	
 	<select id="getUserPage" parameterType="userQuery" resultType="int">
-	select count(*) from mci_user  where state='1'
+	select count(*) from mci_user  where state='1' and type!='3'
 	</select>
 	<select id="getUserPage1" parameterType="userQuery" resultType="int">
-	select count(*) from mci_user  where state='0'
+	select count(*) from mci_user  where state='0' and type!='3'
 	</select>
 	<select id="getUsers"  resultType="user">
 	select * from mci_user
@@ -41,9 +39,24 @@
 	update mci_user set state='1' where id=#{id}
 	</update>
 	<update id="resetPassword" parameterType="string">
-	update mci_user set password='12' where id=#{userid}
+	update mci_user set password='123456' where id=#{userid}
 	</update>
+	<select id="getUserList" parameterType="userQuery" resultType="user">
+	select * from mci_user where state='1' and type!='3' limit #{startIndex},#{pageSize}
+	</select>
 	<select id="getUserList2" parameterType="userQuery" resultType="user">
-	select * from mci_user where state='0' limit #{startIndex},#{pageSize}
+	select * from mci_user where state='0' and type!='3' limit #{startIndex},#{pageSize}
+	</select>
+	<select id="getUserList4admin" parameterType="userQuery" resultType="user">
+	select * from mci_user where state='1' and type='1' limit #{startIndex},#{pageSize}
+	</select>
+	<select id="getUserList24admin" parameterType="userQuery" resultType="user">
+	select * from mci_user where state='0' and type='1' limit #{startIndex},#{pageSize}
+	</select>
+	<select id="getUserPage4admin" parameterType="userQuery" resultType="int">
+	select count(*) from mci_user  where state='1' and type='1'
+	</select>
+	<select id="getUserPage14admin" parameterType="userQuery" resultType="int">
+	select count(*) from mci_user  where state='0' and type='1'
 	</select>
 </mapper>

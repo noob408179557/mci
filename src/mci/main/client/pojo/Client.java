@@ -12,6 +12,7 @@ public class Client implements Serializable {
 	private String webSite;
 	private String days;
 	private String size;
+	//0.updated 1.created 2.active 3.inactive
 	private String state;
 	private String remark;
     private String createDate;

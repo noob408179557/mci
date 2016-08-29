@@ -24,46 +24,46 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping(value = "activeUser", method = RequestMethod.POST)
-	public String activeUser(User user){
-		try{
+	public String activeUser(User user) {
+		try {
 			userServiceImpl.activeUser(user);
 			return "0";
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return "1";
 		}
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "blockUser", method = RequestMethod.POST)
-	public String blockUser(User user){
-		try{
+	public String blockUser(User user) {
+		try {
 			userServiceImpl.blockUser(user);
 			return "0";
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return "1";
 		}
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "resetPassword", method = RequestMethod.POST)
-	public String resetPassword(String userid){
-		try{
+	public String resetPassword(String userid) {
+		try {
 			userServiceImpl.resetPassword(userid);
 			return "0";
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return "1";
 		}
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "saveUser", method = RequestMethod.POST)
 	public String saveUser(User user, HttpSession session) {
 		try {
 			String userid = (String) session.getAttribute("editUserId");
-			User old=userServiceImpl.getaUser(userid);
+			User old = userServiceImpl.getaUser(userid);
 			user.setId(userid);
 			user.setPassword(old.getPassword());
 			userServiceImpl.updateUser(user);
@@ -100,34 +100,48 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "loadUserPage", method = RequestMethod.POST)
 	public int loadUserCount(HttpSession session) {
+		User user = (User) session.getAttribute("user");
 		UserQuery cq = (UserQuery) session.getAttribute("userQuery");
-		return userServiceImpl.getUserPage(cq);
+		return userServiceImpl.getUserPage(cq, user);
 	}
+
 	@ResponseBody
 	@RequestMapping(value = "loadUserPage1", method = RequestMethod.POST)
 	public int loadUserCount1(HttpSession session) {
+		User user = (User) session.getAttribute("user");
 		UserQuery cq = (UserQuery) session.getAttribute("userQuery1");
-		return userServiceImpl.getUserPage1(cq);
+		return userServiceImpl.getUserPage1(cq,user);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "getUserList", method = RequestMethod.POST)
 	public List<User> loadUserList(UserQuery uq, HttpSession session) {
-
 		uq.setStartIndex((uq.getPageIndex() - 1) * UserQuery.getPageSize());
 		session.removeAttribute("userQuery");
 		session.setAttribute("userQuery", uq);
-		return userServiceImpl.getUserList(uq);
+		User user = (User) session.getAttribute("user");
+		if (user.getType().equals("3")) {
+			return userServiceImpl.getUserList(uq);
+		} else {
+			return userServiceImpl.getUserList4admin(uq);
+		}
+
 	}
+
 	@ResponseBody
 	@RequestMapping(value = "getUserList2", method = RequestMethod.POST)
 	public List<User> loadUserList2(UserQuery uq, HttpSession session) {
-
 		uq.setStartIndex((uq.getPageIndex() - 1) * UserQuery.getPageSize());
 		session.removeAttribute("userQuery1");
 		session.setAttribute("userQuery1", uq);
-		return userServiceImpl.getUserList2(uq);
+		User user = (User) session.getAttribute("user");
+		if (user.getType().equals("3")) {
+			return userServiceImpl.getUserList2(uq);
+		} else {
+			return userServiceImpl.getUserList24admin(uq);
+		}
 	}
+
 	@ResponseBody
 	@RequestMapping(value = "getLoginUser", method = RequestMethod.POST)
 	public User getLoginUser(HttpSession session) {
@@ -139,15 +153,15 @@ public class UserController {
 	@RequestMapping(value = "createUser", method = RequestMethod.POST)
 	public String createUser(User user) {
 		try {
-			List<User> list=userServiceImpl.getUsers();
-			for(User u1:list){
-				if(u1.getEmail().equals(user.getEmail())){
+			List<User> list = userServiceImpl.getUsers();
+			for (User u1 : list) {
+				if (u1.getEmail().equals(user.getEmail())) {
 					return "3";
 				}
 			}
 			userServiceImpl.createUser(user);
 			return "0";
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return "1";
 		}
@@ -159,13 +173,13 @@ public class UserController {
 		int i = 0;
 		User user = null;
 		try {
-			List<User> list=userServiceImpl.getUsers();
-			for(User us:list){
-				if(us.getEmail().equals(email)&&us.getPassword().equals(password)){
-					user=us;
+			List<User> list = userServiceImpl.getUsers();
+			for (User us : list) {
+				if (us.getEmail().equals(email) && us.getPassword().equals(password)) {
+					user = us;
 				}
 			}
-			
+
 			if (null == user) {
 				// 如果找不到这个User
 				user.setI("3");

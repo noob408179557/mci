@@ -123,7 +123,7 @@ function editClient() {
 									+ ")' href='javascript:void(0)' id='editRow"
 									+ data[i].id
 									+ "'>"
-									+ "edit</a> <a class='btn btn-danger  btn-lg' onclick='removeRow("
+									+ "edit</a> <a class='btn btn-danger  btn-lg  remove' onclick='removeRow("
 									+ data[i].id
 									+ ")' href='javascript:void(0)' id='removeRow"
 									+ data[i].id
@@ -146,11 +146,21 @@ function editClient() {
 						$("#cpPostal").val("");
 						$("#cpMobile").val("");
 						$("#cpTel").val("");
-
+						hiddenRemove();
 					}
 				}
 			});
 	getEdit();
+	
+}
+function hiddenRemove(){
+//	$(".remove").css({ display: none }); 
+//	$(".remove").attr("display","none");
+	if(pow=="1"){
+		$(".remove").each(function(){
+			$(this).hide();
+			});
+	}
 }
 // get edit history
 function getEdit() {
@@ -187,7 +197,7 @@ function getEdit() {
 						}
 					}else{
 						for (var i = 0; i < data.length; i++) {
-							var body = "<tr id='remarkRow"+data[i].id+"'><th><textarea id='remark"+data[i].id+"' readOnly='true'  class='form-control' data-parsley-id='50' style='margin: 0px; width:700px; height: 60px;'>"
+							var body ="<tr id='remarkRow"+data[i].id+"'><th><textarea id='remark"+data[i].id+"' readOnly='true'  class='form-control' data-parsley-id='50' style='margin: 0px; width:700px; height: 60px;'>"
 									+ data[i].editRemark
 									+ "</textarea></th>"
 									+ "<th>"

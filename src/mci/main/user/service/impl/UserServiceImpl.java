@@ -31,8 +31,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int getUserPage(UserQuery uq) {
-		int totalCount = userMapper.getUserPage(uq);
+	public int getUserPage(UserQuery uq,User user) {
+		int totalCount;
+		if(user.getType().equals("3")){
+			totalCount = userMapper.getUserPage(uq);
+		}else{
+			totalCount = userMapper.getUserPage4admin(uq);
+		}
 		int totalPage;
 		if ((totalCount % UserQuery.getPageSize()) == 0) {
 			totalPage = totalCount / UserQuery.getPageSize();
@@ -42,8 +47,13 @@ public class UserServiceImpl implements UserService {
 		return totalPage;
 	}
 	@Override
-	public int getUserPage1(UserQuery uq) {
-		int totalCount = userMapper.getUserPage1(uq);
+	public int getUserPage1(UserQuery uq,User user) {
+		int totalCount;
+		if(user.getType().equals("3")){
+			totalCount = userMapper.getUserPage1(uq);
+		}else{
+			totalCount = userMapper.getUserPage14admin(uq);
+		}
 		int totalPage;
 		if ((totalCount % UserQuery.getPageSize()) == 0) {
 			totalPage = totalCount / UserQuery.getPageSize();
@@ -90,6 +100,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getUsers() {
 		return userMapper.getUsers();
+	}
+
+	@Override
+	public List<User> getUserList4admin(UserQuery uq) {
+		return userMapper.getUserList4admin(uq);
+	}
+
+	@Override
+	public List<User> getUserList24admin(UserQuery uq) {
+		return userMapper.getUserList24admin(uq);
 	}
 
 	

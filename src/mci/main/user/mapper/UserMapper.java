@@ -23,6 +23,10 @@ public interface UserMapper {
 	
 	int getUserPage1(UserQuery uq);
 	
+	int getUserPage4admin(UserQuery uq);
+
+	int getUserPage14admin(UserQuery uq);
+	
 	User getaUser(@Param("userid")String userid);
 	
 	void updateUser(User user);
@@ -34,4 +38,8 @@ public interface UserMapper {
 	void resetPassword(@Param("userid")String userid);
 
 	List<User> getUsers();
+	
+	List<User> getUserList4admin(UserQuery uq);
+	
+	List<User> getUserList24admin(UserQuery uq);
 }

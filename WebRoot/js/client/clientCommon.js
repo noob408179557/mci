@@ -317,12 +317,8 @@ $(document)
 																		success : function(
 																				pow) {
 
-																			if ((
-//																					data.state != "1"
-																				//updated状态下是否可编辑
-																					data.state != "0"
-																						)
-																					&& pow.type == "1") {
+																			if ((data.state== "2"&&pow.type == "1")||(data.state == "3"&&pow.type == "1")){
+//																					pow.type == "1") {
 																				swal("You can't edit for this client!");
 																				return false;
 																			} else {

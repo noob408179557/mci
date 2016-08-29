@@ -15,11 +15,15 @@ public interface UserService {
 	
 	List<User> getUserList(UserQuery uq);
 	
-	List<User> getUserList2(UserQuery uq);
-
-	int getUserPage(UserQuery uq);
+	List<User> getUserList4admin(UserQuery uq);
 	
-	int getUserPage1(UserQuery uq);
+	List<User> getUserList2(UserQuery uq);
+	
+	List<User> getUserList24admin(UserQuery uq);
+
+	int getUserPage(UserQuery uq,User user);
+	
+	int getUserPage1(UserQuery uq,User user);
 
 	User getaUser(@Param("userid")String userid);
 	
