@@ -14,6 +14,7 @@ function init() {
 			if (data.type == 1) {
 				$("#register").hide();
 				$("#user").hide();
+				$("#delete").hide();
 			}
 		}
 	});

@@ -53,7 +53,7 @@ public class SystemServiceImpl implements SystemService {
 		List<User> list = systemMapper.getAllAdmin();
 		String content="Add a new client ,Information is id:"+client.getId();
 		if(client.getCompanyName()!=null){
-			content=content.concat("，conpanyname:"+client.getCompanyName());
+			content=content.concat("，companyname:"+client.getCompanyName());
 		}
 		if(client.getWebSite()!=null){
 			content=content.concat("，website:"+client.getWebSite());

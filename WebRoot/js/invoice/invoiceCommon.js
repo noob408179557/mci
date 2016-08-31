@@ -282,7 +282,7 @@ $(document)
 																				}
 
 																			} else {
-																				swal("You can't edit for this invoice!");
+																				swal("You can't check more details!");
 																			}
 																		}
 																	})

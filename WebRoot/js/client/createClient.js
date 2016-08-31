@@ -349,6 +349,7 @@ function removeRow(i) {
 		},
 		success : function(data) {
 			$("#row" + i).remove();
+			swal("Delete Success");
 		}
 	});
 	x--;

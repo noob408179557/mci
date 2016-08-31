@@ -257,10 +257,7 @@ function search(i) {
 										var fullypaid = "<th style='text-align:left;vertical-align : middle; '>"
 												+ "<span class='label label-table label-success btn-lg'>Fully Paid</span></th>"
 												+ "<th style='text-align:left;vertical-align : middle; '>"
-												+ "<div data-target='#commission' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' "
-												+ "onclick='getCommission("
-												+ data[i].id
-												+ ")'><i class='glyphicon glyphicon-ok'></i>&nbsp;Pay commission</div></th></tr>";
+												+"</th></tr>";
 									
 										var unpaid1 = "<th style='text-align:left;vertical-align : middle; '>"
 												+ "<span class='label label-table label-danger btn-lg'>Unpaid</span></th>"
