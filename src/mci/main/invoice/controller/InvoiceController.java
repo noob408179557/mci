@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +36,9 @@ import mci.main.invoice.service.InvoiceService;
 import mci.main.system.SystemConstant;
 import mci.main.user.pojo.User;
 
+import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.PhaseInterceptorChain;
+import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,13 +64,14 @@ public class InvoiceController {
 		try{
 			File file=new File(SystemConstant.save_excel_dir);
 			File[] list =file.listFiles();
+			if(list!=null){
 			for(int i=0;i<list.length;i++){
 				System.out.println("file_dir:"+list[i].getAbsoluteFile().getAbsolutePath());
 			if(list[i].exists()){
 				System.out.println("file.exists("+list[i].getAbsoluteFile().getAbsolutePath()+")");
 				list[i].delete();	
 			}
-			}
+			}}
 			return "0";
 		}catch(Exception e){
 			e.printStackTrace();
@@ -77,6 +82,7 @@ public class InvoiceController {
 	@ResponseBody
 	@RequestMapping(value = "printInvoice", method = RequestMethod.POST)
 	public String printInvoice(InvoiceQuery iq,HttpSession session,HttpServletRequest request, HttpServletResponse response) throws Exception{
+	
 //		JSONObject arr=JSONObject.fromObject(param);
 //		for(int i=1;i<arr.size();i++){
 //			System.out.println(arr.get(i));
@@ -93,8 +99,8 @@ public class InvoiceController {
 		User user = (User) session.getAttribute("user");
 		iq.setPic(user.getId());
 		iq.setUtype(user.getType());
-		String path=invoiceServiceImpl.print(iq,session,request,response);
-		return path;
+		
+		return invoiceServiceImpl.print(iq,session,request,response);
 	}
 	@ResponseBody
 	@RequestMapping(value = "getPayHistory", method = RequestMethod.POST)
@@ -522,7 +528,7 @@ public class InvoiceController {
 			// 转换Date格式,从dd/mm/yyyy到yyyy-mm-dd
 			// 没有登录此行会报空指针异常
 			in.setPic(pic.getId());
-			invoiceServiceImpl.addInvoice(in);
+			in=invoiceServiceImpl.addInvoice(in);
 			in.setPicObject(pic);
 
 			// 将之后需要的信息存到session中
@@ -568,9 +574,10 @@ public class InvoiceController {
 		}else{
 			amount=Double.valueOf(invoice.getCashpayment());
 		}
-		invoice.setCashpayment(String.valueOf(amount+Double.valueOf(any.getStr())));
+		DecimalFormat decimalFormat = new DecimalFormat("###0.00");//格式化设置  
+		invoice.setCashpayment(decimalFormat.format(amount+Double.valueOf(any.getStr())));
 		try {
-			invoice.setResidual(String.valueOf(residualNow));
+			invoice.setResidual(decimalFormat.format(residualNow));
 			invoiceServiceImpl.updateInvoice(invoice);
 			//添加payHistory
 			PayHistory ph=new PayHistory();
@@ -601,6 +608,7 @@ public class InvoiceController {
 		double residual = Double.valueOf(invoice.getResidual());
 		double residualNow = residual - credit;
 		double creditNotes = Double.valueOf(invoice.getCreditNotes()) + credit;
+		DecimalFormat decimalFormat = new DecimalFormat("###0.00");//格式化设置  
 		if (residualNow != Double.valueOf(invoice.getTotal())) {
 			invoice.setState("3");
 		}
@@ -613,10 +621,10 @@ public class InvoiceController {
 		}else{
 			amount=Double.valueOf(invoice.getCreditnotespayment());
 		}
-		invoice.setCreditnotespayment(String.valueOf(amount+Double.valueOf(any.getStr())));
+		invoice.setCreditnotespayment(decimalFormat.format(amount+Double.valueOf(any.getStr())));
 		try {
-			invoice.setCreditNotes(String.valueOf(creditNotes));
-			invoice.setResidual(String.valueOf(residualNow));
+			invoice.setCreditNotes(decimalFormat.format(creditNotes));
+			invoice.setResidual(decimalFormat.format(residualNow));
 			invoiceServiceImpl.updateInvoice(invoice);
 			//添加payHistory
 			PayHistory ph=new PayHistory();
@@ -659,11 +667,12 @@ public class InvoiceController {
 		}else{
 			amount1=Double.valueOf(invoice.getChequePayment());
 		}
-		invoice.setChequePayment(String.valueOf(amount1+Double.valueOf(cq.getAmount())));
+		DecimalFormat decimalFormat = new DecimalFormat("###0.00");//格式化设置  
+		invoice.setChequePayment(decimalFormat.format(amount1+Double.valueOf(cq.getAmount())));
 		try {
 			cq.setInvoice(invoice.getId());
 			invoiceServiceImpl.createCheque(cq);
-			invoice.setResidual(String.valueOf(residualNow));
+			invoice.setResidual(decimalFormat.format(residualNow));
 			invoiceServiceImpl.updateInvoice(invoice);
 			//添加payHistory
 			PayHistory ph=new PayHistory();

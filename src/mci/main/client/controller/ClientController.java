@@ -364,6 +364,7 @@ public class ClientController {
 	public String addClient(Client client, HttpSession session) {
 			User user = (User) session.getAttribute("user");
 			client.setPic(user.getId());
+			
 			clientServiceImpl.addClient(client);
 		return client.getId();
 	}
@@ -564,7 +565,7 @@ public class ClientController {
 		User user = (User) session.getAttribute("user");
 		// 对list进行截取
 		List<Invoice> list = new ArrayList<Invoice>();
-		if (!(user.getType()).equals("2")) {
+		if ((user.getType()).equals("1")) {
 			for (int i = 0; i < list1.size(); i++) {
 				if ((user.getId()).equals(list1.get(i).getPic())) {
 					list.add(list1.get(i));

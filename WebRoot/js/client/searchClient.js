@@ -113,6 +113,7 @@ function logout() {
 	})
 }
 function search(i) {
+	clearClient();
 	if (isNaN(i)) {
 		i = $("#pageIndex").val();
 	}

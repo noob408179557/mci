@@ -31,7 +31,8 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void addClient(Client client) {
-		 client.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+	    
+		client.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		clientMapper.addClient(client);
 	}
 
@@ -212,6 +213,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public void clearClient() {
         clientMapper.clearClient();
+        clientMapper.clearCp();
 		
 	}
 

@@ -1,7 +1,7 @@
 window.onload = init;
 
 function init() {
-	clearInvoice();
+	
 	search();
 	$.ajax({
 		type : "POST",
@@ -79,6 +79,7 @@ function init() {
 	});
 }
 function search(i) {
+	clearInvoice();
 	$("#invoiceList").empty();
 	if (isNaN(i)) {
 		i = $("#pageIndex").val();
@@ -209,7 +210,7 @@ function search(i) {
 													+ "'><label></label></div></th>"
 													+ "<th style='text-align:left;vertical-align : middle; '>"
 													+ data[i].type
-													+ data[i].id
+													+ data[i].number
 													+ "</th>"
 													+ "<th style='text-align:left;vertical-align : middle; ' >"
 													+ (data[i].total*1.07).toFixed(1)+"/"+data[i].total

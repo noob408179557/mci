@@ -144,7 +144,7 @@ function init(){
 		  },
 		  success:function(data){
 			  //返回Invoice
-			 $("#id").val("P"+data.id);
+			 $("#id").val("P"+data.number);
 			 $("#date").val(data.createDate);
 			 $("#pic").val(data.picObject.realName);
 			 $("#term").val(data.term);

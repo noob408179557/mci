@@ -65,6 +65,37 @@ public class Invoice implements Serializable,Cloneable {
 		this.EissueforSP ="0" ;
 	}
 
+	@Override
+	public String toString() {
+		return "Invoice [id=" + id + ", clientObject=" + clientObject + ", client=" + client + ", picObject="
+				+ picObject + ", pic=" + pic + ", pic2=" + pic2 + ", pic2Object=" + pic2Object + ", cpObject="
+				+ cpObject + ", cp=" + cp + ", createDate=" + createDate + ", state=" + state + ", term=" + term
+				+ ", type=" + type + ", number=" + number + ", remark=" + remark + ", residual=" + residual
+				+ ", lastdate=" + lastdate + ", realname1=" + realname1 + ", realname2=" + realname2 + ", desc=" + desc
+				+ ", workerNum=" + workerNum + ", billingRate=" + billingRate + ", cost=" + cost + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", clientName=" + clientName + ", consaultantName="
+				+ consaultantName + ", creditNotes=" + creditNotes + ", action=" + action + ", utype=" + utype
+				+ ", upic=" + upic + ", AmountpayblewithGST=" + AmountpayblewithGST + ", total=" + total
+				+ ", Cashpayment=" + Cashpayment + ", ChequePayment=" + ChequePayment + ", Creditnotespayment="
+				+ Creditnotespayment + ", commission=" + commission + ", Overtimes10X=" + Overtimes10X
+				+ ", Overtimes15X=" + Overtimes15X + ", Overtimes20X=" + Overtimes20X + ", CPF=" + CPF + ", SDF=" + SDF
+				+ ", WICA2=" + WICA2 + ", MedicalCoverageFee2=" + MedicalCoverageFee2 + ", AdminFee=" + AdminFee
+				+ ", TransportAllowance=" + TransportAllowance + ", LaundryAllowance=" + LaundryAllowance
+				+ ", AfternoonShiftAllowance=" + AfternoonShiftAllowance + ", MedicalReimbursement="
+				+ MedicalReimbursement + ", MileageERPReimbursement=" + MileageERPReimbursement + ", LessUnpaidLeave="
+				+ LessUnpaidLeave + ", TransportReimbursement=" + TransportReimbursement + ", MealAllowance="
+				+ MealAllowance + ", AttendanceAllowance=" + AttendanceAllowance + ", Allowance=" + Allowance
+				+ ", PublicHolidayOT=" + PublicHolidayOT + ", Lateness=" + Lateness + ", AnnualLeaveEncashment="
+				+ AnnualLeaveEncashment + ", Bonus=" + Bonus + ", CompletionBonus=" + CompletionBonus + ", Incentive="
+				+ Incentive + ", BackPaySalary=" + BackPaySalary + ", BackPayOvertimes=" + BackPayOvertimes
+				+ ", AdjustmentSalary=" + AdjustmentSalary + ", AdjustmentOvertimes=" + AdjustmentOvertimes
+				+ ", SalaryInLieu=" + SalaryInLieu + ", PaidAnnualLeave=" + PaidAnnualLeave + ", LessMidMonthSalary="
+				+ LessMidMonthSalary + ", PaidMedicalLeave=" + PaidMedicalLeave + ", PaidChildcareLeave="
+				+ PaidChildcareLeave + ", ApplicationfeeforWP=" + ApplicationfeeforWP + ", ApplicationfeeforSP="
+				+ ApplicationfeeforSP + ", EissueforWP=" + EissueforWP + ", PurchaseofsecurityBond="
+				+ PurchaseofsecurityBond + ", EissueforSP=" + EissueforSP + "]";
+	}
+
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private Client clientObject;
@@ -79,6 +110,7 @@ public class Invoice implements Serializable,Cloneable {
 	private String state;
 	private String term;
 	private String type;
+	private String number;
 	
 	private String remark;
 	private String residual;
@@ -197,8 +229,14 @@ public class Invoice implements Serializable,Cloneable {
 	
 	
 	
-	
-	
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
 	public String getDesc() {
 		return desc;
 	}

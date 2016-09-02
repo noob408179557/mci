@@ -86,6 +86,8 @@ public interface ClientMapper {
     
     void clearClient();
     
+    void clearCp();
+    
     void blockClient(Client client);
     
     Invoice getLastInvoice(Client client);

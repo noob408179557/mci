@@ -1,30 +1,19 @@
 package mci.main.invoice.service.impl;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JFileChooser;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -49,12 +38,11 @@ import mci.main.invoice.pojo.ItemTotal;
 import mci.main.invoice.pojo.PayHistory;
 import mci.main.invoice.pojo.WorkerC;
 import mci.main.invoice.service.InvoiceService;
-import mci.main.system.Download;
 import mci.main.system.SystemConstant;
 import mci.main.user.pojo.User;
 
 @Service
-public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
+public class InvoiceServiceImpl  implements InvoiceService {
 
 	@Autowired
 	private InvoiceMapper invoiceMapper;
@@ -136,8 +124,18 @@ public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
 	}
 
 	@Override
-	public void addInvoice(Invoice in) {
+	public Invoice addInvoice(Invoice in) {
+		String id=invoiceMapper.getLastIdByType(in.getType());
+		if(id!=null){
+			in.setNumber(String.valueOf(Integer.valueOf(id)+1));
+		}else{
+			in.setNumber("1");
+		}
+		
 		invoiceMapper.addInvoice(in);
+		id=invoiceMapper.getLastIdByType(in.getType());
+		in.setNumber(id);
+		return in;
 	}
 
 	@Override
@@ -382,6 +380,7 @@ public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
 	@Override
 	public void clearInvoice() {
 		invoiceMapper.clearInvoice();
+		
 	}
 
 	@Override
@@ -404,7 +403,212 @@ public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public void print1(InvoiceQuery iq, HttpSession session, HttpServletRequest request, HttpServletResponse response)
+			throws NoSuchFieldException, SecurityException, NoSuchMethodException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, IOException, ServletException {
+		// List<Invoice> list = invoiceMapper.loadInvoice(iq);
+		// invoice的list
+		List<Invoice> list;
+		Invoice invoice = (Invoice) session.getAttribute("InvoiceQuery");
+		if (invoice == null) {
+			list = invoiceMapper.loadInvoiceForPrint(iq);
+		} else {
+			list = invoiceMapper.searchInvoiceForPrint(invoice);
+		}
 
+		Invoice total = new Invoice();
+		total.setId("Total");
+		total.InvoiceZero();
+		// 需要的数据的list
+		List<String> param = iq.getParam();
+		// 不同类型对应的item的list
+		// List<ItemF> itemFList;
+		// List<ItemC> itemCList;
+		// List<ItemT> itemTList;
+		// List<ItemP> itemPList;
+		// 第一步，创建一个webbook，对应一个Excel文件
+		
+		
+		
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("Invoice Table");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+		HSSFCellStyle style = wb.createCellStyle();
+		for(int i=0;i<param.size();i++){
+			sheet.setColumnWidth(i,6500);
+		}
+		
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+		for (int i = 0; i < param.size(); i++) {
+			HSSFCell cell = row.createCell(i);
+			cell.setCellStyle(style);
+			// 表头名称转换
+			cell.setCellValue(SystemConstant.change_item(param.get(i)));
+		}
+		// HSSFCell cell = row.createCell(0);
+		// cell.setCellValue("Invoice No.");
+		// cell.setCellStyle(style);
+		// cell = row.createCell(1);
+		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+		// 构建一个InvoiceQuery对象
+		iq.setPageIndex(1);
+		iq.setStartIndex(0);
+		iq.setTotalCount(0);
+		iq.setTotalPage(0);
+
+		Invoice query = new Invoice();
+		DecimalFormat d1 = new DecimalFormat("######0.00");
+		for (int i = 0; i < list.size(); i++) {
+			list.get(i).setPicObject(getPic(list.get(i)).getPicObject());
+			list.get(i).setPic2Object(getPic(list.get(i)).getPic2Object());
+			// 先set itemTotal到invoice中,需要分类型执行，先执行sql获取到itemTotal，再使用反射给field赋值
+			// preSetItem(param,list.get(0).getId());
+			ItemTotal it = new ItemTotal();
+			System.out.println(list.get(i).getId() + ":" + list.get(i).getTotal());
+			for (int j = 0; j < param.size(); j++) {
+				if ((!param.get(j).equals("id")) && (!param.get(j).equals("createDate"))
+						&& (!param.get(j).equals("pic")) && (!param.get(j).equals("client"))
+						&& (!param.get(j).equals("total"))) {
+					it.setType(list.get(i).getType());
+					it.setInvoiceId(list.get(i).getId());
+					it.setItemName(param.get(j));
+					String itemTotal = setItemTotal(it);
+					System.out.println("param:" + param.get(j) + ",:" + itemTotal);
+					if (null==itemTotal ) {
+						itemTotal = "0";
+					}
+					list.get(i);
+					StringBuffer sf = new StringBuffer(param.get(j));
+					String str = sf.substring(0, 1).toUpperCase() + sf.substring(1);
+					Method set = Invoice.class.getDeclaredMethod("set" + str, String.class);
+					Method get = Invoice.class.getDeclaredMethod("get" + str);
+//					set.invoke(list.get(i), itemTotal);
+					//本次该列数据
+					String param1="0";
+					if((null!=get.invoke(list.get(i))||"0"==get.invoke(list.get(i)))&&!(get.invoke(list.get(i)).toString().length()==0)){
+						param1=(String) get.invoke(list.get(i));
+					}else{
+						set.invoke(list.get(i),"0");
+					}
+					//原本该列数据
+					String param2="0";
+					if(null!=get.invoke(total)||"0"==get.invoke(total)&&!get.invoke(total).equals("")){
+						param2=(String) get.invoke(total);
+					}
+					
+					if(param2==null||param2.equals("")){
+						param2="0";
+					}
+					if(param1==null||param1.equals("")){
+						param1="0";
+					}
+					System.out.println("i:"+i+",j:"+j+",method:"+str+",param1:"+param1+",param2"+param2);
+					set.invoke(total, String.valueOf(Double.valueOf(param2)+ Double.valueOf(param1)));
+				} else if (param.get(j).equals("total")) {
+					total.setTotal(
+							String.valueOf(Double.valueOf(total.getTotal()) + Double.valueOf(list.get(i).getTotal())));
+				}
+			}
+			row = sheet.createRow((int) i + 1);
+			// Student stu = (Student) list.get(i);
+			Invoice in = (Invoice) list.get(i);
+			// 第四步，创建单元格，并设置值
+			query.setPic(in.getPic());
+			query.setPic2(in.getPic2());
+			query.setId(in.getId());
+
+			for (int j = 0; j < param.size(); j++) {
+				// 利用反射给格子赋值
+				Field field = Invoice.class.getDeclaredField(param.get(j));
+				field.setAccessible(true);
+				StringBuffer sf = new StringBuffer(param.get(j));
+				String str = sf.substring(0, 1).toUpperCase() + sf.substring(1);
+				Method get = Invoice.class.getDeclaredMethod("get" + str);
+				if (param.get(j).equals("pic")) {
+					if (null == in.getPic2Object()) {
+						row.createCell(j).setCellValue(in.getPicObject().getRealName());
+					} else {
+						row.createCell(j)
+								.setCellValue(in.getPicObject().getRealName() + "," + in.getPic2Object().getRealName());
+					}
+				} else if (param.get(j).equals("client")) {
+					if(!(in.getClientObject()==null||in.getClientObject().getCompanyName()==null)){
+					row.createCell(j).setCellValue(in.getClientObject().getCompanyName());
+					}else{
+						row.createCell(j).setCellValue("");
+					}
+				} else if (param.get(j).equals("AmountpayblewithGST")) {
+					row.createCell(j).setCellValue(d1.format(Double.valueOf(in.getTotal()) * 1.07));
+				} else if (param.get(j).equals("id")) {
+					row.createCell(j).setCellValue(in.getType() + in.getId());
+				} else if (param.get(j).equals("createDate")) {
+					row.createCell(j).setCellValue(in.getCreateDate());
+				}else {
+					if(null!=get.invoke(in)){
+						row.createCell(j).setCellValue(d1.format(Double.valueOf(String.valueOf(get.invoke(in)))));
+					}else{
+						row.createCell(j).setCellValue(d1.format(0d));
+					}
+					
+				}
+			}
+
+		}
+		// 最后一行写入各列总数
+		row = sheet.createRow(list.size() + 1);
+		for (int i = 0; i < param.size(); i++) {
+			StringBuffer sf = new StringBuffer(param.get(i));
+			String str = sf.substring(0, 1).toUpperCase() + sf.substring(1);
+			Method get = Invoice.class.getDeclaredMethod("get" + str);
+			if ((!param.get(i).equals("createDate")) && (!param.get(i).equals("pic"))
+					&& (!param.get(i).equals("client"))) {
+				System.out.println(param.get(i));
+				if (param.get(i).equals("id")) {
+					row.createCell(i).setCellValue("Total");
+				} else if (param.get(i).equals("AmountpayblewithGST")) {
+					row.createCell(i).setCellValue(d1.format(Double.valueOf(total.getTotal()) * 1.07));
+				} else {
+					row.createCell(i).setCellValue(d1.format(Double.valueOf(String.valueOf(get.invoke(total)))));
+				}
+			} else {
+				row.createCell(i).setCellValue("");
+			}
+		}
+		
+		
+		
+		
+		// 第二种--------------------------------------------------
+		// 获取网站部署路径(通过ServletContext对象)，用于确定下载文件位置，从而实现下载
+
+		// 第一种---------------------------------------
+		// System.out.println(filePath);
+		// 第六步，将文件存到指定位置
+		// 本地测试
+		// String
+		// uploadFilePath="http://localhost:8080/mci/upload/"+iq.getFileName()+".xls";
+		// String
+		// save="D:\\workplace10\\mci\\WebRoot\\upload\\"+iq.getFileName()+".xls";
+		
+		// 服务器使用
+//		String uploadFilePath = SystemConstant.get_excel_dir + iq.getFileName() + ".xls";
+//		String save = SystemConstant.save_excel_dir + iq.getFileName() + ".xls";
+	
+			
+//			FileOutputStream fout = new FileOutputStream(save);
+//			wb.write(os);
+//			byte[] content = os.toByteArray();
+//			InputStream is = new ByteArrayInputStream(content);
+			// 设置response参数，可以打开下载页面
+			
+			
+			
+			
+
+	}
 	@Override
 	public String print(InvoiceQuery iq, HttpSession session, HttpServletRequest request, HttpServletResponse response)
 			throws NoSuchFieldException, SecurityException, NoSuchMethodException, IllegalAccessException,
@@ -491,15 +695,24 @@ public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
 //					set.invoke(list.get(i), itemTotal);
 					//本次该列数据
 					String param1="0";
-					if(null!=get.invoke(list.get(i))||"0"==get.invoke(list.get(i))){
+					if((null!=get.invoke(list.get(i))||"0"==get.invoke(list.get(i)))&&!(get.invoke(list.get(i)).toString().length()==0)){
 						param1=(String) get.invoke(list.get(i));
+					}else{
+						set.invoke(list.get(i),"0");
 					}
 					//原本该列数据
 					String param2="0";
-					if(null!=get.invoke(total)||"0"==get.invoke(total)){
+					if(null!=get.invoke(total)||"0"==get.invoke(total)&&!get.invoke(total).equals("")){
 						param2=(String) get.invoke(total);
 					}
 					
+					if(param2==null||param2.equals("")){
+						param2="0";
+					}
+					if(param1==null||param1.equals("")){
+						param1="0";
+					}
+					System.out.println("i:"+i+",j:"+j+",method:"+str+",param1:"+param1+",param2"+param2);
 					set.invoke(total, String.valueOf(Double.valueOf(param2)+ Double.valueOf(param1)));
 				} else if (param.get(j).equals("total")) {
 					total.setTotal(
@@ -529,7 +742,11 @@ public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
 								.setCellValue(in.getPicObject().getRealName() + "," + in.getPic2Object().getRealName());
 					}
 				} else if (param.get(j).equals("client")) {
+					if(!(in.getClientObject()==null||in.getClientObject().getCompanyName()==null)){
 					row.createCell(j).setCellValue(in.getClientObject().getCompanyName());
+					}else{
+						row.createCell(j).setCellValue("");
+					}
 				} else if (param.get(j).equals("AmountpayblewithGST")) {
 					row.createCell(j).setCellValue(d1.format(Double.valueOf(in.getTotal()) * 1.07));
 				} else if (param.get(j).equals("id")) {
@@ -567,18 +784,8 @@ public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
 				row.createCell(i).setCellValue("");
 			}
 		}
-		// 第二种--------------------------------------------------
-		// 获取网站部署路径(通过ServletContext对象)，用于确定下载文件位置，从而实现下载
-
-		// 第一种---------------------------------------
-		// System.out.println(filePath);
-		// 第六步，将文件存到指定位置
-		// 本地测试
-		// String
-		// uploadFilePath="http://localhost:8080/mci/upload/"+iq.getFileName()+".xls";
-		// String
-		// save="D:\\workplace10\\mci\\WebRoot\\upload\\"+iq.getFileName()+".xls";
-		// 服务器使用
+		
+		
 		String uploadFilePath = SystemConstant.get_excel_dir + iq.getFileName() + ".xls";
 		String save = SystemConstant.save_excel_dir + iq.getFileName() + ".xls";
 		try {
@@ -590,6 +797,31 @@ public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+		// 第二种--------------------------------------------------
+		// 获取网站部署路径(通过ServletContext对象)，用于确定下载文件位置，从而实现下载
+
+		// 第一种---------------------------------------
+		// System.out.println(filePath);
+		// 第六步，将文件存到指定位置
+		// 本地测试
+		// String
+		// uploadFilePath="http://localhost:8080/mci/upload/"+iq.getFileName()+".xls";
+		// String
+		// save="D:\\workplace10\\mci\\WebRoot\\upload\\"+iq.getFileName()+".xls";
+		
+		// 服务器使用
+//		String uploadFilePath = SystemConstant.get_excel_dir + iq.getFileName() + ".xls";
+//		String save = SystemConstant.save_excel_dir + iq.getFileName() + ".xls";
+	
+
+			
+			
+			// 将文件存到tomcat目录下
+//			System.out.println(uploadFilePath);
+//			wb.write(fout);
+//			fout.close();
 
 		// 将文件下载到本地指定位置-------------------------------------------------------
 		// URL url=new URL(uploadFilePath);
@@ -605,7 +837,6 @@ public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
 		// }
 		// os.close();
 		// in.close();
-
 		return uploadFilePath;
 	}
 
@@ -632,6 +863,7 @@ public class InvoiceServiceImpl extends HttpServlet implements InvoiceService {
 		}
 
 	}
+	
 
 	// @Override
 	// public List<Map<String, Object>> moneytable(String id,String[]

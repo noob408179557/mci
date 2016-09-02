@@ -297,6 +297,9 @@
 	<delete id="deleteRemark" parameterType="String" >
 	delete from mci_client_history where id=#{id}
 	</delete>
+	<delete id="clearCp" >
+	delete from mci_contactperson where companyid is null
+	</delete>
 	<select id="getLastClient" resultType="client">
 	select * from mci_client c  order by c.id desc limit 1
 	</select>

@@ -61,7 +61,7 @@ function search(i){
 				+ "<th  style='text-align:left;vertical-align : middle; ' >" 
 				+ "<div class='btn btn-primary waves-effect waves-light  btn-lg' id='' data-target='#edit0' data-toggle='modal' onclick='getCP("+data[i].id+")'>"
 				+ "<i class='glyphicon glyphicon-shopping-cart'></i>&nbsp;Create</div>&nbsp;"
-				+ "<div class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='getAccount("+data[i].id+")'>"
+				+ "<div class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='getThisAccount("+data[i].id+")'>"
 				+ "<i class='glyphicon glyphicon-th-large'></i>&nbsp;Account</div>"
 				+ "</th></tr>";
 	        $("#invoiceList").append(head);
@@ -148,7 +148,7 @@ function search(i){
 		});
 }
 //获取这个client下的所有invoice
-function getAccount(i) {
+function getThisAccount(i) {
 	$.ajax({
 		type : "POST",
 		url : "getAccount.do",
@@ -319,6 +319,7 @@ $(document).ready(function(){
 			type : "POST", 
 			  url  : "addInvoice.do", 
 			  dataType : "json",   
+			  async:false,
 			  data:{
 				  cp:cp,
 				  createDate:date,
@@ -331,28 +332,6 @@ $(document).ready(function(){
 			 success:function(data){
 				       if(data=="0"){
 					 swal("Success~");
-				 }else if(data=="1"){
-					 swal("Fail~");
-				 }else if(data=="2"){
-					 swal("You haven't login your account");
-				 }
-			 }
-		})
-		$.ajax({
-			type : "POST", 
-			  url  : "addInvoice.do", 
-			  dataType : "json",   
-			  data:{
-				  cp:cp,
-				  createDate:date,
-				  type:type,
-				  client:client
-			  },
-			  error:function(data){
-			   alert("Ajax Fail~"); 
-			  },
-			 success:function(data){
-				       if(data=="0"){
 				 }else if(data=="1"){
 					 swal("Fail~");
 				 }else if(data=="2"){

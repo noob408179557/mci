@@ -44,7 +44,7 @@ function init() {
 		},
 		success : function(data) {
 			// 返回Invoice
-			$("#id").val("T"+data.id);
+			$("#id").val("T"+data.number);
 			$("#date").val(data.createDate);
 			$("#pic").val(data.picObject.realName);
 			$("#term").val(data.term);

@@ -7,7 +7,7 @@
 		<result property="workerNum" column="workerNum" />
 		<result property="billingRate" column="billingRate" />
 		<result property="cost" column="cost" />
-		
+		<result property="number" column="number" />
 		<result property="total" column="total" />
 		<result property="state" column="state" />
 		<result property="createDate" column="createdate" />
@@ -104,8 +104,8 @@
 	<select id="commission" parameterType="invoice" resultType="invoice">
 		select * from mci_invoice where `id`=#{id}
 	</select>
-	<update id="activeInvoice">
-		update mci_invoice set `state`='2' where `id`=#{id}
+	<update id="activeInvoice" parameterType="invoice">
+		update mci_invoice i set i.`state`='2' where i.`id`=#{id}
 	</update>
 	<sql id="updateIn">
 		<if test="client!=null and client!=''">
@@ -213,15 +213,15 @@
 	</sql>
 	<select id="loadInvoice" parameterType="invoiceQuery" resultMap="invoiceAll">
 		SELECT *
-		FROM (mci_invoice i ,mci_client client
+		FROM (mci_invoice i ,mci_client c
 		)
-		WHERE client.id=i.client
+		WHERE c.id=i.client
 		<include refid="invoiceQ"></include>
 		order by
 		i.id desc
 		limit #{startIndex},#{pageSize}
 	</select>
-	<select id="loadInvoiceForPrint" parameterType="invoiceQuery" resultType="invoice">
+	<select id="loadInvoiceForPrint" parameterType="invoiceQuery" resultMap="invoiceAll">
 	SELECT *
 		FROM (mci_invoice i ,mci_client client
 		)
@@ -240,7 +240,7 @@
 		where i.id=#{id}
 	</select>
 	<select id="getaInvoice" parameterType="invoice" resultType="invoice">
-		select * from mci_invoice where `id`=#{id}
+		select * from mci_invoice i where i.`id`=#{id} 
 	</select>
 	<select id="loadInvoiceCount" parameterType="invoiceQuery"
 		resultType="int">
@@ -265,9 +265,9 @@
 	</select>
 	<insert id="addInvoice" parameterType="invoice">
 		insert into mci_invoice
-		(`client`,`pic`,`createdate`,`paymentterms`,`type`,`contact`,`state`,`lastdate`)
+		(`number`,`client`,`pic`,`createdate`,`paymentterms`,`type`,`contact`,`state`,`lastdate`)
 		values
-		(#{client},#{pic},#{createDate},#{term},#{type},#{cp},'1',now())
+		(#{number},#{client},#{pic},#{createDate},#{term},#{type},#{cp},'1',now())
 		<selectKey keyProperty="id" resultType="String" order="AFTER">
 			select LAST_INSERT_ID()
 		</selectKey>
@@ -522,5 +522,8 @@
 		SELECT SUM(`amount`)
 		FROM
 		mci_item_t WHERE `invoice`=#{invoiceId} AND `desc`=#{itemName}
+	</select>
+	<select id="getLastIdByType" resultType="string" parameterType="string">
+	   select max(`number`) from mci_invoice where `type`=#{type}
 	</select>
 </mapper>

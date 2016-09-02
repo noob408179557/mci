@@ -49,7 +49,7 @@ public interface InvoiceService {
 
 	List<ContactPerson> getCP(String id);
 
-	void addInvoice(Invoice in);
+	Invoice addInvoice(Invoice in);
 
 	Client getClient(String id);
 

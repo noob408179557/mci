@@ -250,7 +250,7 @@ function search(i) {
 											+ "'><label></label></div></th>"
 											+ "<th style='text-align:left;vertical-align : middle; '>"
 											+ data[i].type
-											+ data[i].id
+											+ data[i].number
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; ' >"
 											+ (data[i].total*1.07).toFixed(1)+"/"+data[i].total
@@ -294,6 +294,7 @@ function search(i) {
 										+ "&nbsp;<div data-target='#payment' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='confirmPayment("
 										+ data[i].id
 										+ ")'>"
+										
 										+ "<i class='glyphicon glyphicon-usd'></i>Comfirm Payment</div></th></tr>";
 								var fullypaid = "<th style='text-align:left;vertical-align : middle; '>"
 										+ "<span class='label label-table label-success btn-lg'>Fully Paid</span></th>"

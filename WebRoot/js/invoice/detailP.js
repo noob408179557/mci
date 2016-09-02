@@ -30,7 +30,7 @@ function init() {
 		},
 		success : function(data) {
 			// 返回Invoice
-			$("#id").val(data.type + data.id);
+			$("#id").val(data.type + data.number);
 			$("#date").val(data.createDate);
 			$("#pic").val(data.picObject.realName);
 			$("#term").val(data.term);

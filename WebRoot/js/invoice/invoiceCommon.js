@@ -4,10 +4,7 @@ function clearInvoice() {
 		type : "POST",
 		url : "clearInvoice.do",
 		dateType : "json",
-		async : false,
-		error : function(data) {
-			swal("clearInvoice.do error!");
-		}
+		async : false
 	})
 
 }
@@ -632,113 +629,153 @@ $(document)
 
 									});
 					$("#activeInvoice")
-							.click(
+							.click(	
+									
 									function() {
-										if ($("input[name='select']:checked")
-												.val() != null) {
-											$
-													.ajax({
-														type : "POST",
-														url : "getPow.do",
-														dataType : "json",
-														async : false,
-														error : function(data) {
-															alert("请求失败~");
-														},
-														success : function(data) {
-															if (data.type != "1") {
-																swal(
-																		{
-																			title : "Are you sure?",
-																			text : "You will send an email to client!",
-																			type : "warning",
-																			showCancelButton : true,
-																			confirmButtonColor : "#DD6B55",
-																			confirmButtonText : "Yes, send it!",
-																			cancelButtonText : "No,don't send!",
-																			closeOnConfirm : false,
-																			closeOnCancel : false
-																		},
-																		function(
-																				isConfirm) {
-																			if (isConfirm) {
-																				swal(
-																						"Success",
-																						"The email will be send!",
-																						"success");
-																				$
-																						.ajax({
-																							type : "POST",
-																							url : "activeInvoice.do",
-																							dataType : "json",
-																							data : {
-																								id : $(
-																										"input[name='select']:checked")
-																										.val()
-																							},
-																							error : function(
-																									data) {
-																								if (data == "0") {
-																									search($(
-																											"#pageIndex")
-																											.val());
-																								}
-																							},
-																							success : function(
-																									data) {
-																								// 根据不同返回值做出不同处理
-																								if (data == "3") {
-																									swal("The invoice has no item,it can't be actived!");
-																								}
-																								if (data == "2") {
-																									swal("The invoice is not created status!");
-																								}
-																								if (data == "0") {
-																									$
-																											.ajax({
-																												type : "POST",
-																												url : "getCPOI.do",
-																												dataType : "json",
-																												async : false,
-																												data : {
-																													id : $(
-																															"input[name='select']:checked")
-																															.val()
-																												},
-																												error : function(
-																														data) {
-																													swal("getCPOI.do Error!!");
-																												},
-																												success : function(
-																														data) {
-																													window.location.href = "mailto:"
-																															+ data.email;
-																													search($(
-																															"#pageIndex")
-																															.val());
-																												}
-																											})
-
-																								}
-																							}
-																						});
-																			} else {
-																				swal(
-																						"Cancelled",
-																						"Your haven't send the email.",
-																						"error");
-																			}
-																		});
-															} else {
-																swal("error!");
-															}
-														}
-													})
-
-										} else {
-											swal("You haven't select any invoice!")
+										if ($("input[name='select']:checked").val() != null) {
+										$("#emailContent").modal();
+										}else{
+											swal("You haven't select any invoice!");
 										}
-									});
+									}
+									);
+					$("#sendMail").click(
+						function(){
+							$
+							.ajax({
+								type : "POST",
+								url : "sendCustomMail.do",
+								dataType : "json",
+								data : {
+									id : $("input[name='select']:checked")
+											.val(),
+									content:$("#emailContentText").val()
+								},
+								success:function(data){
+									if(data==false){
+										swal("The invoice is not in create status！");
+									}else{
+										swal("Active Success!");
+										search();	
+									}
+									
+								},
+								error:function(data){
+									swal("Send Email Error!");
+								}
+							});
+						}	
+					);
+					
+					$("#1")
+					.click(
+							function() {
+								if ($("input[name='select']:checked")
+										.val() != null) {
+									$
+											.ajax({
+												type : "POST",
+												url : "getPow.do",
+												dataType : "json",
+												async : false,
+												error : function(data) {
+													alert("请求失败~");
+												},
+												success : function(data) {
+													if (data.type != "1") {
+														swal(
+																{
+																	title : "Are you sure?",
+																	text : "You will send an email to client!",
+																	type : "warning",
+																	showCancelButton : true,
+																	confirmButtonColor : "#DD6B55",
+																	confirmButtonText : "Yes, send it!",
+																	cancelButtonText : "No,don't send!",
+																	closeOnConfirm : false,
+																	closeOnCancel : false
+																},
+																function(
+																		isConfirm) {
+																	if (isConfirm) {
+																		swal(
+																				"Success",
+																				"The email will be send!",
+																				"success");
+																		$
+																				.ajax({
+																					type : "POST",
+																					url : "activeInvoice.do",
+																					dataType : "json",
+																					data : {
+																						id : $(
+																								"input[name='select']:checked")
+																								.val()
+																					},
+																					error : function(
+																							data) {
+																						if (data == "0") {
+																							search($(
+																									"#pageIndex")
+																									.val());
+																						}
+																					},
+																					success : function(
+																							data) {
+																						// 根据不同返回值做出不同处理
+																						if (data == "3") {
+																							swal("The invoice has no item,it can't be actived!");
+																						}
+																						if (data == "2") {
+																							swal("The invoice is not created status!");
+																						}
+																						if (data == "0") {
+																							$
+																									.ajax({
+																										type : "POST",
+																										url : "getCPOI.do",
+																										dataType : "json",
+																										async : false,
+																										data : {
+																											id : $(
+																													"input[name='select']:checked")
+																													.val()
+																										},
+																										error : function(
+																												data) {
+																											swal("getCPOI.do Error!!");
+																										},
+																										success : function(
+																												data) {
+																											window.location.href = "mailto:"
+																													+ data.email;
+																											search($(
+																													"#pageIndex")
+																													.val());
+																										}
+																									})
+
+																						}
+																					}
+																				});
+																	} else {
+																		swal(
+																				"Cancelled",
+																				"Your haven't send the email.",
+																				"error");
+																	}
+																});
+													} else {
+														swal("error!");
+													}
+												}
+											})
+
+								} else {
+									swal("You haven't select any invoice!")
+								}
+							});
+					
 
 					// 点击search button时
 					$("#searchbtn").click(function() {

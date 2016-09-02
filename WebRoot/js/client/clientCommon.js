@@ -811,3 +811,10 @@ $.ajax({
 	}
 })
 }
+function clearClient(){
+$.ajax({
+	type : "POST",
+	url : "clearClient.do",
+	async:false
+})
+}

@@ -35,7 +35,7 @@ function init() {
 			$("#invoiceRate").val(data.billingRate);
 			$("#invoiceCost").val(data.cost);
 			
-			$("#id").val(data.type + data.id);
+			$("#id").val(data.type + data.number);
 			$("#date").val(data.createDate);
 			$("#pic").val(data.picObject.realName);
 			$("#term").val(data.term);

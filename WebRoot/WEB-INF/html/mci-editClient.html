@@ -135,33 +135,30 @@
 			<div class="content header">
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-12">
-							<div class="card-box table-responsive">
+						<div class="col-sm-12" >
+							<div class="card-box table-responsive" >
 								<table class="table table-hover " border="0px">
 									<thead>
 										<tr>
 											<th style='text-align: left; vertical-align: middle;'
-												colspan="8" bgcolor="#F5F5F5">
+												colspan="3" bgcolor="#F5F5F5">
 												<h4>
 													<strong>Customer Detail</strong>
 												</h4>
 											</th>
+											<th style='text-align: left; vertical-align: middle;'
+												colspan="3" bgcolor="#F5F5F5"></th>
 										</tr>
 										<tr>
 											<th style='text-align: left; vertical-align: middle;'
 												width="15%">Company Name:</th>
-											<th style='text-align: left; vertical-align: middle;'>
+											<th width="20%" style='text-align: left; vertical-align: middle;'>
 												<div class="bootstrap-tagsinput">
 													<input type="text" size="40" id="cName">
-												</div> <a style="color: red">*</a>
+												</div> 
 											</th>
-											<th style='text-align: left; vertical-align: middle;'
-												width="10%">MCI PIC:</th>
-											<th style='text-align: left; vertical-align: middle;'>
-												<div class="bootstrap-tagsinput">
-													<input type="text" size="30" id="cPIC" readOnly="true">
-												</div>
-											</th>
+												<th style="border-bottom-width:0px ;border-top-width: 0px	">
+												<a style="color: red">*</a></th>
 										</tr>
 										<tr>
 											<th style='text-align: left; vertical-align: middle;'>Company
@@ -171,13 +168,6 @@
 													<input type="text" size="40" id="cWebsite">
 												</div>
 											</th>
-											<th style='text-align: left; vertical-align: middle;'
-												width="10%">Last update:</th>
-											<th style='text-align: left; vertical-align: middle;'>
-												<div class="bootstrap-tagsinput">
-													<input type="text" size="30" id="cLastdate" readOnly="true">
-												</div>
-											</th>
 										</tr>
 										<tr>
 											<th style='text-align: left; vertical-align: middle;'>Work
@@ -185,8 +175,10 @@
 											<th style='text-align: left; vertical-align: middle;'>
 												<div class="bootstrap-tagsinput">
 													<input type="text" size="40" id="cDays">
-												</div> <a style="color: red">*</a>
+												</div> 
 											</th>
+												<th style="border-bottom-width:0px ;border-top-width: 0px	">
+												<a style="color: red">*</a></th>
 										</tr>
 										<tr>
 											<th style='text-align: left; vertical-align: middle;'>Payment
@@ -216,7 +208,6 @@
 														<option value="101-200">101-200</option>
 														<option value="201above">201above</option>
 													</select>
-												</div>
 											</th>
 										</tr>
 										<tr>
@@ -225,7 +216,6 @@
 												<div style="padding-left: 0px; width: 421px">
 													<select class="selectpicker" data-style="btn-white"
 														id="cTrade">
-														<option value="">Please select</option>
 														<option value="Manufacturing">Manufacturing</option>
 														<option value="Service">Service</option>
 														<option value="Construction">Construction</option>
@@ -233,6 +223,16 @@
 													</select>
 												</div>
 											</th>
+										</tr>
+										<tr>
+											<th style='text-align: left; vertical-align: middle;'>Remark:
+											</th>
+											<th style='text-align: left; vertical-align: middle;'><textarea
+													id="cRemark" required="" class="form-control"
+													data-parsley-id="50"
+													style="margin: 0px; width: 100%; height: 4%;"></textarea></th>
+											<th style="border-bottom-width:0px ;border-top-width: 0px	">
+												<a style="color: red">*</a></th>
 										</tr>
 
 									</thead>
@@ -251,7 +251,7 @@
 											<th style='text-align: left; vertical-align: middle;'
 												colspan="10" bgcolor="#F5F5F5">
 												<div
-													class="btn btn-primary waves-effect waves-light  btn-lg"
+													class="btn btn-primary waves-effect waves-light  btn-md"
 													data-target="#edit0" data-toggle="modal" id="addUserbtn">
 													<i class="glyphicon glyphicon-shopping-cart"></i>Add
 												</div>
@@ -298,11 +298,12 @@
 									<p></p>
 
 									<div class="form-group">
-										<label class="control-label">New Remark</label>
-
+										
+                                        <div style="width:35%;float:left">
+                                        <label class="control-label">New Remark</label>
 										<textarea id="editRemark" class="form-control"
-											data-parsley-id="50"
-											style="margin: 0px; width: 700px; height: 60px;"></textarea>
+											style="margin: 0px; width: 100%; height: 4%;"></textarea>
+											</div><a style="color: red">*</a>
 									</div>
 
 									<div style="float: right">
@@ -600,5 +601,6 @@
 	<script src="assets/plugins/custombox/dist/legacy.min.js"></script>
 	<script type="text/javascript" src="js/client/editClient.js"></script>
 	<script type="text/javascript" src="js/system/system.js"></script>
+	<script type="text/javascript" src="js/client/editClientCommon.js"></script>
 </body>
 </html>

@@ -162,4 +162,6 @@ public interface InvoiceMapper {
 	List<Invoice> loadInvoiceForPrint(InvoiceQuery iq);
 	
 	List<Invoice> searchInvoiceForPrint(Invoice invoice);
+	//获取type类型invoice的最大id
+	String getLastIdByType(@Param("type")String type);
 }

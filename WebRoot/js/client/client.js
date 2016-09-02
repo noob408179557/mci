@@ -3,10 +3,7 @@ window.onload = init;
 
 function init() {
 	//删除无效的client
-	$.ajax({
-		type : "POST",
-		url : "clearClient.do"
-	})
+	
 	search();
 	$.ajax({
 		type : "POST",
@@ -87,6 +84,7 @@ function init() {
 
 }
 function search(i) {
+	clearClient();
 	if (isNaN(i)) {
 		i = $("#pageIndex").val();
 	}
