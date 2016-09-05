@@ -23,6 +23,7 @@ import mci.main.invoice.mapper.InvoiceMapper;
 import mci.main.invoice.pojo.Invoice;
 import mci.main.system.mapper.SystemMapper;
 import mci.main.system.service.SystemService;
+import mci.main.user.mapper.UserMapper;
 import mci.main.user.pojo.User;
 
 @Service
@@ -36,6 +37,9 @@ public class SystemServiceImpl implements SystemService {
 	
 	@Autowired
 	private InvoiceMapper invoiceMapper;
+	
+	@Autowired
+	private UserMapper userMapper;
 	
 	@Autowired
 	private Properties prop = new Properties();
@@ -121,15 +125,21 @@ public class SystemServiceImpl implements SystemService {
 		Client client=clientMapper.getaClient(id);
 		Invoice invoice=new Invoice();
 		invoice.setId(id);
-		invoiceMapper.getaInvoice(invoice);
+		invoice=invoiceMapper.getaInvoiceAll(invoice);
 		List<String > list=new ArrayList<String>();
-		list.add(invoice.getPicObject().getEmail());
-		if(invoice.getPic2Object()!=null){
-			list.add(invoice.getPic2Object().getEmail());
+		if(userMapper.getaUser(invoice.getPic()).getEmail().contains("@")){
+			list.add(userMapper.getaUser(invoice.getPic()).getEmail());
+		}
+		if(invoice.getPic2()!=null&&userMapper.getaUser(invoice.getPic2()).getEmail().contains("@")){
+			list.add(userMapper.getaUser(invoice.getPic2()).getEmail());
 		}
         for(String address:list){
-        	 Message message=createEmail(content,address);
+//        	try{
+        	Message message=createEmail(content,address);
         	sendEmail(message);
+//        	}catch(com.sun.mail.smtp.SMTPAddressFailedException e){
+//        		return false;
+//        	}
         }
 		return false;
 	}

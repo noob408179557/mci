@@ -7,7 +7,6 @@ import mci.main.client.pojo.ContactPerson;
 import mci.main.user.pojo.User;
 
 public class Invoice implements Serializable,Cloneable {
-	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -15,6 +14,10 @@ public class Invoice implements Serializable,Cloneable {
 
 	public Invoice() {
 		super();
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public void InvoiceZero() {

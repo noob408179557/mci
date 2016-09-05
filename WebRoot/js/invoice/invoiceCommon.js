@@ -646,16 +646,18 @@ $(document)
 								type : "POST",
 								url : "sendCustomMail.do",
 								dataType : "json",
+								async:false,
 								data : {
 									id : $("input[name='select']:checked")
 											.val(),
 									content:$("#emailContentText").val()
 								},
 								success:function(data){
-									if(data==false){
+									if(data=="1"){
 										swal("The invoice is not in create status！");
 									}else{
 										swal("Active Success!");
+										$("#emailContentText").val("");
 										search();	
 									}
 									

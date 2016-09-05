@@ -15,19 +15,20 @@
 		<result property="remark" column="remark" />
 		<result property="term" column="paymentterms" />
 		<result property="type" column="type" />
-		<result property="pic" column="pic" />
-		<result property="pic2" column="pic2" />
 		<result property="commission" column="commission" />
 		<result property="creditNotes" column="creditnotes" />
+		<result property="pic" column="pic" />
+		<result property="pic2" column="pic2" />
 		<association property="picObject" javaType="mci.main.user.pojo.User">
 			<id property="id" column="pic" />
 			<result property="realName" column="realname" />
-			<result property="username" column="username" />
+			<result property="email" column="email" />
 		</association>
+		
 		<association property="pic2Object" javaType="mci.main.user.pojo.User">
 			<id property="id" column="pic2" />
-			<result property="realName" column="realname2" />
-			<result property="username" column="username2" />
+			<result property="realName" column="realname" />
+			<result property="email" column="email" />
 		</association>
 		<association property="clientObject" javaType="mci.main.client.pojo.Client">
 			<id property="id" column="client" />
@@ -242,6 +243,10 @@
 	<select id="getaInvoice" parameterType="invoice" resultType="invoice">
 		select * from mci_invoice i where i.`id`=#{id} 
 	</select>
+	<select id="getaInvoiceAll" parameterType="invoice" resultMap="invoiceAll">
+		select * from mci_invoice i,mci_user u,mci_user u1 where i.`id`=#{id} 
+<!-- 		and i.`pic`=u.`id` and i.`pic2`=u1.`id` -->
+ 	</select>
 	<select id="loadInvoiceCount" parameterType="invoiceQuery"
 		resultType="int">
 		select count(*) from

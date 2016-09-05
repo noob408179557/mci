@@ -30,14 +30,15 @@ public class SystemController {
 
 	@ResponseBody
 	@RequestMapping(value = "sendCustomMail", method = RequestMethod.POST)
-	public boolean sendCustomMail(String content,String id) throws MessagingException{
+	public String sendCustomMail(String content,String id) throws MessagingException{
 		Invoice invoice=new Invoice();
 		invoice.setId(id);
 		invoice=invoiceServiceImpl.getaInvoice(invoice);
 		if(!invoice.getState().equals("1")){
-			return false;
+			return "1";
 		}
+		systemServiceImpl.sendCustomMail(content,id);
 		invoiceServiceImpl.activeInvoice(invoice);
-		return  systemServiceImpl.sendCustomMail(content,id);
+		return  "0";
 	}
 }

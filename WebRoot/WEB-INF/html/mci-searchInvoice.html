@@ -723,7 +723,32 @@
 		</div>
 	</div>
 	<!-- Modal Start-->
-
+  <div id="emailContent" class="modal fade bs-example-modal-lg"
+		tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+		aria-hidden="true" style="display: none;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					Content
+				</div>
+				<div class="modal-body">
+					<textarea id="emailContentText" required="" class="form-control"
+						data-parsley-id="50"
+						style="margin: 0px; width:600px; height: 200px;"></textarea>
+				</div>
+				
+				<div 
+					class="btn btn-success waves-effect waves-light btn-lg"
+					data-toggle="modal" data-dismiss="modal" id="sendMail">
+					<i class="ion-navigate"></i> Send
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	  </div>
 
 	<!-- Modal End -->
 	<script>

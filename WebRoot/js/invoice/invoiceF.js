@@ -71,7 +71,7 @@ $(document)
 																.append(
 																				 "<tr id='row"+data+"' style='height:55px'>"
 																				+ "<td colspan='2'  style='text-align: center;vertical-align:middle;'>"
-																				+ "<select  class='selectpicker' data-style='btn-white'  id='itemName"+data+"'"
+																				+ "<select  class='selectpicker' data-live-search='true'  data-style='btn-white'  id='itemName"+data+"'"
 																				+ ">"
 																				+ "<option value='Overtimes10X'>Overtimes 1.0X</option>"
 																				+ "<option value='Overtimes15X'>Overtimes 1.5X</option>"

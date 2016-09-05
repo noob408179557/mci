@@ -12,9 +12,8 @@
 		<result property="type" column="type" />
 		<result property="pic" column="pic"/>
 		<association property="picObject" javaType="mci.main.user.pojo.User">
-			<id property="id" column="id" />
+			<id property="id" column="pic" />
 			<result property="realName" column="realname" />
-			<result property="username" column="username" />
 			<result property="type" column="user_type"/>
 		</association>
 		<association property="clientObject" javaType="mci.main.client.pojo.Client">
@@ -36,7 +35,7 @@
 		<result property="createDate" column="createdate" />
 		<result property="term" column="term" />
 		<association property="picObject" javaType="mci.main.user.pojo.User">
-			<id property="id" column="id" />
+			<id property="id" column="pic" />
 			<result property="realName" column="realname" />
 			<result property="username" column="username" />
 			<result property="password" column="password" />

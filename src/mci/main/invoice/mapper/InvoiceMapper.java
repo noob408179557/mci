@@ -33,6 +33,8 @@ public interface InvoiceMapper {
 	
 	Invoice getaInvoice(Invoice invoice);
 	
+	Invoice getaInvoiceAll(Invoice invoice);
+	
 	void activeInvoice(Invoice invoice);
 
 	List<Invoice> loadInvoice(InvoiceQuery iq);
