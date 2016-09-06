@@ -98,14 +98,20 @@ function init() {
 				}
 			});
 			showItem();
+			caculateF();
 		}
 	});
+
 }
 
 $(document)
 		.ready(
 				function() {
 					$("#createInvoice").click(function() {
+						if($("#FSubTotal").val()==null||$("#FSubTotal").val()==""||$("#FSubTotal").val()=="0.0"){
+							swal("Required cannot be empty!");
+							return false;
+						}
                          if($(".addFKey")!=null){
                         		$(".addFKey").click();
                          }

@@ -35,6 +35,10 @@ jQuery('#datepicker-autoclose').datepicker({
 $(function() {
 	//点击createInvoice按钮后
 	$("#createInvoice").click(function(){
+		if($("#PSubTotal").val()==null||$("#PSubTotal").val()==""||$("#PSubTotal").val()=="0.0"||isNaN($("#PSubTotal").val())){
+			swal("Required cannot be empty!");
+			return false;
+		}
 			$(".addPKey").click();
 			$.ajax({
 				type : "POST",

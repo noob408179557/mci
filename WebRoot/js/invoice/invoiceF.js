@@ -46,6 +46,10 @@ $(document)
 				function() {
 					// 点击createInvoice按钮后
 					$("#createInvoice ").click(function() {
+						if($("#FSubTotal").val()==null||$("#FSubTotal").val()==""||$("#FSubTotal").val()=="0.0"){
+							swal("Required cannot be empty!");
+							return false;
+						}
 						$(".addFKey").click();
 						cancelInactiveClient();
 						createInvoiceF();

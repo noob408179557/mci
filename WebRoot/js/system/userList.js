@@ -294,8 +294,7 @@ $(function() {
 					alert("请求失败~");
 				},
 				success : function(data) {
-					search();
-					search2();
+					swal("ID for "+$("input[name='select']:checked").val()+" user's password is reset to 123456!");
 				}
 			})
 		} else {

@@ -79,6 +79,9 @@ function payit() {
 	if ($("#payMode1").val() == "cheque") {
 		if ($("#paymentNum").val() != "" && $("#bankName").val() != ""
 				&& $("#chequeNumber").val() != "") {
+			if($("#paymentNum").val()>$("#remainingAmount").val()){
+				swal("You pay too much!");
+			}else{
 			$.ajax({
 				type : "POST",
 				url : "payForInvoice3.do",
@@ -97,12 +100,16 @@ function payit() {
 					}
 				}
 			});
+			}
 		} else {
 			swal("Required cannot be empty!");
 			return false;
 		}
 	} else if ($("#payMode1").val() == "creditNotes") {
 		if ($("#creditNumber").val() != "") {
+			if($("#creditNumber").val()>$("#remainingAmount").val()){
+				swal("You pay too much!");
+			}else{
 			$.ajax({
 				type : "POST",
 				url : "payForInvoice2.do",
@@ -119,12 +126,16 @@ function payit() {
 					}
 				}
 			});
+			}
 		} else {
 			swal("Required cannot be empty!");
 			return false;
 		}
 	} else if ($("#payMode1").val() == "cash") {
 		if ($("#paymentNum").val() != "") {
+			if($("#paymentNum").val()>$("#remainingAmount").val()){
+				swal("You pay too much!");
+			}else{
 			$.ajax({
 				type : "POST",
 				url : "payForInvoice.do",
@@ -141,6 +152,7 @@ function payit() {
 					}
 				}
 			});
+			}
 		} else {
 			swal("Required cannot be empty!");
 			return false;
@@ -265,9 +277,9 @@ $(document)
 																		},
 																		success : function(
 																				user) {
-																			if (user.type == "1"
-																					|| user.type == "3"
-																					|| (user.type == "2" && data.state == "5")) {
+//																			if (user.type == "1"
+//																					|| user.type == "3"
+//																					|| (user.type == "2" && data.state == "5")) {
 																				if (data.type == "C") {
 																					window.location.href = "mci-viewC.do";
 																				} else if (data.type == "F") {
@@ -278,9 +290,9 @@ $(document)
 																					window.location.href = "mci-viewT.do";
 																				}
 
-																			} else {
-																				swal("You can't check more details!");
-																			}
+//																			} else {
+//																				swal("You can't check more details!");
+//																			}
 																		}
 																	})
 														}

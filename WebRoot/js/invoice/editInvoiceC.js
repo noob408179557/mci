@@ -358,6 +358,10 @@ function showWorker() {
 $(function() {
 	// 点击创建invoice时
 	$("#createInvoice").click(function() {
+		if($("#subTotal").val()==null||$("#subTotal").val()==""||$("#subTotal").val()=="0.0"){
+			swal("Required cannot be empty!");
+			return false;
+		}
 		// flag="1";
 		$(".updateItem").click();
 		$(".updateWorker").click();

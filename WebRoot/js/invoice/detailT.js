@@ -19,6 +19,8 @@ function logout(){
 		}
 	})
 }
+
+
 function init(){
 	$.ajax({
 		type : "POST",
@@ -212,7 +214,7 @@ function showWorker() {
 														+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' readOnly='true'/>"
 														
 														+ "</td></tr>");
-			                    $("#desc"+data[j].id).val(data[j].desc);
+			                    $("#desc"+data[j].id).val(switchItem(data[j].desc));
 			                    //$("#workerHour"+data[j].id).val(data[j].hours);
 								$("#itemAmountPayable"+data[j].id).val(data[j].amount);
 								$("#itemCost"+data[j].id).val(data[j].cost);
@@ -585,3 +587,4 @@ function updateInvoiceC() {
 		}
 	});
 }
+

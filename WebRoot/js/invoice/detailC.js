@@ -219,7 +219,7 @@ function showWorker() {
 
 																	+ "</td></tr>");
 											$("#desc" + data[j].id).val(
-													data[j].desc);
+													switchItem(data[j].desc));
 											$("#itemAmountPayable" + data[j].id)
 													.val(data[j].amount);
 											$("#itemCost" + data[j].id).val(

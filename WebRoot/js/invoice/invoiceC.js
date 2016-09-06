@@ -105,6 +105,10 @@ $(function() {
 	// 点击创建invoice时
 	$("#createInvoice").click(function() {
 		// flag="1";
+		if($("#subTotal").val()==null||$("#subTotal").val()==""||$("#subTotal").val()=="0.0"){
+			swal("Required cannot be empty!");
+			return false;
+		}
 		$(".updateItem").click();
 		$(".updateWorker").click();
 		cancelInactiveClient();
