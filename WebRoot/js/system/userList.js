@@ -17,28 +17,11 @@ function logout() {
 	})
 }
 function init() {
+	$("#blockbtn").click();
 	search();
 	search2();
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#activeClient").hide();
-				$("#assign").hide();
-				$("#blockClient").hide();
-				$("#register").hide();
-				$("#user").hide();
-			} else if (data.type == 2) {
-				$("#createClient").hide();
-			}
-		}
-	});
+	loadLeft();
+	
 }
 function search(i) {
 	if (isNaN(i)) {

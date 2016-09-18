@@ -19,6 +19,7 @@ function logout() {
 	})
 }
 function editClient() {
+	loadLeft();
 	$.ajax({
 		type : "POST",
 		url : "getPow.do",
@@ -27,19 +28,8 @@ function editClient() {
 			alert("请求失败~");
 		},
 		success : function(data) {
-			$("#currUser").append(data.realName);
+//			$("#currUser").append(data.realName);
 			pow=data.type;
-			if (data.type == 1) {
-				$("#cName").attr("readOnly","true");
-				$("#cWebsite").attr("readOnly","true");
-				$("#cTerm").attr("disabled","disabled");
-				$("#cDays").attr("disabled","disabled");
-				$("#cSize").attr("disabled","disabled");
-				$("#cTrade").attr("disabled","disabled");
-				
-				$("#register").hide();
-				$("#user").hide();
-			}
 		}
 	});
 	$.ajax({
@@ -118,16 +108,16 @@ function editClient() {
 							} else {
 								status = resigned;
 							}
-							var leg = "<td style='vertical-align:middle;'><a class='btn btn-danger  btn-lg' onclick='editRow("
+							var leg ="<td style='vertical-align:middle;'><a title='edit' class='btn btn-primary  btn-lg' onclick='editRow("
 									+ data[i].id
 									+ ")' href='javascript:void(0)' id='editRow"
 									+ data[i].id
 									+ "'>"
-									+ "edit</a> <a class='btn btn-danger  btn-lg  remove' onclick='removeRow("
+									+ "<i class='glyphicon glyphicon-edit'></i></a> <a  title='remove' class='btn btn-danger  btn-lg  remove' onclick='removeRow("
 									+ data[i].id
 									+ ")' href='javascript:void(0)' id='removeRow"
 									+ data[i].id
-									+ "'>remove</a><a onclick='addKey("
+									+ "'><i class='glyphicon glyphicon-trash'></i></a><a onclick='addKey("
 									+ data[i].id
 									+ ")' class='addKey' style='display:none'></td>"
 									+ "</tr>";
@@ -187,10 +177,10 @@ function getEdit() {
 									+ "</th>"
 									+ "<th>"
 									+ (data[i].lastdate).substring(0,19)
-									+ "<th>"
-									+ "<a class='btn btn-success  btn-lg' onclick='saveRemark("+data[i].id+")'  id='editRow402'>Save</a>"
-									+ "<a class='btn btn-primary  btn-lg' onclick='unlockRemark("+data[i].id+")'  id='editRow402'>Unlock</a>"
-									+ "<a class='btn btn-danger  btn-lg' onclick='deleteRemark("+data[i].id+")'  id='editRow402'>Delete</a>"
+									+ "<th style='padding=top: 10px;'>"
+									+ "<a title='save' class='btn btn-success  btn-lg' onclick='saveRemark("+data[i].id+")'  id='editRow402'><i class='md md-lock'></i></a>"
+									+ "<a title='unlock' class='btn btn-primary  btn-lg' onclick='unlockRemark("+data[i].id+")'  id='editRow402'><i class='md md-lock-open'></i></a>"
+									+ "<a title='delete' class='btn btn-danger  btn-lg' onclick='deleteRemark("+data[i].id+")'  id='editRow402'><i class='glyphicon glyphicon-trash'></i></a>"
 									+ "</th>"
 									+ "</th><tr>";
 							$("#remarkHistory").append(body);

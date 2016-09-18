@@ -57,19 +57,16 @@ public class SystemServiceImpl implements SystemService {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
 		String content="A new client  created at "+format.format(new Date())+",Information is id:"+client.getId();
 		if(client.getCompanyName()!=null){
-			content=content.concat("，companyname:"+client.getCompanyName());
+			content=content.concat(",companyname:"+client.getCompanyName());
 		}
 		if(client.getWebSite()!=null){
-			content=content.concat("，website:"+client.getWebSite());
+			content=content.concat(",website:"+client.getWebSite());
 		}
 		if(client.getDays()!=null){
-			content=content.concat("，days:"+client.getDays());
+			content=content.concat(",work days/hours:"+client.getDays());
 		}
 		if(client.getSize()!=null){
-			content=content.concat("，size:"+client.getSize());
-		}
-		if(client.getContactPerson()!=null){
-			content=content.concat("，contactperson:"+client.getContactPerson());
+			content=content.concat(",size:"+client.getSize());
 		}
 		for (User user : list) {
           Message message=createEmail(content,user.getEmail());
@@ -84,7 +81,7 @@ public class SystemServiceImpl implements SystemService {
 		ts.sendMessage(message, message.getAllRecipients());
 		ts.close();
 	}
-	public MimeMessage createEmail( String content, String address)
+	public Message createEmail( String content, String address)
 			throws AddressException, MessagingException {
 		
 		prop.setProperty("mail.host", "smtp.163.com");
@@ -105,7 +102,7 @@ public class SystemServiceImpl implements SystemService {
 		ts.connect("smtp.163.com", "13262908892@163.com", "ab197015");
 		
 		// 创建邮件对象
-		MimeMessage message = new MimeMessage(session);
+		Message message = new MimeMessage(session);
 		// 指明邮件的发件人
 		message.setFrom(new InternetAddress("13262908892@163.com"));
 		// 指明邮件的收件人，现在发件人和收件人是一样的，那就是自己给自己发
@@ -115,7 +112,7 @@ public class SystemServiceImpl implements SystemService {
 		// 邮件的标题
 		message.setSubject("Notification!");
 		// 邮件的文本内容
-		message.setContent(content, "text/html;charset=UTF-8");
+		message.setText(content);
 		// 返回创建好的邮件对象
 		return message;
 	}
@@ -136,6 +133,7 @@ public class SystemServiceImpl implements SystemService {
         for(String address:list){
 //        	try{
         	Message message=createEmail(content,address);
+        	message.setSubject("An invoice is activated!");
         	sendEmail(message);
 //        	}catch(com.sun.mail.smtp.SMTPAddressFailedException e){
 //        		return false;

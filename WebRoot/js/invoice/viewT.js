@@ -21,22 +21,7 @@ function logout(){
 	})
 }
 function init() {
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
-
+	loadLeft();
 	$.ajax({
 		  type : "POST", 
 		  url  : "getPayHistory.do", 
@@ -52,7 +37,7 @@ function init() {
 						 +"</td><td>"
 						 +data[i].amount
 						 +"</td><td>"
-						 +data[i].time
+						 +data[i].time.substring(0,19)
 						 +"</td>";
 				  var body2;
 				  if(data[i].mode=="cheque"&&data[i].bank!=null&&data[i].number!=null){
@@ -86,7 +71,7 @@ function init() {
 			if(data.commission!=null){
 				$("#payHistory").append("<tr><th>Commission"
 						+ "</th><td>"
-						+　data.commission
+						+data.commission
 						+ "</td></tr>");
 				}
 			// 获取其他的pic并选中invocie中的pic2
@@ -146,7 +131,7 @@ function showWorker() {
 						$("#workerList").append(
 								"<tbody id='worker"
 								+ data[i].id
-								+ "'><tr id='row0'>"
+								+ "'><tr id='row0' >"
 								+ "<td style='text-align: center;vertical-align:middle;'></td>"
 								+ "<td style='vertical-align:middle;' colspan='10'>"
 								+ "<table width='500px'>"
@@ -198,7 +183,7 @@ function showWorker() {
 								+ data[i].id
 								+ "'/> "
 								+ "</td></tr></table></td></tr>"
-								+ "<tr><td style='vertical-align:middle;text-align: center;'>"
+								+ "<tr  style='height:55px'><td style='vertical-align:middle;text-align: center;'>"
 								+ "<strong><h4>"
 								+ "</h4> </strong></td>"
 								+ "<td style='vertical-align:middle;'>Salary</td>"
@@ -228,7 +213,7 @@ function showWorker() {
 								+ "' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateT("
 								+ data[i].id
 								+ ")' readOnly='true'/>"
-								+ "<a style='display:none' class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+								+ "<a style='display:none' class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 								+ data[i].id
 								+ "' onclick='addItem("
 								+ data[i].id
@@ -277,75 +262,110 @@ function showWorker() {
 							},
 							success:function(data){
 								// 回显当前worker中的item
-								
-								for(var j=0;j<data.length;j++){
-								$("#worker"+workerid)
-										.append(
-												"<tr style='height:55px' id='item"
-												+ data[j].id
-												+ "'>"
-												+ "<td></td>"
-												+ "<td colspan='2'>"
-												+ "<div style='padding-left:0px;width:254px'>"
-												+ "<select class='selectpicker' data-style='btn-white' disabled='disabled'  id='desc"
-												+ data[j].id
-												+ "'>"
-												+ "<option value='CPF'>CPF</option>"
-												+ "<option value='SDF'>SDF</option>"
-												+ "<option value='WICA'>WICA</option>"
-												+ "<option value='Medical Coverage Fee'>Medical Coverage Fee</option>"
-												+ "<option value='Admin fee'>Admin fee</option>"
-												+ "</select></div></td>"
-												+ "<td style='vertical-align:middle;'>$<input readOnly='true' "
-												+ "id='itemAmountPayable"
-												+ data[j].id
-												+ "' onkeyup='caculateItem("
-												+ data[j].id
-												+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' /></td>"
-												+ "<td style='vertical-align:middle;'>$<input readOnly='true' "
-												+ "id='itemCost"
-												+ data[j].id
-												+ "' onkeyup='caculateT("
-												+ data[j].id
-												+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' /></td>"
-												+ "<td style='vertical-align:middle;'>$<input readOnly='true' class='itemAmount'"
-												+ "id='itemTotalAmount"
-												+ data[j].id
-												+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateItem("
-												+ data[j].id
-												+ ")' readOnly='true'/>"
-												+ "<a style='display:none' class='cItem"
-												+ workerid
-												+ "' onclick='caculateItem("
-												+ data[j].id
-												+ ")' ></a>"
-												+ "<a style='display:none' class='btn btn-danger btn-lg removeItem"
-												+ workerid
-												+ "'"
-												+ "onclick='removeItem("
-												+ data[j].id
-												+ ")' id='' style='float:right'>Remove&nbsp;"
-												+ "Item</a><a class='updateItem' onclick='updateItem("
-												+ data[j].id + ")'/></td></tr>");
-								var descId="desc"+data[j].id;
-			
-								var trade = document.getElementById(descId);
-								for ( var i = 0; i < trade.length; i++) {
-									if (trade[i].value == data[j].desc) {
-										trade[i].selected = true;
-										$(descId).selectpicker("refresh");
+
+								for ( var j = 0; j < data.length; j++) {
+									$("#worker" + workerid)
+											.append(
+													"<tr style='height:55px' id='item"
+															+ data[j].id
+															+ "'>"
+															+ "<td></td>"
+															+ "<td colspan='2'>"
+															+ "<div style='padding-left:0px;width:254px'>"
+															+ "<select class='selectpicker' disabled='disabled' data-style='btn-white' data-live-search='true'  id='desc"
+															+ data[j].id
+															+ "'>"
+															+ "<option value='Overtimes10X'>Overtimes 1.0X</option>"
+															+ "<option value='Overtimes15X'>Overtimes 1.5X</option>"
+															+ "<option value='Overtimes20X'>Overtimes 2.0X</option>"
+															+ "<option value='CPF'>CPF</option>"
+															+ "<option value='SDF'>SDF</option>"
+															+ "<option value='WICA2'>WICA 2%</option>"
+															+ "<option value='MedicalCoverageFee2'>Medical Coverage Fee 2%</option>"
+															+ "<option value='AdminFee'>Admin Fee</option>"
+															+ "<option value='TransportAllowance'>Transport Allowance</option>"
+															+ "<option value='LaundryAllowance'>Laundry Allowance</option>"
+															+ "<option value='AfternoonShiftAllowance'>Afternoon Shift Allowance</option>"
+															+ "<option value='MedicalReimbursement'>Medical Reimbursement</option>"
+															+ "<option value='MileageERPReimbursement'>Mileage & ERP Reimbursement </option>"
+															+ "<option value='LessUnpaidLeave'> Less: Unpaid Leave</option>"
+															+ "<option value='TransportReimbursement'>Transport Reimbursement</option>"
+															+ "<option value='MealAllowance'>Meal Allowance</option>"
+															+ "<option value='AttendanceAllowance'>Attendance Allowance</option>"
+															+ "<option value='Allowance'>Allowance</option>"
+															+ "<option value='PublicHolidayOT'>Public Holiday OT</option>"
+															+ "<option value='Lateness'>Lateness</option>"
+															+ "<option value='AnnualLeaveEncashment'>Annual Leave Encashment</option>"
+															+ "<option value='Bonus'>Bonus</option>"
+															+ "<option value='CompletionBonus'>Completion Bonus</option>"
+															+ "<option value='Incentive'>Incentive</option>"
+															+ "<option value='BackPaySalary'>Back Pay Salary</option>"
+															+ "<option value='BackPayOvertimes'>Back Pay Overtimes</option>"
+															+ "<option value='AdjustmentSalary'>Adjustment Salary</option>"
+															+ "<option value='AdjustmentOvertimes'>Adjustment Overtimes</option>"
+															+ "<option value='SalaryInLieu'>Salary In Lieu</option>"
+															+ "<option value='PaidAnnualLeave'>Paid Annual Leave</option>"
+															+ "<option value='PaidMedicalLeave'>Paid Medical Leave</option>"
+															+ "<option value='PaidChildcareLeave'>Paid Childcare Leave</option>"
+															+ "<option value='LessMidMonthSalary'>Less: Mid Month Salary</option>"
+															
+															+ "</select></div></td>"
+															+ "<td style='vertical-align:middle;'>$<input "
+															+ "id='itemAmountPayable"
+															+ data[j].id
+															+ "' onkeyup='caculateItem("
+															+ data[j].id
+															+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' /></td>"
+															+ "<td style='vertical-align:middle;'>$<input "
+															+ "id='itemCost"
+															+ data[j].id
+															+ "' onkeyup='caculateT("
+															+ data[j].id
+															+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' /></td>"
+															+ "<td style='vertical-align:middle;'>$<input class='itemAmount'"
+															+ "id='itemTotalAmount"
+															+ data[j].id
+															+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateItem("
+															+ data[j].id
+															+ ")' readOnly='true'/>"
+															+ "</td><td><a style='display:none' class='cItem"
+															+ workerid
+															+ "' onclick='caculateItem("
+															+ data[j].id
+															+ ")' ></a>"
+															+ "<a title='delete' class='btn btn-danger btn-lg removeItem"
+															+ workerid
+															+ "'"
+															+ "onclick='removeItem("
+															+ data[j].id
+															+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
+															+ "</a><a class='updateItem' onclick='updateItem("
+															+ data[j].id
+															+ ")'/></td></tr>");
+									var descId = "desc" + data[j].id;
+
+									var trade = document
+											.getElementById(descId);
+									for ( var i = 0; i < trade.length; i++) {
+										if (trade[i].value == data[j].desc) {
+											trade[i].selected = true;
+											$(descId).selectpicker(
+													"refresh");
+										}
 									}
-								}	
-								$("#itemAmountPayable"+data[j].id).val(data[j].amount);
-								$("#itemCost"+data[j].id).val(data[j].cost);
-								$("#workerHour"+data[j].id).val(data[j].hours);
-								
-								
-								 $("#desc"+data[j].id).selectpicker("refresh");
-								 caculateItem(data[j].id);
-								  // $("#desc"+data[j].id).selectpicker("refresh");
-								
-								caculateT(data[j].id);
+									$("#itemAmountPayable" + data[j].id)
+											.val(data[j].amount);
+									$("#itemCost" + data[j].id).val(
+											data[j].cost);
+									$("#workerHour" + data[j].id).val(
+											data[j].hours);
+
+									$("#desc" + data[j].id)
+											.selectpicker("refresh");
+									caculateItem(data[j].id);
+									// $("#desc"+data[j].id).selectpicker("refresh");
+
+									caculateT(data[j].id);
 								}
 							}
 						});
@@ -470,7 +490,7 @@ $(function() {
 														+ data
 														+ ")' readOnly='true'/>"
 														+ "</td>"
-														+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+														+ "<td width='300px'><a class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 														+ data
 														+ "' onclick='addItem("
 														+ data
@@ -755,7 +775,7 @@ function caculateT(i) {
 		salaryT = parseFloat(salaryT);
 		salaryT = parseFloat(salaryV);
 		if (!isNaN(salaryT)) {
-			$(salaryTotal).val(salaryT);
+			$(salaryTotal).val(salaryT.toFixed(1));
 		}
 	}
 

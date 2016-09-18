@@ -1,21 +1,30 @@
 window.onload = init;
 
 function init() {
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+//	$.ajax({
+//		type : "POST",
+//		url : "getPow.do",
+//		dataType : "json",
+//		asycn:false,
+//		error : function(data) {
+//			alert("请求失败~");
+//		},
+//		success : function(data) {
+//			$("#currUser").append(data.realName);
+//			if (data.type == 1) {
+//
+//				$("#cancel").hide();
+//				$("#confirm").hide();
+//				$("#activeInvoice").hide();
+//				$("#register").hide();
+//				$("#user").hide();
+//			}else if(data.type==2){
+//				$("#addUserbtn").hide();
+//			}
+//		}
+//	});
+	loadLeft();
+	loadInvoice();
 	$.ajax({
 		type : "POST",
 		url : "getInvoiceLimit.do",
@@ -256,7 +265,7 @@ function search(i) {
 											+ (data[i].total*1.07).toFixed(1)+"/"+data[i].total
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; '>"
-											+ data[i].creditNotes
+											+ (data[i].creditNotes*1.0).toFixed(1)
 											+ "</th><th style='text-align:left;vertical-align : middle; '>"
 											+ pic
 											+ "</th>"
@@ -379,10 +388,10 @@ function search(i) {
 											+ "'><label></label></div></th>"
 											+ "<th style='text-align:left;vertical-align : middle; '>"
 											+ data[i].type
-											+ data[i].id
+											+ data[i].number
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; ' >"
-											+ data[i].total+"/"+(data[i].total*1.07).toFixed(1)
+											+ (data[i].total*1.07).toFixed(1)+"/"+data[i].total
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; ' >"
 											+ data[i].creditNotes

@@ -11,6 +11,7 @@
 		<result property="term" column="paymentterms" />
 		<result property="type" column="type" />
 		<result property="pic" column="pic"/>
+		<result property="number" column="number" />
 		<association property="picObject" javaType="mci.main.user.pojo.User">
 			<id property="id" column="pic" />
 			<result property="realName" column="realname" />

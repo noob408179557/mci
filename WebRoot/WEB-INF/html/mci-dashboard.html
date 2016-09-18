@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Coderthemes">
-<link rel="shortcut icon" href="assets/images/favicon_1.ico">
+<link rel="shortcut icon" href="assets/images/logo.png">
 <title>MCI-Dashboard</title>
 <link href="assets/plugins/sweetalert/dist/sweetalert.css"
 	rel="stylesheet" type="text/css">
@@ -54,7 +54,7 @@
         <![endif]-->
 
 <script src="assets/js/modernizr.min.js"></script>
-
+<script src="js/system/loading.js"></script>
 </head>
 
 <body class="fixed-left">
@@ -88,36 +88,38 @@
 				<!--- Divider -->
 				<div id="sidebar-menu">
 					<ul>
-						<li style="background:#92cf5c"> <a id="currUser" style="cursor: pointer;">
-						         <i class="glyphicon glyphicon-user"></i> </a>
+						<li style="background: #92cf5c"><a id="currUser"
+							style="cursor: pointer;"> <i class="glyphicon glyphicon-user"></i>
+						</a>
 							<ul class="list-unstyled" style="display: none;">
-									<li><a href="mci-profile.do"><i class="ti-user m-r-5"></i>Profile</a></li>
+								<li><a href="mci-profile.do"><i class="ti-user m-r-5"></i>Profile</a></li>
 								<li><a href="#"><i class="ti-settings m-r-5"></i>Settings
-								</a>
-								</li>
-								<li><a style="cursor: pointer;" onclick="logout()"><i class="ti-power-off m-r-5"></i>Logout</a>
-								</li>
-							</ul>
+								</a></li>
+								<li><a style="cursor: pointer;" onclick="logout()"><i
+										class="ti-power-off m-r-5"></i>Logout</a></li>
+							</ul></li>
+
+						<li class="" id="dashboard" style="display: none;"><a class="waves-effect "
+							onclick="location.href='mci-dashboard.do'"><font color="#fff">
+									<i class="md md-remove-red-eye"></i><span>Dashboard 
+							</font></span> </a></li>
+					<li class="has_sub" id="invoice" onclick="location.href='mci-staffInvoice.do'" style="display: none;"><a
+							class="waves-effect"><font color="#fff"><i
+									class="md md-event-note"></i>Invoice</font> </a>
 						</li>
-						<li class=""><a href="#" class="waves-effect active"><font
-								color="#fff"><i class="md md-remove-red-eye active"></i><span>Dashboard
-							</font></span></a></li>
-						<li class="has_sub" onclick="location.href='mci-staffInvoice.do'"><a
-							class="waves-effect"><font color="#fff"><i
-									class="md md-event-note"></i> <span>Invoice 
-							</font> </span> </a></li>
-							 <li class="has_sub" onclick="location.href='mci-staffClient.do'"><a
-							class="waves-effect"><font color="#fff"><i
-									class="md md-people"></i> <span>Client
-							</font> </span> </a></li>
-							<li class="has_sub"  id="register"><a class="waves-effect" onclick="location.href='mci-register.do'"> <font
-								color="#fff"><i class="glyphicon glyphicon-plus"></i> Register</font>
+						<li class="has_sub" id="client"  style="display: none;" onclick="location.href='mci-staffClient.do'"><a
+							class="waves-effect "> <font color="#fff"><i
+									class="md md-people"></i>Client</font> </span>
 						</a></li>
-						<li id="user" class="has_sub"  onclick="location.href='mci-user.do'"><a class="waves-effect"
-							> <font color="#fff"><i
-									class="glyphicon glyphicon-list-alt"></i>User</font> </a>
-						</li>
-							 
+						<li class="has_sub" id="register" style="display: none;"><a class="waves-effect"
+							onclick="location.href='mci-register.do'"> <font color="#fff"><i
+									class="glyphicon glyphicon-plus"></i> Register</font>
+						</a></li>
+						<li id="user" class="has_sub" style="display: none;"
+							onclick="location.href='mci-user.do'"><a
+							class="waves-effect"> <font color="#fff"><i
+									class="glyphicon glyphicon-list-alt"></i>User</font>
+						</a></li>
 					</ul>
 					<div class="clearfix"></div>
 				</div>

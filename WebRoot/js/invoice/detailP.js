@@ -206,7 +206,7 @@ $(function() {
 																+ data
 																+ ")' readOnly='true'/>"
 																+ "</td>"
-																+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+																+ "<td width='300px'><a class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 																+ data
 																+ "' onclick='addItem("
 																+ data

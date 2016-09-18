@@ -1,4 +1,9 @@
 window.onload =  search;
+
+function checkDate(date){
+	 var   re =/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
+	 return re.test(date);
+}
 function logout(){
 	$.ajax({
 		type : "POST",
@@ -17,21 +22,7 @@ function logout(){
 	})
 }
 function search(i){
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+	loadLeft();
 	if(isNaN(i)){
 		 i=$("#pageIndex").val();
 	}
@@ -315,6 +306,10 @@ $(document).ready(function(){
 		var cp=$("#addCP").val();
 		var date=$("#datepicker-autoclose").val();
 		var client=$("#addClient").val();
+		if(!checkDate(date)){
+			swal("Invalid invoice date!");
+		    return false;
+		}
 		$.ajax({
 			type : "POST", 
 			  url  : "addInvoice.do", 
@@ -331,7 +326,6 @@ $(document).ready(function(){
 			  },
 			 success:function(data){
 				       if(data=="0"){
-					 swal("Success~");
 				 }else if(data=="1"){
 					 swal("Fail~");
 				 }else if(data=="2"){

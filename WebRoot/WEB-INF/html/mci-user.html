@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Coderthemes">
-<link rel="shortcut icon" href="assets/images/favicon_1.ico">
+<link rel="shortcut icon" href="assets/images/logo.png">
 <title>MCI-User</title>
 <link href="assets/plugins/sweetalert/dist/sweetalert.css"
 	rel="stylesheet" type="text/css">
@@ -58,7 +58,7 @@
         <![endif]-->
 
 <script src="assets/js/modernizr.min.js"></script>
-
+<script src="js/system/loading.js"></script>
 </head>
 
 <body class="fixed-left">
@@ -90,36 +90,37 @@
 			<div class="sidebar-inner slimscrollleft">
 				<!--- Divider -->
 				<div id="sidebar-menu">
-					<ul>
+				<ul>
 						<li style="background: #92cf5c"><a id="currUser"
 							style="cursor: pointer;"> <i class="glyphicon glyphicon-user"></i>
 						</a>
 							<ul class="list-unstyled" style="display: none;">
-								<li><a href="mci-profile.do"><i class="ti-user m-r-5"></i>Profile</a>
-								</li>
+								<li><a href="mci-profile.do"><i class="ti-user m-r-5"></i>Profile</a></li>
 								<li><a href="#"><i class="ti-settings m-r-5"></i>Settings
 								</a></li>
-								<li><a id="log_out" style="cursor: pointer;"
-									onclick="logout()"><i class="ti-power-off m-r-5"></i>Logout</a>
-								</li>
+								<li><a style="cursor: pointer;" onclick="logout()"><i
+										class="ti-power-off m-r-5"></i>Logout</a></li>
 							</ul></li>
-						<li class="" onclick="location.href='mci-dashboard.do'"><a
-							class="waves-effect"><font color="#fff"> <i
-									class="md md-remove-red-eye"></i><span>Dashboard </font></span> </a></li>
-						<li class="has_sub" onclick="location.href='mci-staffInvoice.do'"><a
-							class="waves-effect"> <font color="#fff"><i
-									class="md md-event-note"></i>Invoice</font>
-						</a></li>
-						<li class="has_sub" onclick="location.href='mci-staffClient.do'"><a
+
+						<li class="" id="dashboard" style="display: none;"><a class="waves-effect "
+							onclick="location.href='mci-dashboard.do'"><font color="#fff">
+									<i class="md md-remove-red-eye"></i><span>Dashboard 
+							</font></span> </a></li>
+						<li class="has_sub" style="display: none;" id="invoice" onclick="location.href='mci-staffInvoice.do'" style="display: none;"><a
+							class="waves-effect"><font color="#fff"><i
+									class="md md-event-note"></i>Invoice</font> </a>
+						</li>
+						<li class="has_sub" id="client"  style="display: none;" onclick="location.href='mci-staffClient.do'"><a
 							class="waves-effect "> <font color="#fff"><i
-									class="md md-people"></i> Client</font>
+									class="md md-people"></i>Client</font> </span>
 						</a></li>
-						<li id="register" class="has_sub"><a class="waves-effect"
+						<li class="has_sub" id="register" style="display: none;"><a class="waves-effect"
 							onclick="location.href='mci-register.do'"> <font color="#fff"><i
 									class="glyphicon glyphicon-plus"></i> Register</font>
 						</a></li>
-						<li id="user" class="has_sub"><a class="waves-effect active">
-								<font color="#fff"><i
+						<li id="user" class="has_sub" style="display: none;"
+							onclick="location.href='mci-user.do'"><a
+							class="waves-effect"> <font color="#fff"><i
 									class="glyphicon glyphicon-list-alt"></i>User</font>
 						</a></li>
 					</ul>
@@ -155,11 +156,11 @@
 									data-toggle="modal" id="delete">
 									<i class="    md-cancel    "></i> Block
 								</div>
-								<div class="btn btn-success waves-effect waves-light btn-lg"
+								<div class="btn btn-primary waves-effect waves-light btn-lg"
 									data-toggle="modal" id="active">
 									<i class="glyphicon glyphicon-ok"></i> Active
 								</div>
-								<div class="btn btn-success waves-effect waves-light btn-lg"
+								<div class="btn btn-primary waves-effect waves-light btn-lg"
 									data-toggle="modal" id="reset">
 									<i class="glyphicon glyphicon-refresh"></i> Reset Password
 								</div>
@@ -174,80 +175,11 @@
 								class="active"> <span class="visible-xs"><i
 										class="fa fa-user"></i></span> <span class="hidden-xs">Active</span>
 							</a></li>
-							<li class="tab " style="width: 25%;"><a href="#home-2"
-								data-toggle="tab" aria-expanded="false" class=""> <span
-									class="visible-xs"><i class="fa fa-home"></i></span> <span
-									class="hidden-xs">Block</span>
-							</a></li>
 
 							<div class="indicator" style="right: 402px; left: 200px;"></div>
 						</ul>
-						<div class="tab-content active">
-							<div class="tab-pane" id="home-2" style="display: none;">
-								<div class="card-box ">
-									<table class="table table-bordered table-hover">
-										<tbody>
-											<tr bgcolor="#F5F5F5">
-												<th
-													style='text-align: left; vertical-align: middle; width: 2%'
-													colspan="2"></th>
-												<th
-													style='text-align: left; vertical-align: middle; width: 120px'>
-													<h4>
-														<strong>ID</strong>
-													</h4>
-												</th>
-												<th style='text-align: left; vertical-align: middle;'>
-													<h4>
-														<strong>Email</strong>
-													</h4>
-												</th>
-												<th
-													style='text-align: left; vertical-align: middle; width: 220px'>
-													<h4>
-														<strong>Realname</strong>
-													</h4>
-												</th>
-												<th
-													style='text-align: left; vertical-align: middle; width: 220px'>
-													<h4>
-														<strong>Status</strong>
-													</h4>
-												</th>
-											</tr>
-										</tbody>
-										<tbody id="userList1">
-										</tbody>
-
-									</table>
-									<!-- 分页button -->
-									
-									<div align="middle">
-
-										<div class="btn btn-primary waves-effect waves-light btn-lg"
-											data-toggle="modal" id="firstPage1">
-											<i class="glyphicon glyphicon-fast-backward"></i>
-										</div>
-										<div class="btn btn-primary waves-effect waves-light btn-lg"
-											data-toggle="modal" id="previousPage1">
-											<i class="ion-arrow-left-a"></i>
-										</div>
-										<div class="btn btn-primary  btn-lg" data-toggle="modal"
-											id="pageProgress1"></div>
-										<div class="btn btn-primary waves-effect waves-light btn-lg"
-											data-toggle="modal" id="nextPage1">
-											<i class="ion-arrow-right-a"></i>
-										</div>
-										<div class="btn btn-primary waves-effect waves-light btn-lg"
-											data-toggle="modal" id="lastPage1">
-											<i class="glyphicon glyphicon-fast-forward"></i>
-										</div>
-									</div>
-									
-									<input value="1" type="hidden" id="pageIndex1" />
-								</div>
-
-							</div>
+						<div class="tab-content active" style="height:726px;position:relative;">
+							
 							<div class="tab-pane " id="profile-2" style="display: block;">
 									<div class="card-box ">
 									<table class="table table-bordered table-hover">
@@ -287,7 +219,12 @@
 									</table>
 									<!-- 分页button -->
 									
-									<div align="middle">
+									
+									
+									<input value="1" type="hidden" id="pageIndex" />
+								</div>
+							</div>
+							<div align="middle" style="left:35%;position:absolute;bottom:35px;">
 
 										<div class="btn btn-primary waves-effect waves-light btn-lg"
 											data-toggle="modal" id="firstPage">
@@ -308,21 +245,90 @@
 											<i class="glyphicon glyphicon-fast-forward"></i>
 										</div>
 									</div>
-									
-									
-									
-									
-									
-									
-									
-									
-									<input value="1" type="hidden" id="pageIndex" />
-								</div>
-							</div>
 
 						</div>
 					</div>
+					<!-- 激活锁定分割线 -->
+                    <div class="col-lg-6" style="height:726px">
+						<ul class="nav nav-tabs tabs" style="width: 100%;">
+							<li class="tab "  style="width: 25%;"><a id="blockbtn" href="#home-2"
+								data-toggle="tab" aria-expanded="true" class="active"> <span
+									class="visible-xs"><i class="fa fa-home"></i></span> <span
+									class="hidden-xs">Block</span>
+							</a></li>
+                              
+							<div class="indicator" style="right: 402px; left: 200px;"></div>
+						</ul>
+						<div class="tab-content active" style="height:100%;position:relative;">
+							<div class="tab-pane" id="home-2">
+								<div class="card-box ">
+									<table class="table table-bordered table-hover">
+										<tbody>
+											<tr bgcolor="#F5F5F5">
+												<th
+													style='text-align: left; vertical-align: middle; width: 2%'
+													colspan="2"></th>
+												<th
+													style='text-align: left; vertical-align: middle; width: 120px'>
+													<h4>
+														<strong>ID</strong>
+													</h4>
+												</th>
+												<th style='text-align: left; vertical-align: middle;'>
+													<h4>
+														<strong>Email</strong>
+													</h4>
+												</th>
+												<th
+													style='text-align: left; vertical-align: middle; width: 220px'>
+													<h4>
+														<strong>Realname</strong>
+													</h4>
+												</th>
+												<th
+													style='text-align: left; vertical-align: middle; width: 220px'>
+													<h4>
+														<strong>Status</strong>
+													</h4>
+												</th>
+											</tr>
+										</tbody>
+										<tbody id="userList1">
+										</tbody>
 
+									</table>
+									<!-- 分页button -->
+									
+									
+									<input value="1" type="hidden" id="pageIndex1" />
+								</div>
+
+							</div>
+							
+						
+						<div align="middle" style="left:35%;;position:absolute;bottom:35px;">
+										<div class="btn btn-primary waves-effect waves-light btn-lg"
+											data-toggle="modal" id="firstPage1">
+											<i class="glyphicon glyphicon-fast-backward"></i>
+										</div>
+										<div class="btn btn-primary waves-effect waves-light btn-lg"
+											data-toggle="modal" id="previousPage1">
+											<i class="ion-arrow-left-a"></i>
+										</div>
+										<div class="btn btn-primary  btn-lg" data-toggle="modal"
+											id="pageProgress1"></div>
+										<div class="btn btn-primary waves-effect waves-light btn-lg"
+											data-toggle="modal" id="nextPage1">
+											<i class="ion-arrow-right-a"></i>
+										</div>
+										<div class="btn btn-primary waves-effect waves-light btn-lg"
+											data-toggle="modal" id="lastPage1">
+											<i class="glyphicon glyphicon-fast-forward"></i>
+										</div>
+									</div>
+									
+					</div></div>
+                    
 
 					<div class="row"></div>
 				</div>

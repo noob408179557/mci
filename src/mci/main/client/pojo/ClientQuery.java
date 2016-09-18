@@ -6,7 +6,7 @@ public class ClientQuery implements Serializable {
 	private static final long serialVersionUID = 1L;
 private Client client;
 private int pageIndex;
-public static int pageSize=10;
+public static int pageSize=14;
 private int startIndex;
 private int endIndex;
 private int totalPage;

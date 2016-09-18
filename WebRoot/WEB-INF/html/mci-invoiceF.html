@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Coderthemes">
-<link rel="shortcut icon" href="assets/images/favicon_1.ico">
+<link rel="shortcut icon" href="assets/images/logo.png">
 <title>MCI-invoiceF</title>
 <link href="assets/plugins/sweetalert/dist/sweetalert.css"
 	rel="stylesheet" type="text/css">
@@ -54,7 +54,7 @@
         <![endif]-->
 
 <script src="assets/js/modernizr.min.js"></script>
-
+<script src="js/system/loading.js"></script>
 </head>
 
 <body class="fixed-left">
@@ -98,22 +98,23 @@
 										class="ti-power-off m-r-5"></i>Logout</a></li>
 							</ul></li>
 
-						<li class="" onclick="location.href='mci-dashboard.do'"><a
-							href="#" class="waves-effect"><font color="#fff"><i
-									class="md md-remove-red-eye"></i><span>Dashboard </font></span> </a></li>
-						<li class="has_sub" onclick="location.href='mci-staffInvoice.do'"><a
+						<li class="" id="dashboard" style="display: none;"><a class="waves-effect "
+							onclick="location.href='mci-dashboard.do'"><font color="#fff">
+									<i class="md md-remove-red-eye"></i><span>Dashboard 
+							</font></span> </a></li>
+						<li class="has_sub" id="invoice" onclick="location.href='mci-staffInvoice.do'" style="display: none;"><a
 							class="waves-effect"><font color="#fff"><i
-									class="md md-event-note"></i> <span>Invoice </font> </span> </a></li>
-
-						<li class="has_sub" onclick="location.href='mci-staffClient.do'"><a
-							href="#" class="waves-effect"><font color="#fff"> <i
-									class="md md-people"></i>Client
-							</font> </a></li>
-						<li class="has_sub" id="register"><a class="waves-effect"
+									class="md md-event-note"></i>Invoice</font> </a>
+						</li>
+						<li class="has_sub" id="client"  style="display: none;" onclick="location.href='mci-staffClient.do'"><a
+							class="waves-effect "> <font color="#fff"><i
+									class="md md-people"></i>Client</font> </span>
+						</a></li>
+						<li class="has_sub" id="register" style="display: none;"><a class="waves-effect"
 							onclick="location.href='mci-register.do'"> <font color="#fff"><i
 									class="glyphicon glyphicon-plus"></i> Register</font>
 						</a></li>
-						<li id="user" class="has_sub"
+						<li id="user" class="has_sub" style="display: none;"
 							onclick="location.href='mci-user.do'"><a
 							class="waves-effect"> <font color="#fff"><i
 									class="glyphicon glyphicon-list-alt"></i>User</font>
@@ -260,7 +261,7 @@
 													style="width: 80%; border-top: 0px; border-left: 0px; border-right: 0px;"
 													id="invoiceCost" onkeyup="caculateF()"></td>
 												<td style="vertical-align: middle;">$<input type="text"
-													style="width: 80%; border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: 0px;"
+													style="width: 80%; border-top: 0px; border-left: 0px; border-right: 0px;"
 													readonly="true" id="invoiceTotal"></td>
 												<td></td>
 											</tr>
@@ -319,7 +320,7 @@
 											id="" onclick="window.location='mci-createInvoice.do'">
 											<i class="glyphicon glyphicon-arrow-left"></i>Back
 										</div>
-										<div class="btn btn-info waves-effect waves-light btn-lg"
+										<div class="btn btn-primary waves-effect waves-light btn-lg"
 											id="addRow">
 											Add Item<i class="fa fa-plus"></i>
 										</div>

@@ -98,8 +98,8 @@ File: Components
 .btn-primary:focus,
 .btn-primary:hover,
 .open > .dropdown-toggle.btn-primary {
-  background-color: #5d9cec !important;
-  border: 1px solid #5d9cec !important;
+  background-color: #5C5193 !important;
+  border: 1px solid #FFFFFF !important;
 }
 .btn-success,
 .btn-success:hover,
@@ -111,8 +111,8 @@ File: Components
 .btn-success:focus,
 .btn-success:hover,
 .open > .dropdown-toggle.btn-success {
-  background-color: #81c868 !important;
-  border: 1px solid #81c868 !important;
+  background-color: #8CCB55 !important;
+  border: 1px solid #8CCB55 !important;
 }
 .btn-info,
 .btn-info:hover,
@@ -432,8 +432,8 @@ File: Components
   color: #ffffff;
 }
 .checkbox-primary input[type="checkbox"]:checked + label::before {
-  background-color: #5d9cec;
-  border-color: #5d9cec;
+  background-color: #5C5193;
+  border-color: #5C5193;
 }
 .checkbox-primary input[type="checkbox"]:checked + label::after {
   color: #ffffff;
@@ -571,13 +571,13 @@ File: Components
   background-color: #5fbeaa;
 }
 .radio-primary input[type="radio"] + label::after {
-  background-color: #5d9cec;
+  background-color: #5C5193;
 }
 .radio-primary input[type="radio"]:checked + label::before {
-  border-color: #5d9cec;
+  border-color: #5C5193;
 }
 .radio-primary input[type="radio"]:checked + label::after {
-  background-color: #5d9cec;
+  background-color: #5C5193;
 }
 .radio-danger input[type="radio"] + label::after {
   background-color: #f05050;
@@ -1713,7 +1713,7 @@ div.dataTables_info {
 .datepicker table tr td.active:hover,
 .datepicker table tr td.active.disabled,
 .datepicker table tr td.active.disabled:hover {
-  background-color: #5fbeaa !important;
+  background-color: #5C5193 !important;
   background-image: none;
   box-shadow: none;
   text-shadow: none;
@@ -1990,6 +1990,6 @@ a.editable-click:hover {
   line-height: 22px;
 }
 button.confirm {
-  background-color: #5fbeaa !important;
+  background-color: #5C5193 !important;
   box-shadow: none !important;
 }

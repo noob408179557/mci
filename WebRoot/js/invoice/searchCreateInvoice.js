@@ -18,21 +18,7 @@ function logout(){
 	})
 }
 function search(i){
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+	loadLeft();
 
 	if(isNaN(i)){
 		 i=$("#pageIndex").val();

@@ -190,6 +190,9 @@ function showWorker() {
 								//回显当前worker中的item
 								
 								for(var j=0;j<data.length;j++){
+									if(data[j].amount===null||data[j].amount==""){
+										data[j].amount=0;
+									}
 								$("#worker"+workerid)
 										.append("<tr style='height:40px' id='item"
 														+ data[j].id
@@ -198,8 +201,6 @@ function showWorker() {
 														+ "<input class='selectpicker' data-style='btn-white'  id='desc"
 														+ data[j].id
 														+ "'style='vertical-align:middle;width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' readOnly='true'></td>" 
-														
-														
 														+ "<td style='vertical-align:middle;'>$<input  "
 														+ "id='itemAmountPayable"
 														+ data[j].id
@@ -207,7 +208,6 @@ function showWorker() {
 														+ data[j].id
 														+ ")'  type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' />"
 														+ "</td>"
-														
 														+ "<td style='vertical-align:middle;'>$<input class='itemAmount' "
 														+ "id='itemTotalAmount"
 														+ data[j].id
@@ -319,7 +319,7 @@ $(function() {
 																+ data
 																+ ")' readOnly='true'/>"
 																+ "</td>"
-																+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+																+ "<td width='300px'><a class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 																+ data
 																+ "' onclick='addItem("
 																+ data

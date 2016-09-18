@@ -19,21 +19,7 @@ function logout(){
 	})
 }
 function init() {
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+	loadLeft();
 
 	$.ajax({
 		type : "POST",
@@ -208,14 +194,14 @@ $(function() {
 																+ data
 																+ ")' readOnly='true'/>"
 																+ "</td>"
-																+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+																+ "<td width='300px' height='55px' style='vertical-align:middle;'><a class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 																+ data
 																+ "' onclick='addItem("
 																+ data
 																+ ")'> Add Item </a>&nbsp;<a class='btn btn-danger btn-lg' onclick='removeWorker("
 																+ data
-																+ ")' id=''>Remove"
-																+ "&nbsp;Worker</a><a class='updateWorker' onclick='updateWorker("
+																+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
+																+ "</a><a class='updateWorker' onclick='updateWorker("
 																+ data
 																+ ")' />"
 																+ "</td></tr></tbody id='worker"
@@ -227,8 +213,7 @@ $(function() {
 										x++;
 										// 删除时根据Invoice Id删除remark
 										$("#remark" + data)
-												.append(
-														"<tr><td></td><td colspan='3'><div style='float:left;width:500px' align='left' >"
+												.append("<tr><td></td><td colspan='3'><div style='float:left;width:500px' align='left' >"
 																+ "Remark<textarea id='remarkV"
 																+ data
 																+ "' required class='form-control'"
@@ -329,13 +314,13 @@ function addItem(i) {
 											+ "' onclick='caculateItem("
 											+ data
 											+ ")' ></a>"
-											+ "<a class='btn btn-danger btn-lg removeItem"
+											+ "<a  title='delete' class='btn btn-danger btn-lg removeItem"
 											+ i
 											+ "'"
 											+ "onclick='removeItem("
 											+ data
-											+ ")' id='' style='float:right'>Remove&nbsp;"
-											+ "Item</a><a class='updateItem' onclick='updateItem("
+											+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
+											+ "</a><a class='updateItem' onclick='updateItem("
 											+ data + ")'/></td></tr>");
 					var select = "#desc" + data;
 					$(select).selectpicker('refresh');
@@ -443,12 +428,13 @@ function removeWorker(i) {
 			if (data == "0") {
 				$("#worker" + i).remove();
 				$("#remark" + i).remove();
+				caculateT();
 			} else {
 				swal("Server Error！");
 			}
 		}
 	});
-	caculateT();
+	
 }
 // 计算worker hours和item的payable的计算结果
 function caculateTrigger(i) {
@@ -524,7 +510,7 @@ function caculateT(i) {
 		salaryT = parseFloat(salaryT);
 		salaryT = parseFloat(salaryV);
 		if (!isNaN(salaryT)) {
-			$(salaryTotal).val(salaryT);
+			$(salaryTotal).val(salaryT.toFixed(1));
 		}
 	}
 

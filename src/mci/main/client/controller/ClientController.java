@@ -565,7 +565,7 @@ public class ClientController {
 		User user = (User) session.getAttribute("user");
 		// 对list进行截取
 		List<Invoice> list = new ArrayList<Invoice>();
-		if ((user.getType()).equals("1")) {
+		if (!(user.getType()).equals("2")) {
 			for (int i = 0; i < list1.size(); i++) {
 				if ((user.getId()).equals(list1.get(i).getPic())) {
 					list.add(list1.get(i));

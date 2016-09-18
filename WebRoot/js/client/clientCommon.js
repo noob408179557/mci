@@ -37,24 +37,29 @@ $(document)
 					$("#editInvoice")
 							.click(
 									function() {
-										if ($(
-												"input[name='selectInvoice']:checked")
-												.val() != null) {
-											$
-													.ajax({
+										if ($("input[name='select']:checked").val() != null) {
+											$.ajax({
+												type : "POST",
+												url : "editInvoice.do",
+												dataType : "json",
+												async:false,
+												data : {
+													id : $("input[name='selectInvoice']:checked").val()
+												},
+												error : function(data) {
+													swal("editInvoice.do Error!");
+												},
+												success : function(data) {
+													$.ajax({
 														type : "POST",
-														url : "editInvoice.do",
-														dataType : "json",
-														data : {
-															id : $(
-																	"input[name='selectInvoice']:checked")
-																	.val()
+														url : "getPow.do",
+														async : false,
+														error : function() {
+															swal("getPow  error!");
 														},
-														error : function(data) {
-															swal("editInvoice.do Error!");
-														},
-														success : function(data) {
-															if (data.state == "1") {
+														success : function(user) {
+															if (data.state == "1" || user.type == "3"
+																	|| (user.type == "2" && data.state == "5")||user.type=="3") {
 																if (data.type == "C") {
 																	window.location.href = "mci-editInvoiceC.do";
 																} else if (data.type == "F") {
@@ -64,16 +69,20 @@ $(document)
 																} else if (data.type == "T") {
 																	window.location.href = "mci-editInvoiceT.do";
 																}
+
 															} else {
 																swal("You can't edit for this invoice!");
 															}
 														}
-													});
+													})
+												}
+
+											});
 										} else {
 											swal("You haven't select any invoice!");
 										}
 
-									});
+});
 
 					$("#assignTo")
 							.click(
@@ -350,6 +359,7 @@ $(document)
 										} else {
 											swal("You haven't select any client!");
 										}
+										
 									});
 				})
 				//分页获取clientHistory
@@ -718,7 +728,10 @@ function getAccountPage(i) {
 						}
 						var body1 = "<tr><td width='5%'><div class='radio radio-primary radio-single'><input type='radio' name='selectInvoice' value='"
 								+ data[i].id
-								+ "'><label></label></div></td><td style='text-align:left;vertical-align : middle; '><div style='cursor:pointer;color:#00F' onclick=searchInvoice("+data[i].id+")>"
+								+ "'><label></label></div></td>"
+								+ "<td style='text-align:left;vertical-align : middle; '><div style='cursor:pointer;color:#00F' onclick=searchInvoice("+data[i].id+")>"
+								+ data[i].type+data[i].number+"</td>"
+								+ "<td style='text-align:left;vertical-align : middle; '><div >"
 								+ data[i].clientObject.companyName
 								+ "</div></td><td style='text-align:left;vertical-align : middle; '>"
 								+ data[i].total

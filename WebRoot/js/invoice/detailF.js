@@ -34,7 +34,6 @@ function init() {
 			$("#invoiceNum").val(data.workerNum);
 			$("#invoiceRate").val(data.billingRate);
 			$("#invoiceCost").val(data.cost);
-			
 			$("#id").val(data.type + data.number);
 			$("#date").val(data.createDate);
 			$("#pic").val(data.picObject.realName);
@@ -97,11 +96,14 @@ function showItem() {
 					for ( var j = 0; j < data.length; j++) {
 						x++;
 						var id=data[j].id;
+						if(data[j].itemCost===null|| data[j].itemCost==""){
+							 data[j].itemCost=0;
+						}
 						$("#itemList")
 								.append(
 										 "<tr id='row"+id+"' style='height:55px'>"
 											+ "<td colspan='2'  style='text-align: center;vertical-align:middle;'>"
-											+ switchItem(data[j].desc)
+											+ switchItem(data[j].itemName)
 											+ "</td>"
 											+ "<td  style='vertical-align:middle;'>"
 											+ "$" 
@@ -110,28 +112,31 @@ function showItem() {
 											+ "<td  style='vertical-align:middle;'>"
 											+ "$"
 											+ data[j].itemCost
-											+ "</td><td></td>"
+											+ "</td>"
+											+ "<td  style='vertical-align:middle;'>"
+											+ "$"
+											+ data[j].itemRate
+											+ "</td>"
 							                +"</tr>");
 						
 //						$("#itemRate"+id).val(data[i].itemRate);
-//			        	$("#itemCost"+id).val(data[i].itemCost);
 			        	
 			        	
 			        
 
-			        	var select = "#itemName" + id;
-						$(select).selectpicker('refresh');
+//			        	var select = "#itemName" + id;
+//						$(select).selectpicker('refresh');
 						
-						var descId = "itemName" + data[j].id;
-
-						var trade = document
-								.getElementById(descId);
-						for ( var i = 0; i < trade.length;i++) {
-							if (trade[i].value == data[j].itemName) {
-								trade[i].selected = true;
-								$(select).selectpicker("refresh");
-							}
-						}
+//						var descId = "itemName" + data[j].id;
+//
+//						var trade = document
+//								.getElementById(descId);
+//						for (var i = 0; i < trade.length; i++) {
+//							if (trade[i].value == data.trade) {
+//								trade[i].selected = true;
+//								$("#itemName"+id).selectpicker("refresh");
+//							}
+//						}
 			        	caculateF();
 					}
 				}
@@ -198,7 +203,7 @@ $(function() {
 																+ "</td></tr><tr><td><strong>DOB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong>"
 																+ "</td><td><input id='dob"
 																+ data
-																+ "' type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' />"
+																+ "' type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' />"
 																+ "</td></tr></table></td></tr>"
 																+ "<tr><td style='vertical-align:middle;text-align: center;'>"
 																+ "<strong><h4>"
@@ -207,24 +212,24 @@ $(function() {
 																+ "<td style='vertical-align:middle;'>$<input type='text'"
 																+ "id='salary"
 																+ data
-																+ "' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateC("
+																+ "' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' onkeyup='caculateC("
 																+ data
 																+ ")'/>"
 																+ "</td>"
 																+ "<td style='vertical-align:middle;'>$<input  type='text'"
 																+ "id='salaryCost"
 																+ data
-																+ "' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateC("
+																+ "' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' onkeyup='caculateC("
 																+ data
 																+ ")'/></td>"
 																+ "<td style='vertical-align:middle;'>$<input   type='text' class='workerSalary'"
 																+ "id='salaryTotal"
 																+ data
-																+ "' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateC("
+																+ "' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' onkeyup='caculateC("
 																+ data
 																+ ")' readOnly='true'/>"
 																+ "</td>"
-																+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+																+ "<td width='300px'><a class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 																+ data
 																+ "' onclick='addItem("
 																+ data
@@ -294,17 +299,17 @@ function addItem(i) {
 											+ data
 											+ "' onkeyup='caculateC("
 											+ data
-											+ ")'  type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' />"
+											+ ")'  type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' />"
 											+ "</td><td style='vertical-align:middle;'>$<input "
 											+ "id='itemCost"
 											+ data
 											+ "' onkeyup='caculateC("
 											+ data
-											+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' />"
+											+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' />"
 											+ "</td><td style='vertical-align:middle;'>$<input class='itemAmount'"
 											+ "id='itemTotalAmount"
 											+ data
-											+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' readOnly='true'/>"
+											+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px ' readOnly='true'/>"
 											+ "</td>" + "</tr>");
 					var select = "#desc" + data;
 					$(select).selectpicker('refresh');
@@ -314,7 +319,7 @@ function addItem(i) {
 function updateWorker(i) {
 	var salary = "#salary" + i;
 	var salaryCost = "#salaryCost" + i;
-	var salaryV = $(salary).val();
+	var salaryV = $(salary).val();x
 	var salaryCostV = $(salaryCost).val();
 	var position = $("#position" + i).val();
 	var name = $("#name" + i).val();
@@ -422,7 +427,7 @@ function removeWorker(i) {
 	caculateC();
 }
 function caculateF() {
-	var subTotal = parseFloat(0);
+	//var subTotal = parseFloat(0);
 	
 	var $itemBillRateList=$(".itemBillRate");
 	for ( var j = 0; j < $itemBillRateList.length; j++) {
@@ -442,7 +447,7 @@ function caculateF() {
 	
 	
 	// 若行中无空值
-	subTotal=parseFloat( parseFloat(subTotal)+(numV * rateV));
+	subTotal=parseFloat((numV * rateV));
 	console.log(parseFloat( subTotal));
 //	console.log(subTotal);
 		if(!isNaN(subTotal)){	

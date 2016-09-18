@@ -744,10 +744,10 @@ textarea.form-control {
   width: 100%;
 }
 .tabs li.tab a.active {
-  color: #5fbeaa !important;
+  color: #5C5193 !important;
 }
 .tabs .indicator {
-  background-color: #5fbeaa;
+  background-color: #5C5193;
   bottom: 0;
   height: 2px;
   position: absolute;
@@ -819,7 +819,7 @@ textarea.form-control {
 }
 .nav.nav-tabs > li > a:hover,
 .nav.tabs-vertical > li > a:hover {
-  color: #5fbeaa !important;
+  color: #9286B5 !important;
 }
 .tab-content {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -847,7 +847,7 @@ textarea.form-control {
 .tabs-vertical > li.active > a,
 .tabs-vertical > li.active > a:focus,
 .tabs-vertical > li.active > a:hover {
-  color: #5fbeaa !important;
+  color: #9286B5 !important;
 }
 /* List group */
 .list-group-item {
@@ -1256,7 +1256,7 @@ body.fixed-left .side-menu.left {
 #sidebar-menu ul ul li {
   border-top: 0;
 }
-/* 二级菜单激活后 */
+/* 浜岀骇鑿滃崟婵�椿鍚�*/
 #sidebar-menu ul ul li.active a {
   color: #fff;
 }
@@ -1265,7 +1265,7 @@ body.fixed-left .side-menu.left {
   display: block;
   padding: 10px 20px 10px 65px;
 }
-/* 菜单栏图标字体颜色 */
+/* 鑿滃崟鏍忓浘鏍囧瓧浣撻鑹�*/
 #sidebar-menu ul ul a:hover {
   color: #594f8d;
 }
@@ -1294,7 +1294,7 @@ body.fixed-left .side-menu.left {
   border-left: 3px solid #594f8d;
 }
 #sidebar-menu > ul > li > a:hover {
-  color: #5fbeaa;
+  color: #594F8D;
   text-decoration: none;
 }
 #sidebar-menu > ul > li > a > span {

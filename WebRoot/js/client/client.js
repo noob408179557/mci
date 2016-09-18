@@ -5,29 +5,33 @@ function init() {
 	//删除无效的client
 	
 	search();
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				
-				
-				$("#activeClient").hide();
-				$("#assign").hide();
-				$("#blockClient").hide();
-				$("#register").hide();
-				$("#user").hide();
-				$("#delete").hide();
-			}else if(data.type ==2){
-				$("#createClient").hide();
-			}
-		}
-	});
+	loadLeft();
+	loadClient();
+//	$.ajax({
+//		type : "POST",
+//		url : "getPow.do",
+//		dataType : "json",
+//		error : function(data) {
+//			alert("请求失败~");
+//		},
+//		success : function(data) {
+//			$("#currUser").append(data.realName);
+//			if (data.type == 1) {
+////				$("#activeClient").hide();
+////				$("#assign").hide();
+////				$("#blockClient").hide();
+////				$("#register").hide();
+////				$("#user").hide();
+////				$("#delete").hide();
+//				$("#dashboard").show();
+//				$("#invoice").show();
+//				$("#client").show();
+//			}else if(data.type ==2){
+//
+//			}
+//			
+//		}
+//	});
 	$.ajax({
 		type : "POST",
 		url : "autoClientList.do",

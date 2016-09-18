@@ -1,4 +1,4 @@
-window.onload = init;
+
 var x = 1;
 // var flag="1";
 // 页面加载完毕后执行init
@@ -19,22 +19,8 @@ function logout(){
 		}
 	})
 }
-function init() {
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+function initInvoice() {
+//	loadLeft();
 	$.ajax({
 		type : "POST",
 		url : "getEditInvoice.do",
@@ -95,7 +81,7 @@ function init() {
 					swal("getCurrentUser.do error!");
 				},
 				success : function(data2) {
-					if (data2.id != data.pic) {
+					if (data2.id != data.pic&&pow!=3) {
 						$("#anotherPIC").attr({
 							disabled : "disabled"
 						});
@@ -183,7 +169,7 @@ function showWorker() {
 												+ data[i].id
 												+ "'/> "
 												+ "</td></tr></table></td></tr>"
-												+ "<tr><td style='vertical-align:middle;text-align: center;'>"
+												+ "<tr style='height:55px'><td style='vertical-align:middle;text-align: center;'>"
 												+ "<strong><h4>"
 												+ "</h4> </strong></td>"
 												+ "<td style='vertical-align:middle;'>Salary</td>"
@@ -214,14 +200,14 @@ function showWorker() {
 												+ data[i].id
 												+ ")' readOnly='true'/>"
 												+ "</td>"
-												+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+												+ "<td width='300px'><a class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 												+ data[i].id
 												+ "' onclick='addItem("
 												+ data[i].id
-												+ ")'> Add Item </a>&nbsp;<a class='btn btn-danger btn-lg' onclick='removeWorker("
+												+ ")'> Add Item </a>&nbsp;<a style='float:right' title='delete' class='btn btn-danger btn-lg' onclick='removeWorker("
 												+ data[i].id
-												+ ")' id=''>Remove"
-												+ "&nbsp;Worker</a><a class='updateWorker' onclick='updateWorker("
+												+ ")' id=''><i class='glyphicon glyphicon-trash'></i>"
+												+ "</a><a class='updateWorker' onclick='updateWorker("
 												+ data[i].id
 												+ ")' />"
 												+ "</td></tr></tbody id='worker"
@@ -335,13 +321,13 @@ function showWorker() {
 																	+ "' onclick='caculateItem("
 																	+ data[j].id
 																	+ ")' ></a>"
-																	+ "<a class='btn btn-danger btn-lg removeItem"
+																	+ "<a title='delete' class='btn btn-danger btn-lg removeItem"
 																	+ workerid
 																	+ "'"
 																	+ "onclick='removeItem("
 																	+ data[j].id
-																	+ ")' id='' style='float:right'>Remove&nbsp;"
-																	+ "Item</a><a class='updateItem' onclick='updateItem("
+																	+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
+																	+ "</a><a class='updateItem' onclick='updateItem("
 																	+ data[j].id
 																	+ ")'/></td></tr>");
 											var descId = "desc" + data[j].id;
@@ -465,7 +451,7 @@ $(function() {
 																+ "<tr><td style='vertical-align:middle;text-align: center;'>"
 																+ "<strong><h4>"
 																+ "</h4> </strong></td>"
-																+ "<td style='vertical-align:middle;'>Salary</td>"
+																+ "<td style='vertical-align:middle;height:55px'>Salary</td>"
 																+ "<td style='vertical-align:middle;'><input type='text'"
 																+ "id='hours"
 																+ data
@@ -493,14 +479,14 @@ $(function() {
 																+ data
 																+ ")' readOnly='true'/>"
 																+ "</td>"
-																+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+																+ "<td width='300px'><a class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 																+ data
 																+ "' onclick='addItem("
 																+ data
-																+ ")'> Add Item </a>&nbsp;<a class='btn btn-danger btn-lg' onclick='removeWorker("
+																+ ")'> Add Item </a>&nbsp;<a style='float:right' title='delete' class='btn btn-danger btn-lg' onclick='removeWorker("
 																+ data
-																+ ")' id=''>Remove"
-																+ "&nbsp;Worker</a><a class='updateWorker' onclick='updateWorker("
+																+ ")' id=''><i class='glyphicon glyphicon-trash'></i>"
+																+ "</a><a class='updateWorker' onclick='updateWorker("
 																+ data
 																+ ")' />"
 																+ "</td></tr></tbody id='worker"
@@ -614,13 +600,13 @@ function addItem(i) {
 											+ "' onclick='caculateItem("
 											+ data
 											+ ")' ></a>"
-											+ "<a class='btn btn-danger btn-lg removeItem"
+											+ "<a title='delete' class='btn btn-danger btn-lg removeItem"
 											+ i
 											+ "'"
 											+ "onclick='removeItem("
 											+ data
-											+ ")' id='' style='float:right'>Remove&nbsp;"
-											+ "Item</a><a class='updateItem' onclick='updateItem("
+											+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
+											+ "</a><a class='updateItem' onclick='updateItem("
 											+ data + ")'/></td></tr>");
 					var select = "#desc" + data;
 					$(select).selectpicker('refresh');
@@ -728,12 +714,13 @@ function removeWorker(i) {
 			if (data == "0") {
 				$("#worker" + i).remove();
 				$("#remark" + i).remove();
+				caculateT();
 			} else {
 				swal("Server Error！");
 			}
 		}
 	});
-	caculateT();
+
 }
 // 计算worker hours和item的payable的计算结果
 function caculateTrigger(i) {
@@ -807,7 +794,7 @@ function caculateT(i) {
 		salaryT = parseFloat(salaryT);
 		salaryT = parseFloat(salaryV);
 		if (!isNaN(salaryT)) {
-			$(salaryTotal).val(salaryT);
+			$(salaryTotal).val(salaryT.toFixed(1));
 		}
 	}
 

@@ -750,7 +750,7 @@ public class InvoiceServiceImpl  implements InvoiceService {
 				} else if (param.get(j).equals("AmountpayblewithGST")) {
 					row.createCell(j).setCellValue(d1.format(Double.valueOf(in.getTotal()) * 1.07));
 				} else if (param.get(j).equals("id")) {
-					row.createCell(j).setCellValue(in.getType() + in.getId());
+					row.createCell(j).setCellValue(in.getType() + in.getNumber());
 				} else if (param.get(j).equals("createDate")) {
 					row.createCell(j).setCellValue(in.getCreateDate());
 				}else {

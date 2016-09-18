@@ -1,3 +1,4 @@
+
 window.onload = init;
 var x = 1;
 var pow=1;
@@ -17,6 +18,7 @@ function logout() {
 	})
 }
 function init() {
+	loadLeft();
 	$.ajax({
 		type : "POST",
 		url : "getPow.do",
@@ -26,11 +28,6 @@ function init() {
 		},
 		success : function(data) {
 			pow=data;
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#user").hide();
-				$("#register").hide();
-			}
 		}
 	});
 	$.ajax({
@@ -54,6 +51,8 @@ $(document)
 				function() {
 					// 添加client
 					$("#createClient").click(function() {
+						  $(this).attr("disabled","disabled");  
+						  $(this).html("waiting...");  
 						createClient();
 					});
 

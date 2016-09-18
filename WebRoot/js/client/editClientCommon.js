@@ -96,19 +96,19 @@ $(document)
 													}else{
 														status=resigned;
 													}
-													var leg="<td style='vertical-align:middle;'><a class='btn btn-danger  btn-lg' onclick='editRow("
-															+ data
-															+ ")' href='javascript:void(0)' id='editRow"
-															+ data
-															+ "'>"
-															+ "edit</a> <a class='btn btn-danger  btn-lg' onclick='removeRow("
-															+ data
-															+ ")' href='javascript:void(0)' id='removeRow"
-															+ data
-															+ "'>remove</a><a onclick='addKey("
-															+ data
-															+ ")' class='addKey' style='display:none'></td>"
-															+ "</tr>";
+													var leg ="<td style='vertical-align:middle;'><a title='edit' class='btn btn-primary  btn-lg' onclick='editRow("
+														+ data
+														+ ")' href='javascript:void(0)' id='editRow"
+														+ data
+														+ "'>"
+														+ "<i class='glyphicon glyphicon-edit'></i></a> <a  title='remove' class='btn btn-danger  btn-lg  remove' onclick='removeRow("
+														+ data
+														+ ")' href='javascript:void(0)' id='removeRow"
+														+ data
+														+ "'><i class='glyphicon glyphicon-trash'></i></a><a onclick='addKey("
+														+ data
+														+ ")' class='addKey' style='display:none'></td>"
+														+ "</tr>";
 													
 													var one=head+status+leg;
 													$(
@@ -288,19 +288,32 @@ function updateContactPerson() {
 						} else {
 							status = resigned;
 						}
-						var leg="<td style='vertical-align:middle;'><a class='btn btn-danger  btn-lg' onclick='editRow("
-												+ data
-												+ ")' href='javascript:void(0)' id='editRow"
-												+ data
-												+ "'>"
-												+ "edit</a> <a class='btn btn-danger  btn-lg' onclick='removeRow("
-												+ data
-												+ ")' href='javascript:void(0)' id='removeRow"
-												+ data
-												+ "'>remove</a><a onclick='addKey("
-												+ data
-												+ ")' class='addKey' style='display:none'></td>"
-												+ "</tr>";
+						if(pow!=1){
+							var leg ="<td style='vertical-align:middle;'><a title='edit' class='btn btn-primary  btn-lg' onclick='editRow("
+								+ data
+								+ ")' href='javascript:void(0)' id='editRow"
+								+ data
+								+ "'>"
+								+ "<i class='glyphicon glyphicon-edit'></i></a> <a  title='remove' class='btn btn-danger  btn-lg  remove' onclick='removeRow("
+								+ data
+								+ ")' href='javascript:void(0)' id='removeRow"
+								+ data
+								+ "'><i class='glyphicon glyphicon-trash'></i></a><a onclick='addKey("
+								+ data
+								+ ")' class='addKey' style='display:none'></td>"
+								+ "</tr>";
+						}else{
+							var leg="<td style='vertical-align:middle;'><a class='btn btn-danger  btn-lg' onclick='editRow("
+								+ data
+								+ ")' href='javascript:void(0)' id='editRow"
+								+ data
+								+ "'>"
+								+ "<i class='glyphicon glyphicon-edit'></i></a> <a onclick='addKey("
+								+ data
+								+ ")' class='addKey' style='display:none'></td>"
+								+ "</tr>";
+						}
+						
 						var one=head+status+leg;
 						$("#addContactPerson")
 						.append(one);

@@ -21,21 +21,7 @@ function logout(){
 	})
 }
 function init() {
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+	loadLeft();
 
 	$.ajax({
 		  type : "POST", 
@@ -52,7 +38,7 @@ function init() {
 						 +"</td><td>"
 						 +data[i].amount
 						 +"</td><td>"
-						 +data[i].time
+						 +data[i].time.substring(0,19)
 						 +"</td>";
 				  var body2;
 				  if(data[i].mode=="cheque"&&data[i].bank!=null&&data[i].number!=null){
@@ -230,7 +216,8 @@ $(document)
 																			+ "<td  style='vertical-align:middle;'>"
 																			+ "$<input readOnly='true'  type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='itemCost"
 																			+ data
-																			+ "'/></td><td></td>"
+																			+ "'/></td><td>$<input   type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='rowTotal"
+																			+ data+"'/></td>"
 																			+ "<td><a class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
 																			+ data
 																			+ ")' id='removeRow"
@@ -278,7 +265,7 @@ function caculateF() {
 	console.log(parseFloat( subTotal));
 //	console.log(subTotal);
 		if(!isNaN(subTotal)){	
-		$("#invoiceTotal").val((subTotal).toFixed(1));
+		$("#invoiceTotal").val( (numV * rateV).toFixed(1));
 		$("#subTotal").val((subTotal).toFixed(1));
 		$("#gst").val((subTotal * 0.07).toFixed(1));
 		$("#totalAmount").val((subTotal * 1.07).toFixed(1));
@@ -344,12 +331,13 @@ function showItem(){
 						+ "<td  style='vertical-align:middle;'>"
 						+ "$<input readOnly='true'  type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='itemCost"
 						+ data[i].id
-						+ "'/></td><td></td>"
+						+ "'/></td><td  style='vertical-align:middle;'>$<input  readOnly='true' type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='rowTotal"
+						+ data[i].id+"'/></td>"
 		                +"</tr>");
         	
         	$("#itemRate"+id).val(data[i].itemRate);
         	$("#itemCost"+id).val(data[i].itemCost);
-        	
+        	$("#rowTotal"+id).val(parseFloat(data[i].itemRate).toFixed(1));
         	
         
         	var select = "#itemName" + id;

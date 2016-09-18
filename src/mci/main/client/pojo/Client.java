@@ -28,192 +28,145 @@ public class Client implements Serializable {
     private String endDate;
     private String picName;
    //用于account分页的属性
-    public static int pageSize=10;
+    public static int pageSize=14;
     private int startIndex;
     private int pageIndex;
     //用于查询的属性
     
     private String type;
     public static String flag="1";
-    
-    
-   
-
-
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getCompanyName() {
+		return companyName;
+	}
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	public String getWebSite() {
+		return webSite;
+	}
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
+	}
+	public String getDays() {
+		return days;
+	}
+	public void setDays(String days) {
+		this.days = days;
+	}
+	public String getSize() {
+		return size;
+	}
+	public void setSize(String size) {
+		this.size = size;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	public String getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	public int getTotalPage() {
+		return totalPage;
+	}
+	public void setTotalPage(int totalPage) {
+		this.totalPage = totalPage;
+	}
+	public String getContactPerson() {
+		return contactPerson;
+	}
+	public void setContactPerson(String contactPerson) {
+		this.contactPerson = contactPerson;
+	}
+	public String getPic() {
+		return pic;
+	}
+	public void setPic(String pic) {
+		this.pic = pic;
+	}
+	public User getPicObject() {
+		return picObject;
+	}
+	public void setPicObject(User picObject) {
+		this.picObject = picObject;
+	}
+	public String getTrade() {
+		return trade;
+	}
+	public void setTrade(String trade) {
+		this.trade = trade;
+	}
+	public String getLastDate() {
+		return lastDate;
+	}
+	public void setLastDate(String lastDate) {
+		this.lastDate = lastDate;
+	}
 	public String getTerm() {
 		return term;
 	}
-
 	public void setTerm(String term) {
 		this.term = term;
 	}
-
-	public String getType() {
-		return type;
+	public String getStartDate() {
+		return startDate;
 	}
-
-	public void setType(String type) {
-		this.type = type;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
-
-	public static int getPageSize() {
-		return pageSize;
+	public String getEndDate() {
+		return endDate;
 	}
-
-	public static void setPageSize(int pageSize) {
-		Client.pageSize = pageSize;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
-
-	public int getPageIndex() {
-		return pageIndex;
+	public String getPicName() {
+		return picName;
 	}
-
-	public void setPageIndex(int pageIndex) {
-		this.pageIndex = pageIndex;
+	public void setPicName(String picName) {
+		this.picName = picName;
 	}
 
 	public int getStartIndex() {
 		return startIndex;
 	}
-
 	public void setStartIndex(int startIndex) {
 		this.startIndex = startIndex;
 	}
-
-	public String getPicName() {
-		return picName;
+	public int getPageIndex() {
+		return pageIndex;
 	}
-
-	public void setPicName(String picName) {
-		this.picName = picName;
+	public void setPageIndex(int pageIndex) {
+		this.pageIndex = pageIndex;
 	}
-
-	public String getStartDate() {
-		return startDate;
+	public String getType() {
+		return type;
 	}
-
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
+	public void setType(String type) {
+		this.type = type;
 	}
+    
+    
+   
 
-	public String getEndDate() {
-		return endDate;
-	}
 
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
 
-	public String getLastDate() {
-		return lastDate;
-	}
-
-	public void setLastDate(String lastDate) {
-		this.lastDate = lastDate;
-	}
-
-	public String getTrade() {
-		return trade;
-	}
-
-	public void setTrade(String trade) {
-		this.trade = trade;
-	}
-
-	public String getContactPerson() {
-		return contactPerson;
-	}
-
-	public void setContactPerson(String contactPerson) {
-		this.contactPerson = contactPerson;
-	}
-
-	public String getPic() {
-		return pic;
-	}
-
-	public void setPic(String pic) {
-		this.pic = pic;
-	}
-
-	public User getPicObject() {
-		return picObject;
-	}
-
-	public void setPicObject(User picObject) {
-		this.picObject = picObject;
-	}
-
-	public int getTotalPage() {
-		return totalPage;
-	}
-
-	public void setTotalPage(int totalPage) {
-		this.totalPage = totalPage;
-	}
-
-	public String getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(String createDate) {
-		this.createDate = createDate;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
-	public String getWebSite() {
-		return webSite;
-	}
-
-	public void setWebSite(String webSite) {
-		this.webSite = webSite;
-	}
-
-	public String getDays() {
-		return days;
-	}
-
-	public void setDays(String days) {
-		this.days = days;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
 
 }

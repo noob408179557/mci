@@ -1,4 +1,4 @@
-window.onload = init;
+
 
 var x = 0;
 
@@ -20,22 +20,7 @@ function logout(){
 		}
 	})
 }
-function init() {
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+function initInvoice() {
 	$.ajax({
 		type : "POST",
 		url : "getEditInvoice.do",
@@ -92,7 +77,7 @@ function init() {
 					swal("getCurrentUser.do error!");
 				},
 				success:function(data2){
-					if(data2.id!=data.pic){
+					if(data2.id!=data.pic&&pow!=3){
 						 $("#anotherPIC").attr({ disabled: "disabled" });
 					}
 				}
@@ -121,7 +106,11 @@ $(document)
 							dataType : "json",
 							data : {
 								total : $("#FSubTotal").val(),
-								pic2: $("#anotherPIC").val()
+								pic2: $("#anotherPIC").val(),
+								desc:$("#invoiceDesc").val(),
+								workerNum:$("#invoiceNum").val(),
+								billingRate:$("#invoiceRate").val(),
+								cost:$("#invoiceCost").val()
 							},
 							error : function(data) {
 								swal("请求失败~");
@@ -192,17 +181,21 @@ $(document)
 																				+ "<td  style='vertical-align:middle;'>"
 																				+ "$<input class='itemBillRate'   type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='itemRate"
 																				+ data
-																				+ "' onkeyup='caculateF("
+																				+ "' onkeyup='caculateF("+data
 																				+ ")'/></td>"
 																				+ "<td  style='vertical-align:middle;'>"
 																				+ "$<input   type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='itemCost"
 																				+ data
-																				+ "'/></td><td></td>"
-																				+ "<td><a class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
+																				+ "'/></td>"
+																				
+																				+ "<td  style='vertical-align:middle;'>"
+																				+ "$<input   type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='rowTotal"
+																				+ data+"'/></td>"
+																				+ "<td><a title='delete' class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
 																				+ data
 																				+ ")' id='removeRow"
 																				+ x
-																				+ "'>remove</a>"
+																				+ "'><i class='glyphicon glyphicon-trash'></i></a>"
 																				+ "<a class='addFKey' onclick='addFKey("
 																				+ data
 																				+ ")'/>"
@@ -213,9 +206,10 @@ $(document)
 														if (x != 1) {
 															hideLastRemove(x);
 														}
+														caculateF(data);
 													}
 												})
-												caculateF();
+											
 									})
 				})
 			
@@ -313,15 +307,32 @@ function removeRow(i) {
 		}
 	});
 }
+
 // 计算总价
-function caculateF() {
+//计算总价
+function caculateF(id) {
 	var subTotal = parseFloat(0);
 	
-	var $itemBillRateList=$(".itemBillRate");
-	for ( var j = 0; j < $itemBillRateList.length; j++) {
-			subTotal =subTotal+ parseFloat($itemBillRateList.eq(j).val());
-	
+//	var $itemBillRateList=$(".itemBillRate");
+//	for ( var j = 0; j < $itemBillRateList.length; j++) {
+//			subTotal =subTotal+ parseFloat($itemBillRateList.eq(j).val());
+//	
+//	}
+	if(!isNaN(parseFloat($("#itemRate"+id).val()).toFixed(1))){
+		$("#rowTotal"+id).val(parseFloat($("#itemRate"+id).val()).toFixed(1));
+	}else{
+		$("#rowTotal"+id).val("");
 	}
+	
+	var $rowList=$(".rowTotal");
+	for ( var j = 0; j < $rowList.length; j++) {
+		if(isNaN(parseFloat($rowList.eq(j).val()))){
+			continue;
+		}
+		subTotal =parseFloat(subTotal)+ parseFloat($rowList.eq(j).val());
+
+    }
+
 	
 	//计算invoice第一行的结果
 	var num = "#invoiceNum";
@@ -331,15 +342,19 @@ function caculateF() {
 	// 先按行从左到右计算
 	var numV =parseInt( $("#invoiceNum").val());
 	var rateV =parseFloat( $("#invoiceRate").val());
-	console.log("numV:"+numV+" rateV:"+rateV);
 	
 	
 	// 若行中无空值
-	subTotal=parseFloat( parseFloat(subTotal)+(numV * rateV));
-	console.log(parseFloat( subTotal));
-//	console.log(subTotal);
+	if((!isNaN(numV))&&(!isNaN(rateV))){
+		subTotal=parseFloat(parseFloat(subTotal)+(numV * rateV));
+		$("#invoiceTotal").val((numV * rateV).toFixed(1));
+	}else{
+		$("#invoiceTotal").val("");
+	}
+	console.log(parseFloat(subTotal));
+	
 		if(!isNaN(subTotal)){	
-		$("#invoiceTotal").val((subTotal).toFixed(1));
+	
 		$("#FSubTotal").val((subTotal).toFixed(1));
 		$("#gst").val((subTotal * 0.07).toFixed(1));
 		$("#totalAmount").val((subTotal * 1.07).toFixed(1));
@@ -400,17 +415,22 @@ function showItem(){
 						+ "<td  style='vertical-align:middle;'>"
 						+ "$<input class='itemBillRate'   type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='itemRate"
 						+ data[i].id
-						+ "' onkeyup='caculateF("
+						+ "' onkeyup='caculateF("+id
 						+ ")'/></td>"
 						+ "<td  style='vertical-align:middle;'>"
 						+ "$<input   type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='itemCost"
 						+ data[i].id
-						+ "'/></td><td></td>"
+						+ "'/></td>"
+						+ "<td  style='vertical-align:middle;'>"
+						+ "$<input class='rowTotal'   type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='rowTotal"
+						+ data[i].id
+						+ "' onkeyup='caculateF("+id
+						+ ")'/></td>"
 						+ "<td><a class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
 						+ data[i].id
 						+ ")' id='removeRow"
 						+ x
-						+ "'>remove</a>"
+						+ "'><i class='glyphicon glyphicon-trash'></i></a>"
 						+ "<a class='addFKey' onclick='addFKey("
 						+ data[i].id
 						+ ")'/>"
@@ -418,7 +438,8 @@ function showItem(){
 		                +"</tr>");
         	$("#itemRate"+id).val(data[i].itemRate);
         	$("#itemCost"+id).val(data[i].itemCost);
-        	caculateF();
+        	$("#itemTotal"+id).val(data[i].itemRate);
+        	caculateF(id);
         	
         	var descId = "itemName" + data[i].id;
 

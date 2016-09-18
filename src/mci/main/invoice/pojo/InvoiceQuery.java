@@ -8,7 +8,7 @@ public class InvoiceQuery implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Invoice invoice;
 	private int pageIndex;
-	private static int pageSize=10;
+	private static int pageSize=14;
 	private int startIndex;
 	private int totalPage;
 	private int totalCount;

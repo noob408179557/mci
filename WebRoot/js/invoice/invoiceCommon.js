@@ -79,8 +79,9 @@ function payit() {
 	if ($("#payMode1").val() == "cheque") {
 		if ($("#paymentNum").val() != "" && $("#bankName").val() != ""
 				&& $("#chequeNumber").val() != "") {
-			if($("#paymentNum").val()>$("#remainingAmount").val()){
+			if(parseFloat($("#paymentNum").val())>$("#remainingAmount").val()){
 				swal("You pay too much!");
+				return false;
 			}else{
 			$.ajax({
 				type : "POST",
@@ -107,8 +108,9 @@ function payit() {
 		}
 	} else if ($("#payMode1").val() == "creditNotes") {
 		if ($("#creditNumber").val() != "") {
-			if($("#creditNumber").val()>$("#remainingAmount").val()){
+			if(parseFloat($("#creditNumber").val())>$("#remainingAmount").val()){
 				swal("You pay too much!");
+				return false;
 			}else{
 			$.ajax({
 				type : "POST",
@@ -133,8 +135,9 @@ function payit() {
 		}
 	} else if ($("#payMode1").val() == "cash") {
 		if ($("#paymentNum").val() != "") {
-			if($("#paymentNum").val()>$("#remainingAmount").val()){
+			if(parseFloat($("#paymentNum").val())>$("#remainingAmount").val()){
 				swal("You pay too much!");
+				return false;
 			}else{
 			$.ajax({
 				type : "POST",
@@ -179,7 +182,7 @@ function getInvoiceHistoryResult(i) {
 					if (data.length != 0) {
 						$("#historyList").empty();
 						$("#invoiceHistory").val("");
-						$("#invoiceHistory").val(data[0].invoice);
+						$("#invoiceHistory").val(data[0].invoiceObject.type+data[0].invoiceObject.number);
 						for (var i = 0; i < data.length; i++) {
 							$("#historyList")
 									.append(
@@ -482,13 +485,7 @@ $(document)
 																				isConfirm) {
 																			if (isConfirm) {
 																				deleteInvoice();
-																				swal(
-																						"Deleted!",
-																						"Your client has been deleted.",
-																						"success");
-																				search($(
-																						"#pageIndex")
-																						.val());
+																				
 																			} else {
 																				swal(
 																						"Cancelled",
@@ -531,13 +528,7 @@ $(document)
 																									isConfirm) {
 																								if (isConfirm) {
 																									deleteInvoice();
-																									swal(
-																											"Deleted!",
-																											"Your client has been deleted.",
-																											"success");
-																									search($(
-																											"#pageIndex")
-																											.val());
+																									
 																								} else {
 																									swal(
 																											"Cancelled",
@@ -875,8 +866,8 @@ function deleteInvoice() {
 					swal("getPow  error!");
 				},
 				success : function(user) {
-					if (data.state == "1" || user.type == "3"
-							|| (user.type == "2" && data.state == "5")) {
+					if ((data.state == "1"&& user.type=="1")|| user.type == "3"
+							|| (user.type == "2" && (data.state == "5"||data.state=="1"))) {
 						$.ajax({
 							type : "POST",
 							url : "deleteInvoice.do",
@@ -889,17 +880,26 @@ function deleteInvoice() {
 								swal("deleteInvoice.do Error!!");
 							},
 							success : function(data) {
-								swal("Delete success!");
+								swal(
+										"Deleted!",
+										"Your invoice has been deleted.",
+										"success");
+								search($(
+										"#pageIndex")
+										.val());
 							}
 						});
-					} else {
+					}else{
 						swal("You can't delete this invoice!");
+						return false;
 					}
 				}
 			})
+			
 		}
+	
 	});
-
+	return true;
 }
 function getCommission(i) {
 	$("#totalAmount").val("");

@@ -118,21 +118,7 @@ function removeItemP(i){
 }
 
 function init(){
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+	loadLeft();
 
 	//获取invoice 的payHistory
 	$.ajax({
@@ -150,7 +136,7 @@ function init(){
 						 +"</td><td>"
 						 +data[i].amount
 						 +"</td><td>"
-						 +data[i].time
+						 +data[i].time.substring(0,19)
 						 +"</td>";
 				  var body2;
 				  if(data[i].mode=="cheque"&&data[i].bank!=null&&data[i].number!=null){

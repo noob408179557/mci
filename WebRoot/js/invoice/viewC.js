@@ -20,21 +20,7 @@ function logout(){
 	})
 }
 function init(){
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+	loadLeft();
 
 	$.ajax({
 		  type : "POST", 
@@ -51,7 +37,7 @@ function init(){
 						 +"</td><td>"
 						 +data[i].amount
 						 +"</td><td>"
-						 +data[i].time
+						 +data[i].time.substring(0,19)
 						 +"</td>";
 				  var body2;
 				  if(data[i].mode=="cheque"&&data[i].bank!=null&&data[i].number!=null){
@@ -183,7 +169,7 @@ function showWorker() {
 												+ data[i].id
 												+ "'/> " 
 												+ "</td></tr></table></td></tr>"
-												+ "<tr><td style='vertical-align:middle;text-align: center;'>"
+												+ "<tr style='height:55px'><td style='vertical-align:middle;text-align: center;'>"
 												+ "<strong><h4>"
 												+ "</h4> </strong></td>"
 												+ "<td style='vertical-align:middle;' colspan='2'>Salary</td>"
@@ -206,7 +192,7 @@ function showWorker() {
 												+ "' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateC("
 												+ data[i].id
 												+ ")' readOnly='true'/>"
-												+ "<a style='display:none' class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+												+ "<a style='display:none' class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 												+ data[i].id
 												+ "' onclick='addItem("
 												+ data[i].id
@@ -440,7 +426,7 @@ $(function() {
 																+ data
 																+ ")' readOnly='true'/>"
 																+ "</td>"
-																+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+																+ "<td width='300px'><a class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 																+ data
 																+ "' onclick='addItem("
 																+ data
@@ -668,7 +654,7 @@ function caculateC(i) {
 		salaryT = parseFloat(salaryT);
 		salaryT = parseFloat(salaryV);
 		if (!isNaN(salaryT)) {
-			$(salaryTotal).val(salaryT);
+			$(salaryTotal).val(salaryT.toFixed(1));
 		}
 	}
 

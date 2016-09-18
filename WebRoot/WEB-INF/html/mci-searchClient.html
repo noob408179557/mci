@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Coderthemes">
-<link rel="shortcut icon" href="assets/images/favicon_1.ico">
+<link rel="shortcut icon" href="assets/images/logo.png">
 <title>MCI-searchClient</title>
 <link href="assets/plugins/sweetalert/dist/sweetalert.css"
 	rel="stylesheet" type="text/css">
@@ -58,7 +58,7 @@
         <![endif]-->
 
 <script src="assets/js/modernizr.min.js"></script>
-
+<script src="js/system/loading.js"></script>
 </head>
 
 <body class="fixed-left">
@@ -91,34 +91,38 @@
 				<!--- Divider -->
 				<div id="sidebar-menu">
 					<ul>
-						<li style="background:#92cf5c"> <a id="currUser" style="cursor: pointer;">
+						<li style="background: #92cf5c" >  
+						         <a id="currUser" style="cursor: pointer;">
 						         <i class="glyphicon glyphicon-user"></i> </a>
 							<ul class="list-unstyled" style="display: none;">
-								<li><a href="mci-profile.do"><i class="ti-user m-r-5"></i>Profile</a></li>
+								<li><a href="mci-profile.do"><i class="ti-user m-r-5"></i>Profile</a>
+								</li>
 								<li><a href="#"><i class="ti-settings m-r-5"></i>Settings
 								</a>
 								</li>
-								<li><a style="cursor: pointer;" onclick="logout()"><i class="ti-power-off m-r-5"></i>Logout</a>
+								<li><a id="log_out" style="cursor: pointer;"
+									onclick="logout()"><i class="ti-power-off m-r-5"></i>Logout</a>
 								</li>
 							</ul>
 						</li>
-						<li class="" onclick="location.href='mci-dashboard.do'"><a
-							href="#" class="waves-effect"><font color="#fff"><i
+						<li class="" id="dashboard" onclick="location.href='mci-dashboard.do'" style="display: none;"><a
+							class="waves-effect"><font color="#fff"> <i
 									class="md md-remove-red-eye"></i><span>Dashboard 
-							</font></span> </a></li>
-						<li class="has_sub" onclick="location.href='mci-staffInvoice.do'"><a
+							</font></span> </a>
+						</li>
+						<li class="has_sub" style="display: none;" id="invoice" onclick="location.href='mci-staffInvoice.do'" style="display: none;"><a
 							class="waves-effect"><font color="#fff"><i
-									class="md md-event-note"></i> <span>Invoice 
-							</font> </span> </a></li>
-
-						<li class="has_sub" onclick="location.href='mci-staffClient.do'"><a
-							href="#" class="waves-effect"><font color="#fff"> <i
-									class="md md-people"></i>Client</font> </a></li>
-									<li class="has_sub"  id="register"><a class="waves-effect" onclick="location.href='mci-register.do'"> <font
-								color="#fff"><i class="glyphicon glyphicon-plus"></i> Register</font>
-						</a></li>
-						<li id="user" class="has_sub"  onclick="location.href='mci-user.do'"><a class="waves-effect"
-							> <font color="#fff"><i
+									class="md md-event-note"></i>Invoice</font> </a>
+						</li>
+						<li class="has_sub" id="client" style="display: none;"><a class="waves-effect active"> <font
+								color="#fff"><i class="md md-people"></i> Client</font> </a>
+						</li>
+						<li id="register"  class="has_sub" style="display: none;"><a class="waves-effect"
+							onclick="location.href='mci-register.do'"> <font color="#fff"><i
+									class="glyphicon glyphicon-plus"></i> Register</font> </a>
+						</li>
+						<li id="user" class="has_sub" style="display: none;"><a class="waves-effect"
+							onclick="location.href='mci-user.do'"> <font color="#fff"><i
 									class="glyphicon glyphicon-list-alt"></i>User</font> </a>
 						</li>
 					</ul>
@@ -145,50 +149,49 @@
 					<br>
 					<div class="row">
 						<div class="col-sm-12">
-							<div class="m-b-30">
-
-
-								<a href="mci-createClient.do" id="createClient">
+						<div class="m-b-30">
+								<a href="mci-createClient.do" id="createClient" style="display: none;">
 									<div class="btn btn-primary waves-effect waves-light btn-lg"
 										id="">
 										<i class="fa fa-plus"></i> Create Client
 									</div> </a>
 								<div class="btn btn-primary waves-effect waves-light btn-lg"
-									data-toggle="modal" id="edit">
+									data-toggle="modal" id="edit" style="display: none;">
 									<i class="glyphicon glyphicon-edit"></i> Edit
 								</div>
 								<div class="btn btn-primary waves-effect waves-light btn-lg"
-									data-toggle="modal" id="assign" onclick="getUser()">
+									data-toggle="modal" id="assign" onclick="getUser()" style="display: none;">
 									<i class="glyphicon glyphicon-random"></i> Assign
 								</div>
 								<div class="btn btn-primary waves-effect waves-light btn-lg"
-									data-toggle="modal" id="account" onclick="getAccount()">
+									data-toggle="modal" id="account" onclick="getAccount()" style="display: none;">
 									<i class="glyphicon glyphicon-list-alt"></i> Account
 								</div>
 								<div class="btn btn-primary waves-effect waves-light btn-lg"
-									data-toggle="modal" id="activeClient">
-									<i class="glyphicon glyphicon-list-alt"></i> Active
+									data-toggle="modal" id="activeClient" style="display: none;">
+									<i class="glyphicon glyphicon-star"></i> Active
 								</div>
 								<div class="btn btn-primary waves-effect waves-light btn-lg"
-									data-toggle="modal" id="blockClient">
-									<i class="glyphicon glyphicon-list-alt"></i>Inactive
+									data-toggle="modal" id="blockClient" style="display: none;">
+									<i class="glyphicon glyphicon-star-empty"></i>Inactive
 								</div>
 								<div class="btn btn-primary waves-effect waves-light btn-lg"
-									id="history">
-									<i class="glyphicon glyphicon-list-alt"></i> History
+									id="history" style="display: none;">
+									<i class="glyphicon glyphicon-align-justify"></i> History
 								</div>
 								<div class="btn btn-danger waves-effect waves-light btn-lg"
-									data-toggle="modal" id="delete">
+									data-toggle="modal" id="delete" style="display: none;">
 									<i class="    md-cancel    "></i> Delete
 								</div>
 								<div class="btn btn-warning waves-effect waves-light btn-lg"
-									id="searchbtn">
+									id="searchbtn" style="display: none;">
 									<i class="glyphicon glyphicon-search"></i> Search
 								</div>
-								<div class="btn btn-warning waves-effect waves-light btn-lg"
-									id="searchbtn" style="float:right">
+								<!-- <div class="btn btn-warning waves-effect waves-light btn-lg"
+									id="searchbtn" style="float: right">
 									<i class="glyphicon glyphicon-question-sign"></i> Help
-								</div>
+								</div> -->
+								
 							</div>
 						</div>
 					</div>

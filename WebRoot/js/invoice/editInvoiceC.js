@@ -1,4 +1,4 @@
-window.onload = init;
+
 var x = 1;
 // var flag="1";
 // 页面加载完毕后执行init
@@ -19,22 +19,8 @@ function logout(){
 		}
 	})
 }
-function init() {
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+function initInvoice() {
+	
 	$.ajax({
 		type : "POST",
 		url : "getEditInvoice.do",
@@ -95,7 +81,7 @@ function init() {
 					swal("getCurrentUser.do error!");
 				},
 				success : function(data2) {
-					if (data2.id != data.pic) {
+					if (data2.id != data.pic&&pow!=3) {
 						$("#anotherPIC").attr({
 							disabled : "disabled"
 						});
@@ -151,28 +137,6 @@ function showWorker() {
 												+ data[i].id
 												+ "' type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;'  />"
 												+ "</td></tr>"
-												// + "<tr><td><strong>Employee"
-												// +
-												// "Account&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong></td>"
-												// + "<td><input id='employee"
-												// + data[i].id
-												// + "' type='text'
-												// style='width:80%;
-												// border-top:0px
-												// ;border-left:0px;border-right:0px;'
-												// />"
-												// +
-												// "</td></tr><tr><td><strong>Employer"
-												// +
-												// "Account&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong></td>"
-												// + "<td><input id='employer"
-												// + data[i].id
-												// + "' type='text'
-												// style='width:80%;
-												// border-top:0px
-												// ;border-left:0px;border-right:0px;'
-												// />"
-												// + "</td></tr>"
 												+ "<tr><td><strong>DOB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong>"
 												+ "</td><td>"
 												+ " <input type='text' class='form-control ' placeholder='mm/dd/yyyy' id='dob"
@@ -203,14 +167,14 @@ function showWorker() {
 												+ data[i].id
 												+ ")' readOnly='true'/>"
 												+ "</td>"
-												+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+												+ "<td width='300px'><a  class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 												+ data[i].id
 												+ "' onclick='addItem("
 												+ data[i].id
-												+ ")'> Add Item </a>&nbsp;<a class='btn btn-danger btn-lg' onclick='removeWorker("
+												+ ")'> Add Item </a>&nbsp;<a title='delete' style='float:right' class='btn btn-danger btn-lg' onclick='removeWorker("
 												+ data[i].id
-												+ ")' id=''>Remove"
-												+ "&nbsp;Worker</a><a class='updateWorker' onclick='updateWorker("
+												+ ")' id=''><i class='glyphicon glyphicon-trash'></i>"
+												+ "</a><a style='float:right' class='updateWorker' onclick='updateWorker("
 												+ data[i].id
 												+ ")' />"
 												+ "</td></tr></tbody id='worker"
@@ -298,7 +262,7 @@ function showWorker() {
 																	+ "<option value='PaidMedicalLeave'>Paid Medical Leave</option>"
 																	+ "<option value='PaidChildcareLeave'>Paid Childcare Leave</option>"
 																	+ "<option value='LessMidMonthSalary'>Less: Mid Month Salary</option>"
-																	+ "</select></div></td style='vertical-align:middle;'><td>$<input  "
+																	+ "</select></div></td style='vertical-align:middle;'><td style='vertical-align:middle;'>$<input  "
 																	+ "id='itemAmountPayable"
 																	+ data[j].id
 																	+ "' onkeyup='caculateC("
@@ -314,13 +278,13 @@ function showWorker() {
 																	+ "id='itemTotalAmount"
 																	+ data[j].id
 																	+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' readOnly='true'/>"
-																	+ "</td><td><a class='btn btn-danger btn-lg removeItem"
+																	+ "</td><td style='vertical-align:middle;'><a title='delete' class='btn btn-danger btn-lg removeItem"
 																	+ j
 																	+ "'"
 																	+ "onclick='removeItem("
 																	+ data[j].id
-																	+ ")' id='' style='float:right'>Remove&nbsp;"
-																	+ "Item</a><a class='updateItem' onclick='updateItem("
+																	+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
+																	+ "</a><a class='updateItem' onclick='updateItem("
 																	+ data[j].id
 																	+ ")'/></td></tr>");
 											var descId = "desc" + data[j].id;
@@ -444,14 +408,14 @@ $(function() {
 																+ data
 																+ ")' readOnly='true'/>"
 																+ "</td>"
-																+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+																+ "<td width='300px'><a style='float:right' class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 																+ data
 																+ "' onclick='addItem("
 																+ data
-																+ ")'> Add Item </a>&nbsp;<a class='btn btn-danger btn-lg' onclick='removeWorker("
+																+ ")'> Add Item </a>&nbsp;<a title='delete' style='float:right' class='btn btn-danger btn-lg' onclick='removeWorker("
 																+ data
-																+ ")' id=''>Remove"
-																+ "&nbsp;Worker</a><a class='updateWorker' onclick='updateWorker("
+																+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
+																+ "</a><a style='float:right'  class='updateWorker'  onclick='updateWorker("
 																+ data
 																+ ")' />"
 																+ "</td></tr></tbody id='worker"
@@ -499,7 +463,7 @@ function addItem(i) {
 											+ data
 											+ "'>"
 											+ "<td></td>"
-											+ "<td colspan=2'>"
+											+ "<td colspan=2' style='vertical-align:middle;'>"
 											+ "<div style='padding-left:0px;width:254px'>"
 											+ "<select class='selectpicker' data-style='btn-white'  id='desc"
 											+ data
@@ -537,7 +501,7 @@ function addItem(i) {
 											+ "<option value='Paid Medical Leave'>Paid Medical Leave</option>"
 											+ "<option value='Paid Childcare Leave'>Paid Childcare Leave</option>"
 											+ "<option value='Less: Mid Month Salary'>Less: Mid Month Salary</option>"
-											+ "</select></div></td><td>$<input "
+											+ "</select></div></td><td style='vertical-align:middle;'>$<input "
 											+ "id='itemAmountPayable"
 											+ data
 											+ "' onkeyup='caculateC("
@@ -553,13 +517,13 @@ function addItem(i) {
 											+ "id='itemTotalAmount"
 											+ data
 											+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' readOnly='true'/>"
-											+ "</td><td><a class='btn btn-danger btn-lg removeItem"
+											+ "</td><td><a  title='delete' class='btn btn-danger btn-lg removeItem"
 											+ i
 											+ "'"
 											+ "onclick='removeItem("
 											+ data
-											+ ")' id='' style='float:right'>Remove&nbsp;"
-											+ "Item</a><a class='updateItem' onclick='updateItem("
+											+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
+											+ "</a><a class='updateItem' onclick='updateItem("
 											+ data + ")'/></td></tr>");
 					var select = "#desc" + data;
 					$(select).selectpicker('refresh');

@@ -51,6 +51,7 @@
 		<association property="invoiceObject" javaType="mci.main.invoice.pojo.Invoice">
 			<id property="id" column="id" />
 			<result property="type" column="type" />
+			<result property="number" column="number"/>
 		</association>
 	</resultMap>
 	<sql id="QueryInvoice">
@@ -246,8 +247,7 @@
 		select * from mci_invoice i,mci_user u,mci_user u1 where i.`id`=#{id} 
 <!-- 		and i.`pic`=u.`id` and i.`pic2`=u1.`id` -->
  	</select>
-	<select id="loadInvoiceCount" parameterType="invoiceQuery"
-		resultType="int">
+	<select id="loadInvoiceCount" parameterType="invoiceQuery"	resultType="int">
 		select count(*) from
 		mci_invoice i where i.`id`!='0'
 		<include refid="invoiceQ"></include>

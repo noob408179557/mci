@@ -1,4 +1,4 @@
-window.onload=init; 
+
 function testSite(id, name) {
 	this.id = id;
 	this.name = name;
@@ -83,9 +83,9 @@ $(function() {
 						+ data
 						+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateP()'  class='payable'/>"
 						+ "</td>"
-						+ "<td><a class='btn btn-danger btn-lg'  onclick='removeRow("
+						+ "<td><a title='delete' class='btn btn-danger btn-lg'  onclick='removeRow("
 						+ data + ")' href='javascript:void(0)' id='removeRow"
-						+ x + "'>remove</a> <a class='addPKey' onclick='addPKey("+data+")'/></td></tr>");
+						+ x + "'><i class='glyphicon glyphicon-trash'></i></a> <a class='addPKey' onclick='addPKey("+data+")'/></td></tr>");
 			  var date="#date"+data;
 			  $(date).datepicker("refresh");
 			if(x !=1){
@@ -127,7 +127,7 @@ function removeItemP(i){
 	});
 }
 
-function init(){
+function initInvoice(){
 	$.ajax({
 		type : "POST",
 		url : "getPow.do",
@@ -136,7 +136,6 @@ function init(){
 			alert("请求失败~");
 		},
 		success : function(data) {
-			$("#currUser").append(data.realName);
 			if (data.type == 1) {
 				$("#register").hide();
 				$("#user").hide();
@@ -209,7 +208,7 @@ function init(){
 				swal("getCurrentUser.do error!");
 			},
 			success:function(data2){
-				if(data2.id!=data.pic){
+				if(data2.id!=data.pic&&pow!=3){
 					 $("#anotherPIC").attr({ disabled: "disabled" });
 				}
 			}
@@ -250,7 +249,7 @@ function showItem(){
 						+ data[i].id
 						+ ")' href='javascript:void(0)' id='removeRow"
 						+ x 
-						+ "'>remove</a> <a class='addPKey' onclick='addPKey("
+						+ "'><i class='glyphicon glyphicon-trash'></i></a> <a class='addPKey' onclick='addPKey("
 						+id
 						+")'/></td></tr>");
         	$("#date"+id).val(data[i].date);
@@ -272,13 +271,19 @@ function caculateP(){
 	 var subTotal=0;
 	 subTotal= parseFloat(subTotal);
 	 for(var j=0;j<$list.length;j++){
-	    	if($list.eq(j).val()!=""||$list.eq(j).val()!="0"){
-	    	subTotal+= parseFloat($list.eq(j).val());
-	    	}
+		 if(!isNaN(parseFloat($list.eq(j).val()))){
+				if($list.eq(j).val()!=""||$list.eq(j).val()!="0"){
+			    	subTotal+= parseFloat($list.eq(j).val());
+			    	}
+		 }else{
+			 continue;
+		 }
+	    
 	    }
 	  $("#PSubTotal").val((subTotal).toFixed(1));
 	    $("#gst").val((subTotal*0.07).toFixed(1));
 	    $("#totalAmount").val((subTotal*1.07).toFixed(1));
+	    $("#totalAmount").input.refresh();
 }
 //为invoice中item添加外键
 function addPKey(i){

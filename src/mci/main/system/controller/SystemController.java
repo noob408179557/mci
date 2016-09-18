@@ -37,7 +37,8 @@ public class SystemController {
 		if(!invoice.getState().equals("1")){
 			return "1";
 		}
-		systemServiceImpl.sendCustomMail(content,id);
+		String mess="Invoice of number "+invoice.getType()+invoice.getNumber()+" is activated,active information :"+content;
+		systemServiceImpl.sendCustomMail(mess,id);
 		invoiceServiceImpl.activeInvoice(invoice);
 		return  "0";
 	}

@@ -20,21 +20,7 @@ function logout(){
 	})
 }
 function init() {
-	$.ajax({
-		type : "POST",
-		url : "getPow.do",
-		dataType : "json",
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			$("#currUser").append(data.realName);
-			if (data.type == 1) {
-				$("#register").hide();
-				$("#user").hide();
-			}
-		}
-	});
+	loadLeft();
 
 	$.ajax({
 		type : "POST",
@@ -192,14 +178,14 @@ $(function() {
 																+ data
 																+ ")' readOnly='true'/>"
 																+ "</td>"
-																+ "<td width='300px'><a class='btn btn-info waves-effect waves-light btn-lg' id='addItem"
+																+ "<td width='300px'><a class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 																+ data
 																+ "' onclick='addItem("
 																+ data
-																+ ")'> Add Item </a>&nbsp;<a class='btn btn-danger btn-lg' onclick='removeWorker("
+																+ ")'> Add Item </a>&nbsp;<a style='float:right' title='delete' class='btn btn-danger btn-lg' onclick='removeWorker("
 																+ data
-																+ ")' id=''>Remove"
-																+ "&nbsp;Worker</a><a class='updateWorker' onclick='updateWorker("
+																+ ")' id=''><i class='glyphicon glyphicon-trash'></i>"
+																+ "</a><a class='updateWorker' onclick='updateWorker("
 																+ data
 																+ ")' />"
 																+ "</td></tr></tbody id='worker"
@@ -243,14 +229,13 @@ function addItem(i) {
 					// 给worker加item
 					var worker = "#worker" + i;
 					$(worker)
-							.append(
-									"<tr style='height:55px' id='item"
+							.append("<tr style='height:55px' id='item"
 											+ data
 											+ "'>"
 											+ "<td></td>"
-											+ "<td colspan=2'>"
-											+ "<div style='padding-left:0px;width:254px;height:100px'>"
-											+ "<select class='selectpicker' data-live-search='true' data-style='btn-white'  id='desc"
+											+ "<td colspan=2' style='vertical-align:middle;'>"
+											+ "<div style='padding-left:0px;width:254px'>"
+											+ "<select class='selectpicker' data-style='btn-white'  id='desc"
 											+ data
 											+ "'>"
 											+ "<option value='Overtimes10X'>Overtimes 1.0X</option>"
@@ -302,13 +287,13 @@ function addItem(i) {
 											+ "id='itemTotalAmount"
 											+ data
 											+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' readOnly='true'/>"
-											+ "</td><td><a class='btn btn-danger btn-lg removeItem"
+											+ "</td><td><a  title='delete' class='btn btn-danger btn-lg removeItem"
 											+ i
 											+ "'"
 											+ "onclick='removeItem("
 											+ data
-											+ ")' id='' style='float:right'>Remove&nbsp;"
-											+ "Item</a><a class='updateItem' onclick='updateItem("
+											+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
+											+ "</a><a class='updateItem' onclick='updateItem("
 											+ data + ")'/></td></tr>");
 					var select = "#desc" + data;
 					$(select).selectpicker('refresh');

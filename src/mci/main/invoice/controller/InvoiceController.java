@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +36,7 @@ import mci.main.invoice.pojo.WorkerC;
 import mci.main.invoice.service.InvoiceService;
 import mci.main.system.SystemConstant;
 import mci.main.user.pojo.User;
+import mci.main.user.service.UserService;
 
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
@@ -56,6 +58,9 @@ public class InvoiceController {
 	private InvoiceService invoiceServiceImpl;
 	@Autowired
 	private ClientService clientServiceImpl;
+	
+	@Autowired
+	private UserService userServiceImpl;
 	
 	@ResponseBody
 	@RequestMapping(value = "deleteXls", method = RequestMethod.POST)
@@ -391,13 +396,15 @@ public class InvoiceController {
 	public String updateInvoiceC(Invoice invoice, HttpSession session) {
 		try {
 			Invoice in1 = (Invoice) (session.getAttribute("editInvoiceId"));
-			in1.setResidual(invoice.getTotal());
+			NumberFormat nf=new DecimalFormat("0.0");
+			in1.setResidual(String.valueOf(nf.format(Double.valueOf(invoice.getTotal())*1.07)));
 			in1.setTotal(invoice.getTotal());
 			in1.setType("C");
+			in1.setPic2(invoice.getPic2());
+			in1.setPic2Object(userServiceImpl.getaUser(invoice.getPic2()));
 //			SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 //			Date date = new Date();
 //			in1.setLastdate(format2.format(date));
-			in1.setResidual(invoice.getTotal());
 			//
 //			SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 //			Date create =format2.parse(in1.getCreateDate());
@@ -958,14 +965,22 @@ public class InvoiceController {
 		try {
 			Invoice in = (Invoice) session.getAttribute("editInvoiceId");
 			invoice.setId(in.getId());
-			invoice.setResidual(invoice.getTotal());
+			NumberFormat nf=new DecimalFormat("0.0");
+			in.setResidual(String.valueOf(nf.format(Double.valueOf(invoice.getTotal())*1.07)));
+			in.setPic2(invoice.getPic2());
+			in.setPic2Object(userServiceImpl.getaUser(invoice.getPic2()));
+			in.setTotal(invoice.getTotal());
+			in.setWorkerNum(invoice.getWorkerNum());
+			in.setBillingRate(invoice.getBillingRate());
+			in.setDesc(invoice.getDesc());
+			in.setCost(invoice.getCost());
 			//
 			SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 			Date create =format2.parse(in.getCreateDate());
 			String create1 =format1.format(create);
-			in.setCreateDate(create1);
-			invoiceServiceImpl.updateInvoice(invoice);
+//			in.setCreateDate(create1);
+			invoiceServiceImpl.updateInvoice(in);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "1";
@@ -1063,12 +1078,12 @@ public class InvoiceController {
 	public String updateInvoiceT(Invoice invoice, HttpSession session) {
 		try {
 			Invoice in1 = (Invoice) (session.getAttribute("editInvoiceId"));
-			in1.setResidual(invoice.getTotal());
+			NumberFormat nf=new DecimalFormat("0.0");
+			in1.setResidual(String.valueOf(nf.format(Double.valueOf(invoice.getTotal())*1.07)));
 			in1.setTotal(invoice.getTotal());
 			SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = new Date();
 			in1.setLastdate(format2.format(date));
-			in1.setResidual(invoice.getTotal());
 			//
 			SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 			Date create =format2.parse(in1.getCreateDate());
