@@ -55,6 +55,7 @@ function init() {
 								"<option value='" + data[i].id + "'>"
 										+ data[i].realName + "</option>");
 					}
+					$("#anotherPIC").selectpicker("refresh");
 				}
 			})
 	$.ajax({

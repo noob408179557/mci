@@ -235,7 +235,7 @@
 						</div>
 						<div class="col-md-10" style="float:right">
 							<div class=" btn btn-warning waves-effect waves-light  btn-lg"
-								id="search" align="center" style="float:right">
+								id="search" align="center" style="float:right;margin-bottom: 5px;">
 								<i class="glyphicon glyphicon-search"></i> Go
 							</div>
 						</div>
@@ -468,7 +468,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="account1" class="modal fade bs-example-modal-lg" tabindex="-1"
+<div id="account1" class="modal fade bs-example-modal-lg" tabindex="-1"
 		role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
 		style="display: none;">
 		<div class="modal-dialog modal-lg">
@@ -485,20 +485,34 @@
 					<table class="table table-bordered table-hover">
 						<tbody>
 							<tr bgcolor="#F5F5F5">
-								<td style='text-align:left;vertical-align : middle; '></td>
-								<td style='text-align:left;vertical-align : middle; '>
+								<td style='text-align: left; vertical-align: middle;'
+									width="100" style="table-layout:fixed;"></td>
+										<td style='text-align: left; vertical-align: middle;'
+									width="128px">
+									<h4>
+										<strong>Invoice Number</strong>
+									</h4></td>
+								<td style='text-align: left; vertical-align: middle;'
+									width="128px">
 									<h4>
 										<strong>Client</strong>
 									</h4></td>
-								<td style='text-align:left;vertical-align : middle; '>
+								<td style='text-align: left; vertical-align: middle;'
+									width="100px">
 									<h4>
 										<strong>Amount</strong>
 									</h4></td>
-								<td style='text-align:left;vertical-align : middle; '>
+								<td style='text-align: left; vertical-align: middle;'
+									width="200px">
 									<h4>
 										<strong>Remark</strong>
 									</h4></td>
-								<td style='text-align:left;vertical-align : middle; '>
+								<td style='text-align: left; vertical-align: middle;'
+									width="110px">
+									<h4>
+										<strong>State</strong>
+									</h4></td>
+								<td style='text-align: left; vertical-align: middle;'>
 									<h4>
 										<strong>Date</strong>
 									</h4></td>
@@ -528,8 +542,8 @@
 							data-toggle="modal" id="lastAccount">
 							<i class="glyphicon glyphicon-fast-forward"></i>
 						</div>
-						<input id="accountPageIndex" value="1" style="display:none" />
-						<div style="float:right"
+						<input id="accountPageIndex" value="1" style="display: none" />
+						<div style="float: right"
 							class="btn btn-danger waves-effect waves-light save btn-lg"
 							id="closeAccount" data-dismiss="modal">close</div>
 					</div>

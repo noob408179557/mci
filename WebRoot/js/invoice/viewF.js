@@ -337,7 +337,12 @@ function showItem(){
         	
         	$("#itemRate"+id).val(data[i].itemRate);
         	$("#itemCost"+id).val(data[i].itemCost);
-        	$("#rowTotal"+id).val(parseFloat(data[i].itemRate).toFixed(1));
+        	if(data[i].itemRate==""||isNaN(data[i].itemRate)){
+        		$("#rowTotal"+id).val("");
+        	}else{
+        		$("#rowTotal"+id).val(parseFloat(data[i].itemRate).toFixed(1));
+        	}
+        	
         	
         
         	var select = "#itemName" + id;

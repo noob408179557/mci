@@ -44,7 +44,7 @@ function init() {
 			$("#companyName").val(data.clientObject.companyName);
 			$("#subTotal").val(data.total);
 			$("#gst").val((data.total * 0.07).toFixed(1));
-			$("#totalAmount").val((data.total * 1.07).toFixed(1));
+			$("#totalAmount").val(($("#subTotal").val() * 1.07).toFixed(1));
 			$("#invoiceTotal").val(data.total);
 			$.ajax({
 				type:"POST",
@@ -66,7 +66,6 @@ function init() {
 				}
 				})
 			showItem();
-			caculateF();
 		}
 	});
 	
@@ -99,6 +98,9 @@ function showItem() {
 						if(data[j].itemCost===null|| data[j].itemCost==""){
 							 data[j].itemCost=0;
 						}
+						if(data[j].itemRate==""||isNaN(data[j].itemRate)){
+							data[j].itemRate=0;
+						}
 						$("#itemList")
 								.append(
 										 "<tr id='row"+id+"' style='height:55px'>"
@@ -115,7 +117,7 @@ function showItem() {
 											+ "</td>"
 											+ "<td  style='vertical-align:middle;'>"
 											+ "$"
-											+ data[j].itemRate
+											+ parseFloat(data[j].itemRate).toFixed(1)
 											+ "</td>"
 							                +"</tr>");
 						
@@ -137,7 +139,6 @@ function showItem() {
 //								$("#itemName"+id).selectpicker("refresh");
 //							}
 //						}
-			        	caculateF();
 					}
 				}
 			});

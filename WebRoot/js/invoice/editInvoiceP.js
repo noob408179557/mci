@@ -46,7 +46,7 @@ $(function() {
 				dataType : "json",
 				async:false,
 				data : {
-					total : $("#totalAmount").val(),
+					total : $("#PSubTotal").val(),
 					pic2: $("#anotherPIC").val()
 				},
 				error : function(data) {
@@ -83,7 +83,7 @@ $(function() {
 						+ data
 						+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateP()'  class='payable'/>"
 						+ "</td>"
-						+ "<td><a title='delete' class='btn btn-danger btn-lg'  onclick='removeRow("
+						+ "<td><a title='delete' style='float:right' class='btn btn-danger btn-lg'  onclick='removeRow("
 						+ data + ")' href='javascript:void(0)' id='removeRow"
 						+ x + "'><i class='glyphicon glyphicon-trash'></i></a> <a class='addPKey' onclick='addPKey("+data+")'/></td></tr>");
 			  var date="#date"+data;
@@ -197,6 +197,7 @@ function initInvoice(){
 					$("#anotherPIC").append("<option  value='"+data1[i].id+"'>"+data1[i].realName+"</option>");
 				}
 				}
+				$("#anotherPIC").selectpicker("refresh");
 			}
 			})
 		// 决定选中哪个pic,是否锁定状态
@@ -245,7 +246,7 @@ function showItem(){
 						+ data[i].id
 						+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateP()'  class='payable'/>"
 						+ "</td>"
-						+ "<td><a class='btn btn-danger btn-lg'  onclick='removeRow("
+						+ "<td><a class='btn btn-danger btn-lg' style='float:right' onclick='removeRow("
 						+ data[i].id
 						+ ")' href='javascript:void(0)' id='removeRow"
 						+ x 
@@ -283,7 +284,6 @@ function caculateP(){
 	  $("#PSubTotal").val((subTotal).toFixed(1));
 	    $("#gst").val((subTotal*0.07).toFixed(1));
 	    $("#totalAmount").val((subTotal*1.07).toFixed(1));
-	    $("#totalAmount").input.refresh();
 }
 //为invoice中item添加外键
 function addPKey(i){

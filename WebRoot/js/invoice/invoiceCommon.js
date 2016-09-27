@@ -250,6 +250,13 @@ function getInvoiceHistoryResult(i) {
 $(document)
 		.ready(
 				function() {
+					$(document).keypress(function(e) {
+						if (e.which == 13) {
+							if($("#search").is(":visible")){
+							$("#search").trigger("click");
+						}}
+					});
+					
 					$("#detail")
 							.click(
 									function() {
@@ -468,82 +475,53 @@ $(document)
 															alert("请求失败~");
 														},
 														success : function(data) {
-															if (data.type != "1") {
-																swal(
-																		{
-																			title : "Are you sure?",
-																			text : "You will not be able to recover this client!",
-																			type : "warning",
-																			showCancelButton : true,
-																			confirmButtonColor : "#DD6B55",
-																			confirmButtonText : "Yes, delete it!",
-																			cancelButtonText : "No,cancel it!",
-																			closeOnConfirm : false,
-																			closeOnCancel : false
-																		},
-																		function(
-																				isConfirm) {
-																			if (isConfirm) {
-																				deleteInvoice();
-																				
-																			} else {
-																				swal(
-																						"Cancelled",
-																						"Your invoice still there.",
-																						"error");
-																			}
-																		});
-															} else if (data.type == "1") {
-																$
-																		.ajax({
-																			type : "POST",
-																			url : "getaInvoice.do",
-																			dataType : "json",
-																			async : false,
-																			data : {
-																				id : $(
-																						"input[name='select']:checked")
-																						.val()
-																			},
-																			error : function(
-																					data) {
-																				alert("请求失败~");
-																			},
-																			success : function(
-																					data) {
-																				if (data.state == "1") {
-																					swal(
-																							{
-																								title : "Are you sure?",
-																								text : "You will not be able to recover this client!",
-																								type : "warning",
-																								showCancelButton : true,
-																								confirmButtonColor : "#DD6B55",
-																								confirmButtonText : "Yes, delete it!",
-																								cancelButtonText : "No,cancel it!",
-																								closeOnConfirm : false,
-																								closeOnCancel : false
-																							},
-																							function(
-																									isConfirm) {
-																								if (isConfirm) {
-																									deleteInvoice();
-																									
-																								} else {
-																									swal(
-																											"Cancelled",
-																											"Your invoice still there.",
-																											"error");
-																								}
-																							});
-																				} else {
-																					swal("You just can delete the invoice in created status.");
-																				}
-																			}
-																		});
-															} else {
-																swal("error!");
-															}
+															$.ajax({
+																type : "POST",
+																url : "getaInvoice.do",
+																dataType : "json",
+																async : false,
+																data : {
+																	id : $(
+																			"input[name='select']:checked")
+																			.val()
+																},
+																error : function(
+																		data) {
+																	alert("请求失败~");
+																},
+																success : function(invoice) {
+																	if ((invoice.state == "1"&&data.type=="1")||data.type=="3"||
+																			(data.type=="2"&&(invoice.state=="1"||invoice.state=="5"))) {
+																		swal(
+																				{
+																					title : "Are you sure?",
+																					text : "You will not be able to recover this client!",
+																					type : "warning",
+																					showCancelButton : true,
+																					confirmButtonColor : "#DD6B55",
+																					confirmButtonText : "Yes, delete it!",
+																					cancelButtonText : "No,cancel it!",
+																					closeOnConfirm : false,
+																					closeOnCancel : false
+																				},
+																				function(
+																						isConfirm) {
+																					if (isConfirm) {
+																						deleteInvoice();
+																						
+																					} else {
+																						swal(
+																								"Cancelled",
+																								"Your invoice still there.",
+																								"error");
+																					}
+																				});
+																	} else {
+																		swal("You just can delete the invoice in current status.");
+																	}
+																}
+															});
+															
 														}
 													})
 
@@ -560,7 +538,7 @@ $(document)
 													url : "setInvoiceLimit.do",
 													dataType : "json",
 													data : {
-														id : $(
+														number : $(
 																"#searchInvoiceNo")
 																.val(),
 														pic : $(
@@ -592,7 +570,7 @@ $(document)
 																		url : "searchInvoice.do",
 																		dataType : "json",
 																		data : {
-																			id : $(
+																			number : $(
 																					"#searchInvoiceNo")
 																					.val(),
 																			pic : $(

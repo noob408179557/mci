@@ -400,8 +400,14 @@ public class InvoiceController {
 			in1.setResidual(String.valueOf(nf.format(Double.valueOf(invoice.getTotal())*1.07)));
 			in1.setTotal(invoice.getTotal());
 			in1.setType("C");
-			in1.setPic2(invoice.getPic2());
-			in1.setPic2Object(userServiceImpl.getaUser(invoice.getPic2()));
+			if(invoice.getPic2().equals("")){
+				in1.setPic2(null);
+				in1.setPic2Object(null);
+			}else{
+				in1.setPic2(invoice.getPic2());
+				in1.setPic2Object(userServiceImpl.getaUser(invoice.getPic2()));
+			}
+			
 //			SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 //			Date date = new Date();
 //			in1.setLastdate(format2.format(date));
@@ -967,8 +973,13 @@ public class InvoiceController {
 			invoice.setId(in.getId());
 			NumberFormat nf=new DecimalFormat("0.0");
 			in.setResidual(String.valueOf(nf.format(Double.valueOf(invoice.getTotal())*1.07)));
-			in.setPic2(invoice.getPic2());
-			in.setPic2Object(userServiceImpl.getaUser(invoice.getPic2()));
+			if(invoice.getPic2().equals("")){
+				in.setPic2(null);
+				in.setPic2Object(null);
+			}else{
+				in.setPic2(invoice.getPic2());
+				in.setPic2Object(userServiceImpl.getaUser(invoice.getPic2()));
+			}
 			in.setTotal(invoice.getTotal());
 			in.setWorkerNum(invoice.getWorkerNum());
 			in.setBillingRate(invoice.getBillingRate());
@@ -1089,8 +1100,15 @@ public class InvoiceController {
 			Date create =format2.parse(in1.getCreateDate());
 			String create1 =format1.format(create);
 			in1.setCreateDate(create1);
+			if(invoice.getPic2().equals("")){
+				in1.setPic2(null);
+				in1.setPic2Object(null);
+			}else{
+				in1.setPic2(invoice.getPic2());
+				in1.setPic2Object(userServiceImpl.getaUser(invoice.getPic2()));
+			}
 			invoiceServiceImpl.updateInvoice(in1);
-
+            
 			InvoiceHistory ih = new InvoiceHistory();
 			User user = (User) session.getAttribute("user");
 			ih.setInvoice(in1.getId());

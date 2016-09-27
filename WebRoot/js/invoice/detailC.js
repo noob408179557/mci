@@ -170,7 +170,7 @@ function showWorker() {
 						// $("#employer"+data[i].id).val(data[i].employer);
 						$("#dob" + data[i].id).val(data[i].dob);
 						$("#salary" + data[i].id).val(data[i].salary);
-						$("#salaryTotal" + data[i].id).val(data[i].salary);
+						$("#salaryTotal" + data[i].id).val(parseFloat(data[i].salary).toFixed(1));
 						$("#remark" + data[i].id)
 								.append(
 										"<tr><td >"

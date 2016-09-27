@@ -123,7 +123,7 @@ $(document)
 																		+ "<td  style='vertical-align:middle;'>"
 																		+ "$<input   class='rowTotal'   type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='rowTotal"
 																		+ data+"'/></td>"
-																		+ "<td><a title='delete' class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
+																		+ "<td><a title='delete' style='float:right' class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
 																		+ data
 																		+ ")' id='removeRow"
 																		+ x
@@ -207,6 +207,7 @@ function init() {
 			for(var i=0;i<data.length;i++){
 				$("#anotherPIC").append("<option value='"+data[i].id+"'>"+data[i].realName+"</option>");
 			}
+			$("#anotherPIC").selectpicker("refresh");
 		}
 	})
 	$.ajax({

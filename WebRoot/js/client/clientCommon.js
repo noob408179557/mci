@@ -1,6 +1,14 @@
 $(document)
 		.ready(
 				function() {
+					$(document).keypress(function(e) {
+						if (e.which == 13) {
+							if($("#search").is(":visible")){
+								$("#search").trigger("click");
+							}
+							
+						}
+					});
 					$("#blockClient")
 							.click(
 									function() {
@@ -26,6 +34,8 @@ $(document)
 															} else if (data == "0") {
 																swal("This client is already inactive!");
 																search();
+															}else if(data=="2"){
+																swal("This client is not in active status!");
 															}
 
 														}
@@ -37,7 +47,7 @@ $(document)
 					$("#editInvoice")
 							.click(
 									function() {
-										if ($("input[name='select']:checked").val() != null) {
+										if ($("input[name='selectInvoice']:checked").val() != null) {
 											$.ajax({
 												type : "POST",
 												url : "editInvoice.do",
@@ -229,6 +239,24 @@ $(document)
 					$("#delete")
 							.click(
 									function() {
+										$.ajax({
+											type : "POST",
+											url : ".do",
+											dataType : "json",
+											async : false,
+											data : {
+												pageIndex:"1",
+												id:$("input[name='select']:checked").val()
+											},
+											error : function(data) {
+												swal("getaClient.do Error!!");
+											},
+											success:function(data){
+												if(data.length!=0){
+													swal("Please delete the client's invoice！");
+													return false;
+												}
+										
 										if ($("input[name='select']:checked")
 												.val() != null) {
 											swal(
@@ -262,6 +290,8 @@ $(document)
 											swal("You haven't select any client!")
 										}
 
+											}
+									});
 									});
 					// 查看选中client update history
 					$("#history")
@@ -500,6 +530,7 @@ function getRemark(id){
 // 删除一个Client
 function deleteClient() {
 
+	
 	$.ajax({
 		type : "POST",
 		url : "getaClient.do",
@@ -525,24 +556,7 @@ function deleteClient() {
 						swal("You can't delete this client!");
 						return false;
 					}else{
-						$.ajax({
-							type : "POST",
-							url : "getAccountPage.do",
-							dataType : "json",
-							async : false,
-							data : {
-								pageIndex:"1"
-							},
-							error : function(data) {
-								swal("getaClient.do Error!!");
-							},
-							success:function(data){
-								if(data.length!=0){
-									swal("Please delete the client's invoice！");
-									return false;
-								}
-								}
-						});
+						
 						
 						
 						$.ajax({
@@ -624,7 +638,7 @@ function getUser(i) {
 													+ data[i].id
 													+ "'><label></label></div></th><th style='text-align:left;vertical-align : middle; '>"
 													+ data[i].realName
-													+ "</th><tr>");
+													+ "</th></tr>");
 						}
 
 					}
@@ -759,6 +773,9 @@ function getAccountPage(i) {
 		type : "POST",
 		url : "loadClientAccountCount.do",
 		dataType : "json",
+		data:{
+			id:$("input[name='select']:checked").val()
+		},
 		error : function(data) {
 			alert("请求失败~");
 		},

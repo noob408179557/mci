@@ -145,9 +145,9 @@ html { overflow: scroll; }
 					<br>
 
 					<div class="row">
-						<div class="col-sm-12">
+						<div class="col-sm-12" style="background:#fff;color:#FFF;bottom: 10px;padding-bottom: 10px;">
 							<div class="card-box ">
-								<div class="table-responsive">
+								<div class="">
 									<div style="float:left">
 										<table width="500px">
 											<tr style="background-color: #F5F5F5;">
@@ -211,8 +211,9 @@ html { overflow: scroll; }
 											<tr>
 												<td>Another MCI PIC:</td>
 												<td>
-												<select data-style="btn-white" id="anotherPIC">
-												</select>
+												<div style='padding-left:0px;width:170px'>
+												<select class='selectpicker'  data-style='btn-white' data-live-search='true' id="anotherPIC" >
+												</select></div>
 												</td>
 											</tr>
 										</table>
@@ -282,11 +283,11 @@ html { overflow: scroll; }
 									</table>
 									<div class="modal-footer">
 									<div class="btn btn-warning waves-effect waves-light  btn-lg" id="" onclick="window.location='mci-createInvoice.do'">
-											<i class="glyphicon glyphicon-arrow-left"></i>Back
+											<i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Back
 										</div>
 										<div class="btn btn-primary waves-effect waves-light btn-lg"
-											id="addWorker">
-											Add Worker&nbsp;<i class="fa fa-plus"></i>
+											id="addWorker"><i class="fa fa-plus"></i>&nbsp;
+											Add Worker
 										</div>
 										<button type="button"
 											class="btn btn-success waves-effect waves-light save btn-lg"

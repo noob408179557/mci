@@ -2,6 +2,9 @@ package mci.main.user.service.impl;
 
 import java.util.List;
 
+import mci.main.client.pojo.Client;
+import mci.main.invoice.mapper.InvoiceMapper;
+import mci.main.invoice.pojo.Invoice;
 import mci.main.user.mapper.UserMapper;
 import mci.main.user.pojo.User;
 import mci.main.user.pojo.UserQuery;
@@ -14,6 +17,9 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private InvoiceMapper invoiceMapper;
 
 	@Override
 	public User login(String email, String password) {
@@ -110,6 +116,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getUserList24admin(UserQuery uq) {
 		return userMapper.getUserList24admin(uq);
+	}
+
+	@Override
+	public List<Invoice> getInvoiceOfUser(UserQuery uq) {
+         
+		return invoiceMapper.getInvoiceOfUser(uq);
+	}
+
+	@Override
+	public List<Invoice> getInvoiceOfUserCount(Client client) {
+		
+		return invoiceMapper.getInvoiceOfUserCount(client);
 	}
 
 	

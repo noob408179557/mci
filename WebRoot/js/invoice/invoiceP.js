@@ -7,7 +7,12 @@ function testSite(id, name) {
 
 var testSites = [];
 var x = 1;
-
+function autoClose(i){
+	 jQuery('#date'+i).datepicker({
+     	autoclose: true,
+     	todayHighlight: true
+     	})
+}
 function logout(){
 	$.ajax({
 		type : "POST",
@@ -78,7 +83,7 @@ $(function() {
 						+ data
 						+ "'><td style='text-align: center;vertical-align:middle;'>"
 						+ "<div class='input-group'><input type='text' id='date"
-						+ data+"' class='form-control' placeholder='mm/dd/yyyy' id='datepicker-autoclose'><div>"
+						+ data+"' class='form-control' placeholder='mm/dd/yyyy' ><div>"
 						+ "</td>"
 						+ "<td  style='vertical-align:middle;' colspan='2'><input id='desc"
 						+ data
@@ -87,11 +92,13 @@ $(function() {
 						+ data
 						+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateP()'  class='payable'/>"
 						+ "</td>"
-						+ "<td><a title='delete' class='btn btn-danger btn-lg'  onclick='removeRow("
+						+ "<td><a title='delete' style='float:right' class='btn btn-danger btn-lg'  onclick='removeRow("
 						+ data + ")' href='javascript:void(0)' id='removeRow"
 						+ x + "'><i class='glyphicon glyphicon-trash'></i></a> <a class='addPKey' onclick='addPKey("+data+")'/></td></tr>");
 			  var date="#date"+data;
+			  autoClose(data);
 			  $(date).datepicker("refresh");
+			
 			if(x!=1){
 			 hideLastRemove(x);
 			}
@@ -148,6 +155,7 @@ function init(){
 			for(var i=0;i<data.length;i++){
 				$("#anotherPIC").append("<option value='"+data[i].id+"'>"+data[i].realName+"</option>");
 			}
+			$("#anotherPIC").selectpicker("refresh");
 		}
 	})
 		$.ajax({

@@ -182,7 +182,7 @@ function init(){
 			 if(data.commission!=null){
 					$("#payHistory").append("<tr><th>Commission"
 							+ "</th><td>"
-							+　data.commission
+							+data.commission
 							+ "</td></tr>");
 					}
 	
@@ -266,6 +266,7 @@ function showItem(){
 						+id
 						+")'/></td></tr>");
         	$("#desc"+id).val(data[i].description);
+        	$("#date"+id).val(data[i].date);
         	$("#amount"+id).val(data[i].payment);
         	caculateP(id);
         	if (x != 1) {

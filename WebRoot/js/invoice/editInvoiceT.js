@@ -70,6 +70,7 @@ function initInvoice() {
 											+ data1[i].realName + "</option>");
 						}
 					}
+					$("#anotherPIC").selectpicker("refresh");
 				}
 			})
 			// 决定选中哪个pic,是否锁定状态

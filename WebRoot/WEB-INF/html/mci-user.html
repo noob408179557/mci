@@ -152,6 +152,10 @@
 									data-toggle="modal" id="edit">
 									<i class="glyphicon glyphicon-edit"></i> Edit
 								</div>
+								<div class="btn btn-primary waves-effect waves-light btn-lg"
+									data-toggle="modal"   id="check"  onclick="getInvoice()" >
+									<i class="glyphicon glyphicon-th-list"></i> Check
+								</div>
 								<div class="btn btn-danger waves-effect waves-light btn-lg"
 									data-toggle="modal" id="delete">
 									<i class="    md-cancel    "></i> Block
@@ -336,7 +340,94 @@
 			<!-- container -->
 		</div>
 		<!-- content -->
+		
 	</div>
+	<div id="invoice1" class="modal fade bs-example-modal-lg" tabindex="-1"
+		role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<div class="btn btn-primary waves-effect waves-light btn-lg"
+						data-toggle="modal" id="editInvoice">
+						<i class="glyphicon glyphicon-edit"></i> Edit
+					</div>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered table-hover">
+						<tbody>
+							<tr bgcolor="#F5F5F5">
+								<td style='text-align: left; vertical-align: middle;'
+									width="100" style="table-layout:fixed;"></td>
+										<td style='text-align: left; vertical-align: middle;'
+									width="128px">
+									<h4>
+										<strong>Invoice Number</strong>
+									</h4></td>
+								<td style='text-align: left; vertical-align: middle;'
+									width="128px">
+									<h4>
+										<strong>Client</strong>
+									</h4></td>
+								<td style='text-align: left; vertical-align: middle;'
+									width="100px">
+									<h4>
+										<strong>Amount</strong>
+									</h4></td>
+								<td style='text-align: left; vertical-align: middle;'
+									width="200px">
+									<h4>
+										<strong>Remark</strong>
+									</h4></td>
+								<td style='text-align: left; vertical-align: middle;'
+									width="110px">
+									<h4>
+										<strong>State</strong>
+									</h4></td>
+								<td style='text-align: left; vertical-align: middle;'>
+									<h4>
+										<strong>Date</strong>
+									</h4></td>
+							</tr>
+						</tbody>
+						<tbody id="accountList">
+						</tbody>
+
+					</table>
+					<input value="1" type="hidden" id="userIndex" />
+						<div align="middle">
+						<div class="btn btn-primary waves-effect waves-light"
+							data-toggle="modal" id="firstAccount">
+							<i class="glyphicon glyphicon-fast-backward"></i>
+						</div>
+						<div class="btn btn-primary waves-effect waves-light "
+							data-toggle="modal" id="previousAccount">
+							<i class="ion-arrow-left-a"></i>
+						</div>
+						<div class="btn btn-primary  btn-lg" data-toggle="modal"
+							id="pageAccount"></div>
+						<div class="btn btn-primary waves-effect waves-light "
+							data-toggle="modal" id="nextAccount">
+							<i class="ion-arrow-right-a"></i>
+						</div>
+						<div class="btn btn-primary waves-effect waves-light "
+							data-toggle="modal" id="lastAccount">
+							<i class="glyphicon glyphicon-fast-forward"></i>
+						</div>
+						<input id="accountPageIndex" value="1" style="display: none" />
+						<div style="float: right"
+							class="btn btn-danger waves-effect waves-light save btn-lg"
+							id="closeAccount" data-dismiss="modal">close</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	
 	<!-- ============================================================== -->
 	<!-- End Right content here -->
 	<!-- ============================================================== -->
@@ -404,7 +495,7 @@
 	<script type="text/javascript"
 		src="assets/plugins/jquery.bigautocomplete.js"></script>
 	<script src="js/system/userList.js"></script>
-
+    <script src="js/system/userCommon.js"></script>
 	<!-- 日期插件
  -->
 

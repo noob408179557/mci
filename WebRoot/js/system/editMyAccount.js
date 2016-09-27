@@ -20,7 +20,7 @@ function editClient() {
 	loadLeft();
 	$.ajax({
 		type : "POST",
-		url : "getEditUser.do",
+		url : "getMyUser.do",
 		dataType : "json",
 		error : function(data) {
 			alert("Server Error!");

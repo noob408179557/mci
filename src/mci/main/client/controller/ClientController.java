@@ -18,6 +18,8 @@ import mci.main.invoice.pojo.Invoice;
 import mci.main.system.Mss;
 import mci.main.system.service.SystemService;
 import mci.main.user.pojo.User;
+import mci.main.user.service.UserService;
+import mci.main.user.service.impl.UserServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,9 @@ public class ClientController {
 	
 	@Autowired
 	private SystemService systemServiceImpl;
+	
+	@Autowired
+	private UserService userServiceImpl;
 
 	@ResponseBody
 	@RequestMapping(value = "deleteRemark", method = RequestMethod.POST)
@@ -455,8 +460,17 @@ public class ClientController {
 	// assign的功能
 	@ResponseBody
 	@RequestMapping(value = "getUser", method = RequestMethod.POST)
-	public List<User> getUser(AssignQuery aq) {
-		return clientServiceImpl.getUser(aq);
+	public List<User> getUser(AssignQuery aq,HttpSession session) {
+		 List<User> list=clientServiceImpl.getUser(aq);
+		 String clientid=(String)session.getAttribute("editClientId");
+		 Client client=(Client)clientServiceImpl.getaClient(clientid);
+		 User user=userServiceImpl.getaUser(client.getPic());
+		 for(int i=0;i<list.size();i++){
+			 if(list.get(i).getEmail().equals(user.getEmail())){
+				 list.remove(i);
+			 }
+		 }
+		return list;
 	}
 
 	@ResponseBody
@@ -467,7 +481,8 @@ public class ClientController {
 
 	@ResponseBody
 	@RequestMapping(value = "getUserName", method = RequestMethod.POST)
-	public Client getUserName(User user) {
+	public Client getUserName(User user,HttpSession session) {
+		session.setAttribute("editClientId", user.getId());
 		return clientServiceImpl.getUserName(user);
 	}
 
@@ -479,7 +494,8 @@ public class ClientController {
 			ClientHistory ch = new ClientHistory();
 			ch.setClient(as.getClient());
 			ch.setUser(as.getUser());
-			ch.setType(as.getType());
+			ch.setType(as.getType());    
+			ch.setEditRemark("assign to "+userServiceImpl.getaUser(as.getUser()).getRealName());
 			clientServiceImpl.addClientHistory(ch);
 			return "0";
 		} catch (Exception e) {
@@ -527,6 +543,10 @@ public class ClientController {
 	@RequestMapping(value = "getAccountPage", method = RequestMethod.POST)
 	public List<Invoice> getAccountPage(ClientQuery cq, HttpSession session) {
 		Client query = (Client) session.getAttribute("clientAccountQuery");
+		if(null==query){
+		 query=new Client();
+		 query.setId(cq.getId());
+		}
 		query.setStartIndex(cq.getPageIndex());
 		List<Invoice> list1 = clientServiceImpl.getAccount(query);
 		System.out.println("list1.size()" + list1.size());
@@ -567,7 +587,7 @@ public class ClientController {
 		List<Invoice> list = new ArrayList<Invoice>();
 		if (!(user.getType()).equals("2")) {
 			for (int i = 0; i < list1.size(); i++) {
-				if ((user.getId()).equals(list1.get(i).getPic())) {
+				if ((user.getId()).equals(list1.get(i).getPic())||(user.getId()).equals(list1.get(i).getPic2())) {
 					list.add(list1.get(i));
 				}
 			}
@@ -576,7 +596,7 @@ public class ClientController {
 		}
 		int totalCount = list.size();
 		int totalPage;
-		if ((totalCount % ClientQuery.getPageSize()) == 0) {
+		if ((totalCount % ClientQuery.getPageSize()) == 0&&(totalCount/ClientQuery.getPageSize()) != 0) {
 			System.out.println("list:" + list.size()
 					+ "   ClientQuery.getPageSize()"
 					+ ClientQuery.getPageSize()

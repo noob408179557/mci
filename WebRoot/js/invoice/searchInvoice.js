@@ -34,7 +34,7 @@ function init() {
 			// swal("getInvoiceLimit Error!");
 		},
 		success : function(data) {
-			$("#searchInvoiceNo").val(data.id);
+			$("#searchInvoiceNo").val(data.number);
 			$("#searchConsultant").val(data.pic);
 			$("#searchCompanyName").val(data.clientName);
 			var type = document.getElementById("searchType");
@@ -166,21 +166,21 @@ function search(i) {
 								var unpaid = "<th style='text-align:left;vertical-align : middle; '>"
 										+ "<span class='label label-table label-danger btn-lg'>Unpaid</span></th>"
 										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ "&nbsp;<div data-target='#payment' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='confirmPayment("
+										+ "&nbsp;<div  style='width: 215px' data-target='#payment' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='confirmPayment("
 										+ data[i].id
 										+ ")'>"
 										+ "<i class='glyphicon glyphicon-usd'></i>Comfirm Payment</div></th></tr>";
 								var partialpaid = "<th style='text-align:left;vertical-align : middle; '>"
 										+ "<span class='label label-table label-warning btn-lg'>Partial Paid</span></th>"
 										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ "&nbsp;<div data-target='#payment' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='confirmPayment("
+										+ "&nbsp;<div  style='width: 215px' data-target='#payment' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='confirmPayment("
 										+ data[i].id
 										+ ")'>"
 										+ "<i class='glyphicon glyphicon-usd'></i>Comfirm Payment</div></th></tr>";
 								var fullypaid = "<th style='text-align:left;vertical-align : middle; '>"
 										+ "<span class='label label-table label-success btn-lg'>Fully Paid</span></th>"
 										+ "<th style='text-align:left;vertical-align : middle;padding-left:12px '>"
-										+"<div data-target='#commission' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='getCommission("
+										+"<div  style='width: 215px' data-target='#commission' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='getCommission("
 											+ data[i].id
 											+ ")'>"
 										+ "<i class='glyphicon glyphicon-ok'></i>&nbsp;Pay commission</div></th></tr>";
@@ -250,7 +250,7 @@ function search(i) {
 											}
 										}
 									});
-									var head = "<tr><th style='text-align:left;vertical-align : middle; '>"
+									var head ="<tr><th style='text-align:left;vertical-align : middle; '>"
 											+ (i + 1)
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; '>"
@@ -262,7 +262,7 @@ function search(i) {
 											+ data[i].number
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; ' >"
-											+ (data[i].total*1.07).toFixed(1)+"/"+data[i].total
+											+ (data[i].total*1.07).toFixed(1)+"/"+(data[i].total*1.0).toFixed(1)
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; '>"
 											+ (data[i].creditNotes*1.0).toFixed(1)
@@ -293,14 +293,14 @@ function search(i) {
 										+ "<span class='label label-table label-danger btn-lg'>Unpaid</span></th>"
 										+ "<th style='text-align:left;vertical-align : middle; '>"
 										+ "<div class='btn btn-primary waves-effect waves-light btn-lg' id=''><i class='glyphicon glyphicon-list-alt'></i>&nbsp;Detail</div>"
-										+ "&nbsp;<div data-target='#payment' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='confirmPayment("
+										+ "&nbsp;<div  style='width: 215px' data-target='#payment' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='confirmPayment("
 										+ data[i].id
 										+ ")'>"
 										+ "<i class='glyphicon glyphicon-usd'></i>Comfirm Payment</div></th></tr>";
 								var partialpaid = "<th style='text-align:left;vertical-align : middle; '>"
 										+ "<span class='label label-table label-warning btn-lg'>Partial Paid</span></th>"
 										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ "&nbsp;<div data-target='#payment' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='confirmPayment("
+										+ "&nbsp;<div  style='width: 215px' data-target='#payment' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' onclick='confirmPayment("
 										+ data[i].id
 										+ ")'>"
 										
@@ -308,7 +308,7 @@ function search(i) {
 								var fullypaid = "<th style='text-align:left;vertical-align : middle; '>"
 										+ "<span class='label label-table label-success btn-lg'>Fully Paid</span></th>"
 										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ "<div data-target='#commission' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' "
+										+ "<div  style='width: 215px' data-target='#commission' data-toggle='modal' class='btn btn-primary waves-effect waves-light btn-lg' id='' "
 										+ "onclick='getCommission("
 										+ data[i].id
 										+ ")'><i class='glyphicon glyphicon-ok'></i>&nbsp;Pay commission</div></th></tr>";

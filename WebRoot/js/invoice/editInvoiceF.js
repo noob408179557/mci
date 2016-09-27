@@ -66,6 +66,7 @@ function initInvoice() {
 						$("#anotherPIC").append("<option  value='"+data1[i].id+"'>"+data1[i].realName+"</option>");
 					}
 					}
+					$("#anotherPIC").selectpicker("refresh");
 				}
 				})
 			// 决定选中哪个pic,是否锁定状态
@@ -191,7 +192,7 @@ $(document)
 																				+ "<td  style='vertical-align:middle;'>"
 																				+ "$<input   type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' id='rowTotal"
 																				+ data+"'/></td>"
-																				+ "<td><a title='delete' class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
+																				+ "<td><a style='float:right' title='delete' class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
 																				+ data
 																				+ ")' id='removeRow"
 																				+ x
@@ -426,7 +427,7 @@ function showItem(){
 						+ data[i].id
 						+ "' onkeyup='caculateF("+id
 						+ ")'/></td>"
-						+ "<td><a class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
+						+ "<td><a style='float:right' class='btn btn-danger btn-lg ' href='javascript:void(0)' onclick='removeFRow("
 						+ data[i].id
 						+ ")' id='removeRow"
 						+ x

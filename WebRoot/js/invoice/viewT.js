@@ -68,6 +68,9 @@ function init() {
 			$("#companyAddress").val(data.cpObject.billaddress);
 			$("#companyCountry").val(data.cpObject.country);
 			$("#companyName").val(data.clientObject.companyName);
+			$("#subTotal").val(parseFloat(data.total).toFixed(1));
+			$("#gst").val(parseFloat(data.total * 0.07).toFixed(1));
+			$("#totalAmount").val(parseFloat(data.total * 1.07).toFixed(1));
 			if(data.commission!=null){
 				$("#payHistory").append("<tr><th>Commission"
 						+ "</th><td>"
@@ -313,35 +316,22 @@ function showWorker() {
 															+ "<td style='vertical-align:middle;'>$<input "
 															+ "id='itemAmountPayable"
 															+ data[j].id
-															+ "' onkeyup='caculateItem("
+															+ "'  readOnly='true' onkeyup='caculateItem("
 															+ data[j].id
 															+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' /></td>"
-															+ "<td style='vertical-align:middle;'>$<input "
+															+ "<td style='vertical-align:middle;'>$<input  readOnly='true' "
 															+ "id='itemCost"
 															+ data[j].id
 															+ "' onkeyup='caculateT("
 															+ data[j].id
 															+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' /></td>"
-															+ "<td style='vertical-align:middle;'>$<input class='itemAmount'"
-															+ "id='itemTotalAmount"
+															+ "<td style='vertical-align:middle;'>$<input  readOnly='true'"
+															+ "id='itemAmount"
 															+ data[j].id
-															+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateItem("
+															+ "' onkeyup='caculateT("
 															+ data[j].id
-															+ ")' readOnly='true'/>"
-															+ "</td><td><a style='display:none' class='cItem"
-															+ workerid
-															+ "' onclick='caculateItem("
-															+ data[j].id
-															+ ")' ></a>"
-															+ "<a title='delete' class='btn btn-danger btn-lg removeItem"
-															+ workerid
-															+ "'"
-															+ "onclick='removeItem("
-															+ data[j].id
-															+ ")' id='' style='float:right'><i class='glyphicon glyphicon-trash'></i>"
-															+ "</a><a class='updateItem' onclick='updateItem("
-															+ data[j].id
-															+ ")'/></td></tr>");
+															+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' /></td>"
+															+ "</td></tr>");
 									var descId = "desc" + data[j].id;
 
 									var trade = document
@@ -355,6 +345,8 @@ function showWorker() {
 									}
 									$("#itemAmountPayable" + data[j].id)
 											.val(data[j].amount);
+									$("#itemAmount" + data[j].id)
+									.val(parseFloat(data[j].amount).toFixed(1));
 									$("#itemCost" + data[j].id).val(
 											data[j].cost);
 									$("#workerHour" + data[j].id).val(
@@ -425,34 +417,6 @@ $(function() {
 														+ data
 														+ "' type='text' style='width:80%; border-top:0px ;border-left:0px;border-right:0px;' />"
 														+ "</td></tr>"
-														// +
-														// "<tr><td><strong>Employee"
-														// +
-														// "Account&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong></td>"
-														// + "<td><input
-														// id='employee"
-														// + data
-														// + "'
-														// type='text'
-														// style='width:80%;
-														// border-top:0px
-														// ;border-left:0px;border-right:0px;'
-														// />"
-														// +
-														// "</td></tr><tr><td><strong>Employer"
-														// +
-														// "Account&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong></td>"
-														// + "<td><input
-														// id='employer"
-														// + data
-														// + "'
-														// type='text'
-														// style='width:80%;
-														// border-top:0px
-														// ;border-left:0px;border-right:0px;'
-														// />"
-														// +
-														// "</td></tr>"
 														+ "<tr><td><strong>DOB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong>"
 														+ "</td><td>"
 														+ " <input type='text' class='form-control ' placeholder='mm/dd/yyyy' id='dob"
@@ -524,77 +488,6 @@ $(function() {
 			})
 
 });
-//为一个worker添加一个item
-function addItem(i) {
-// 参数i为worker主键
-$
-	.ajax({
-		type : "POST",
-		url : "addItemT.do",
-		dataType : "json",
-		async : false,
-		data : {
-			worker : i
-		},
-		error : function(data) {
-			alert("请求失败~");
-		},
-		success : function(data) {
-			// 给worker加item
-			var worker = "#worker" + i;
-			$(worker)
-					.append(
-							"<tr style='height:55px' id='item"
-									+ data
-									+ "'>"
-									+ "<td></td>"
-									+ "<td colspan='2'>"
-									+ "<div style='padding-left:0px;width:254px'>"
-									+ "<select class='selectpicker' data-style='btn-white'  id='desc"
-									+ data
-									+ "'>"
-									+ "<option value='CPF'>CPF</option>"
-									+ "<option value='SDF'>SDF</option>"
-									+ "<option value='WICA'>WICA</option>"
-									+ "<option value='Medical Coverage Fee'>Medical Coverage Fee</option>"
-									+ "<option value='Admin fee'>Admin fee</option>"
-									+ "</select></div></td>"
-									+ "<td style='vertical-align:middle;'>$<input "
-									+ "id='itemAmountPayable"
-									+ data
-									+ "' onkeyup='caculateItem("
-									+ data
-									+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' /></td>"
-									+ "<td style='vertical-align:middle;'>$<input "
-									+ "id='itemCost"
-									+ data
-									+ "' onkeyup='caculateT("
-									+ data
-									+ ")' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' /></td>"
-									+ "<td style='vertical-align:middle;'>$<input class='itemAmount'"
-									+ "id='itemTotalAmount"
-									+ data
-									+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;' onkeyup='caculateItem("
-									+ data
-									+ ")' readOnly='true'/>"
-									+ "</td><td><a style='display:none' class='cItem"
-									+ i
-									+ "' onclick='caculateItem("
-									+ data
-									+ ")' ></a>"
-									+ "<a class='btn btn-danger btn-lg removeItem"
-									+ i
-									+ "'"
-									+ "onclick='removeItem("
-									+ data
-									+ ")' id='' style='float:right'>Remove&nbsp;"
-									+ "Item</a><a class='updateItem' onclick='updateItem("
-									+ data + ")'/></td></tr>");
-			var select = "#desc" + data;
-			$(select).selectpicker('refresh');
-		}
-	})
-}
 function updateWorker(i) {
 	var salary = "#salary" + i;
 	var salaryCost = "#salaryCost" + i;
@@ -796,12 +689,7 @@ function caculateT(i) {
 			totalAmount += parseFloat($itemList.eq(j).val());
 		}
 	}
-	swal(totalAmount);
-	if (!isNaN(totalAmount)) {
-		$("#subTotal").val((totalAmount).toFixed(1));
-		$("#gst").val((totalAmount * 0.07).toFixed(1));
-		$("#totalAmount").val((totalAmount * 1.07).toFixed(1));
-	}
+	
 }
 function updateInvoiceC() {
 	var subTotal = $("#subTotal").val();

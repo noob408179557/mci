@@ -66,6 +66,7 @@ function init() {
 			for(var i=0;i<data.length;i++){
 				$("#anotherPIC").append("<option value='"+data[i].id+"'>"+data[i].realName+"</option>");
 			}
+			$("#anotherPIC").selectpicker("refresh");
 		}
 	})
 	$("#addWorker").trigger("click");

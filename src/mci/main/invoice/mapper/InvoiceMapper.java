@@ -17,6 +17,7 @@ import mci.main.invoice.pojo.ItemTotal;
 import mci.main.invoice.pojo.PayHistory;
 import mci.main.invoice.pojo.WorkerC;
 import mci.main.user.pojo.User;
+import mci.main.user.pojo.UserQuery;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -166,4 +167,8 @@ public interface InvoiceMapper {
 	List<Invoice> searchInvoiceForPrint(Invoice invoice);
 	//获取type类型invoice的最大id
 	String getLastIdByType(@Param("type")String type);
+
+	List<Invoice> getInvoiceOfUser(UserQuery uq);
+	
+	List<Invoice> getInvoiceOfUserCount(Client client);
 }

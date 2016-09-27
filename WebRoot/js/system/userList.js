@@ -205,7 +205,7 @@ $(function() {
 		if ($("input[name='select']:checked").val() != null) {
 			var clientId = $("input[name='select']:checked").val();
 			$.ajax({
-				type : "POST",
+				type :"POST",
 				url : "preEditUser.do",
 				dataType : "json",
 				data : {

@@ -40,7 +40,7 @@ function init(){
 			$("#companyAddress").val(data.cpObject.billaddress);
 			$("#companyCountry").val(data.cpObject.country);
 			$("#companyName").val(data.clientObject.companyName);
-			$("#subTotal").val(data.total);
+			$("#subTotal").val(parseFloat(data.total).toFixed(1));
 			$("#gst").val((data.total * 0.07).toFixed(1));
 			$("#totalAmount").val((data.total * 1.07).toFixed(1));
 			$.ajax({
@@ -165,8 +165,8 @@ function showWorker() {
 //						$("#employee"+data[i].id).val(data[i].employee);
 //						$("#employer"+data[i].id).val(data[i].employer);
 						$("#dob"+data[i].id).val(data[i].dob);
-						$("#salary"+data[i].id).val(data[i].salary);
-						$("#salaryTotal"+data[i].id).val(data[i].salary*data[i].hours);
+						$("#salary"+data[i].id).val(parseFloat(data[i].salary).toFixed(1));
+						$("#salaryTotal"+data[i].id).val(parseFloat(data[i].salary*data[i].hours).toFixed(1));
 						$("#remark" + data[i].id).append("<tr><td >"
 												+ "Remark<textarea id='remarkV"
 												+ data[i].id
@@ -212,13 +212,12 @@ function showWorker() {
 														+ "id='itemTotalAmount"
 														+ data[j].id
 														+ "' type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' readOnly='true'/>"
-														
 														+ "</td></tr>");
 			                    $("#desc"+data[j].id).val(switchItem(data[j].desc));
 			                    //$("#workerHour"+data[j].id).val(data[j].hours);
 								$("#itemAmountPayable"+data[j].id).val(data[j].amount);
 								$("#itemCost"+data[j].id).val(data[j].cost);
-								$("#itemTotalAmount"+data[j].id).val(data[j].amount*parseFloat($("#hours"+workerid).val()));
+								$("#itemTotalAmount"+data[j].id).val(parseFloat(data[j].amount).toFixed(1));
 								$("#desc"+data[j].id).selectpicker("refresh");
 								}
 							}
@@ -252,7 +251,7 @@ $(function() {
 						$
 								.ajax({
 									url : "addWorkerC.do",
-									type : "POST",
+									type :"POST",
 									async : false,
 									dataType : "json",
 									error : function(data) {
@@ -565,7 +564,7 @@ function caculateC(i) {
 	}
 	swal(totalAmount);
 	if (!isNaN(totalAmount)) {
-		$("#subTotal").val(totalAmount);
+		$("#subTotal").val(parseFloat(totalAmount).toFixed(1));
 		$("#gst").val((totalAmount * 0.07).toFixed(1));
 		$("#totalAmount").val((totalAmount * 1.07).toFixed(1));
 	}

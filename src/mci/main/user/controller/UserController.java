@@ -1,10 +1,14 @@
 package mci.main.user.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import mci.main.client.pojo.Client;
 import mci.main.client.pojo.ClientQuery;
+import mci.main.client.service.ClientService;
+import mci.main.invoice.pojo.Invoice;
 import mci.main.user.pojo.User;
 import mci.main.user.pojo.UserQuery;
 import mci.main.user.service.UserService;
@@ -21,7 +25,17 @@ import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 public class UserController {
 	@Autowired
 	private UserService userServiceImpl;
-
+	
+	@Autowired
+	private ClientService clientServiceImpl;
+	
+	@ResponseBody
+	@RequestMapping(value = "getInvoiceOfUser", method = RequestMethod.POST)
+	public List<Invoice> getInvoiceOfUser(UserQuery uq) {
+		uq.setStartIndex((uq.getPageIndex()-1)*UserQuery.pageSize);
+			return userServiceImpl.getInvoiceOfUser(uq);
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "activeUser", method = RequestMethod.POST)
 	public String activeUser(User user) {
@@ -61,14 +75,15 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "saveUser", method = RequestMethod.POST)
 	public String saveUser(User user, HttpSession session) {
-		try {
+		try
+		{
 			String userid = (String) session.getAttribute("editUserId");
 			User old = userServiceImpl.getaUser(userid);
 			user.setId(userid);
 			user.setPassword(old.getPassword());
 			userServiceImpl.updateUser(user);
 			return "0";
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 			return "1";
 		}
@@ -93,6 +108,14 @@ public class UserController {
 	public User getEditUser(HttpSession session) {
 		String userid = (String) session.getAttribute("editUserId");
 		User user = (User) userServiceImpl.getaUser(userid);
+		return user;
+
+	}
+	@ResponseBody
+	@RequestMapping(value = "getMyUser", method = RequestMethod.POST)
+	public User getMyUser(HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		session.setAttribute("editUserId",user.getId());
 		return user;
 
 	}
@@ -213,5 +236,21 @@ public class UserController {
 			e.printStackTrace();
 			return "1";
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "loadInvoiceOfUserCount", method = RequestMethod.POST)
+	public int getClientAccountCount(Client client,HttpSession session) {
+		List<Invoice> list1 = userServiceImpl.getInvoiceOfUserCount(client);
+	
+		int totalCount = list1.size();
+		int totalPage;
+		if ((totalCount % UserQuery.getPageSize()) == 0&&(totalCount/UserQuery.getPageSize()) != 0) {
+		
+			totalPage = totalCount / UserQuery.getPageSize();
+		} else {
+			totalPage = totalCount / UserQuery.getPageSize() + 1;
+		}
+		return totalPage;
 	}
 }

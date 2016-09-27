@@ -2,6 +2,7 @@ package mci.main.user.mapper;
 
 import java.util.List;
 
+import mci.main.invoice.pojo.Invoice;
 import mci.main.user.pojo.User;
 import mci.main.user.pojo.UserQuery;
 
@@ -42,4 +43,6 @@ public interface UserMapper {
 	List<User> getUserList4admin(UserQuery uq);
 	
 	List<User> getUserList24admin(UserQuery uq);
+	
+	List<Invoice> getInvoiceOfUser(UserQuery uq);
 }

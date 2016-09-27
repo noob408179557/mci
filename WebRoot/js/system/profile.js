@@ -36,26 +36,26 @@ function init(){
 					trade[i].selected = true;
 					$("#userType").selectpicker("refresh");
 				}
-			}	
+			}
 		}
 	})
 }
 $(function() {
 	
 	$("#editUser").click(function() {
-		$.ajax({
-			type : "POST",
-			url : "preEditUser.do",
-			dataType : "json",
-			data : {
-				id : $("#userId").val()
-			},
-			error : function(data) {
-				alert("请求失败~");
-			},
-			success : function(data) {
+//		$.ajax({
+//			type: "POST",
+//			url : "preEditUser.do",
+//			dataType : "json",
+//			data : {
+//				id : $("#userId").val()
+//			},
+//			error : function(data) {
+//				alert("请求失败~");
+//			},
+//			success : function(data) {
 				window.location.href = "mci-editMyAccount.do";
-			}
-		})
+//			}
+//		})
 	});
 });

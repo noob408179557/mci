@@ -70,6 +70,7 @@ function initInvoice() {
 											+ data1[i].realName + "</option>");
 						}
 					}
+					$("#anotherPIC").selectpicker("refresh");
 				}
 			})
 			// 决定选中哪个pic,是否锁定状态
@@ -408,7 +409,7 @@ $(function() {
 																+ data
 																+ ")' readOnly='true'/>"
 																+ "</td>"
-																+ "<td width='300px'><a style='float:right' class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
+																+ "<td width='300px'><a  class='btn btn-primary waves-effect waves-light btn-lg' id='addItem"
 																+ data
 																+ "' onclick='addItem("
 																+ data
@@ -648,13 +649,14 @@ function caculateC(i) {
 		if (itemAmountPayableV == "" || itemAmountPayableV == null) {
 			itemAmountPayableV = parseFloat(0);
 		}
-
 		var itemTotal = 0;
 		itemTotal = parseFloat(itemTotal);
 		itemTotal = parseFloat(itemAmountPayableV);
 		var itemTotalAmount = "#itemTotalAmount" + i;
 		if (!isNaN(itemTotal)) {
 			$(itemTotalAmount).val(itemTotal);
+		}else{
+			$(itemTotalAmount).val(0);
 		}
 		// 计算worker salary
 		var salary = "#salary" + i;

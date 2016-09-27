@@ -51,9 +51,12 @@ $(document)
 				function() {
 					// 添加client
 					$("#createClient").click(function() {
-						  $(this).attr("disabled","disabled");  
-						  $(this).html("waiting...");  
-						createClient();
+						 $(this).attr("disabled","disabled");  
+						  $(this).html("waiting..."); 
+						
+							createClient();
+					
+						
 					});
 
 					$("#addRow").click(function() {
@@ -72,58 +75,63 @@ $(document)
 function createClient() {
 	// 查询cp的数量
 	var flag;
-
 	if ($("#cName").val() != "" && $("#cDays").val() != ""
-			&& $("#cSize").val() != "" && $("#cRemark").val() != ""
-			&& $("#cTrade").val() != "") {
-		// 创建Client,返回主键值()
-		$.ajax({
-			type : "POST",
-			url : "createClient.do",
-			dateType : "json",
-			data : {
-				id : $("#clientId").val(),
-				companyName : $("#cName").val(),
-				webSite : $("#cWebsite").val(),
-				days : $("#cDays").val(),
-				size : $("#cSize").val(),
-				remark : $("#cRemark").val(),
-				trade : $("#cTrade").val(),
-				state : "1",
-				term : $("#cTerm").val()
-			},
-			error : function(data) {
-				alert("请求失败！");
-			},
-			success : function(data) {
-				$.ajax({
-					type : "POST",
-					url : "getCPcount.do",
-					dateType : "json",
-					data : {
-						id : $("#clientId").val()
-					},
-					error : function(data) {
-						swal("getCPcount Error！");
-					},
-					success : function(data1) {
-						if (data1 == 0) {
-							swal("Please create a Client-PIC");
-							return false;
-						} else {
-							$("#clientId").val(data);
-							// js模拟click事件触发addKey(cp主键)
-							// 将页面中ContactPerson关联刚创建的Client
-							if ($(".addKey") != null) $(".addKey").click();
-							// 跳转到staffClient页面
-							window.location.href = "mci-staffClient.do";
-						}
+		&& $("#cSize").val() != "" && $("#cRemark").val() != ""
+		&& $("#cTrade").val() != ""&&$("#addContactPerson").html().trim()!="") {
+	// 创建Client,返回主键值()
+	$.ajax({
+		type :"POST",
+		url : "createClient.do",
+		dateType : "json",
+		async:false,
+		data : {
+			id : $("#clientId").val(),
+			companyName : $("#cName").val(),
+			webSite : $("#cWebsite").val(),
+			days : $("#cDays").val(),
+			size : $("#cSize").val(),
+			remark : $("#cRemark").val(),
+			trade : $("#cTrade").val(),
+			state : "1",
+			term : $("#cTerm").val()
+		},
+		error : function(data) {
+			alert("请求失败！");
+		},
+		success : function(data) {
+			
+			$.ajax({
+				type : "POST",
+				url : "getCPcount.do",
+				dateType : "json",
+				async:false,
+				data : {
+					id : $("#clientId").val()
+				},
+				error : function(data) {
+					swal("getCPcount Error！");
+				},
+				success : function(data1) {
+					if (data1 == 0) {
+						swal("Please create a Client-PIC");
+						return false;
+					} else {
+						$("#clientId").val(data);
+						// js模拟click事件触发addKey(cp主键)
+						// 将页面中ContactPerson关联刚创建的Client
+						if ($(".addKey") != null) $(".addKey").click();
+						// 跳转到staffClient页面
+						window.location.href = "mci-staffClient.do";
 					}
-				})
-			}
-		});
+				}
+			})
+		}
+	});
 	} else {
+		 $("#createClient").attr("disabled",false);  
+		  $("#createClient").html("<i class='glyphicon glyphicon-floppy-disk'></i> Create"); 
 		swal("Required cannot be empty!");
+		
 		return false;
 	}
 }

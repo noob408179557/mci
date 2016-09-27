@@ -42,14 +42,12 @@ function editClient() {
 }
 $(document).ready(function() {
 	$("#saveUser").click(function(){
+		if(veryfyEmail($("#email").val())){
 		 if($("#email").val()==""){
 			swal("Email can't be empty!");
 			return false;
 		}else if($("#realname").val()==""){
 			swal("Realname can't be empty!");
-			return false;
-		}else if($("#password").val()==""){
-			swal("Password can't be empty!");
 			return false;
 		}else{
 		$.ajax({
@@ -75,5 +73,6 @@ $(document).ready(function() {
     		}
        })
 		}
+	}
 	})
 });

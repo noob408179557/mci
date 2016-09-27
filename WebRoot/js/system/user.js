@@ -4,6 +4,9 @@ function init() {
 }
 $(document).ready(function() {
 	$("#createUser").click(function(){
+		
+			
+		if(veryfyEmail($("#email").val())){
 		if($("#email").val()==""){
 			swal("Email can't be empty!");
 			return false;
@@ -15,6 +18,9 @@ $(document).ready(function() {
 			return false;
 		}else if($("#repassword").val()==""){
 			swal("Confirmpassword can't be empty!");
+			return false;
+		}else if($("#password").val().length<6){
+			swal("Password lengh must be over 6 numbers including letters!");
 			return false;
 		}else if($("#password").val()!=$("#repassword").val()){
 			swal("Confirmpassword must be same as password!");
@@ -46,6 +52,7 @@ $(document).ready(function() {
 		}
 		})
 		}
+	}
 	});
 	
 	

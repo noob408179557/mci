@@ -7,7 +7,7 @@
 		<result property="workerNum" column="workerNum" />
 		<result property="billingRate" column="billingRate" />
 		<result property="cost" column="cost" />
-		<result property="number" column="number"/>
+		<result property="number" column="number" />
 		<result property="total" column="total" />
 		<result property="state" column="state" />
 		<result property="createDate" column="createdate" />
@@ -29,8 +29,8 @@
 			<result property="realName" column="realname2" />
 			<result property="username" column="username2" />
 		</association>
-		<association property="clientObject" javaType="mci.main.client.pojo.Client">
-			<id property="id" column="client" />
+	    <association property="clientObject" javaType="mci.main.client.pojo.Client">
+			<id property="id" column="id" />
 			<result property="companyName" column="companyname" />
 		</association>
 	</resultMap>
@@ -51,7 +51,7 @@
 		<association property="invoiceObject" javaType="mci.main.invoice.pojo.Invoice">
 			<id property="id" column="id" />
 			<result property="type" column="type" />
-			<result property="number" column="number"/>
+			<result property="number" column="number" />
 		</association>
 	</resultMap>
 	<sql id="QueryInvoice">
@@ -61,8 +61,12 @@
 		<if test="endDate!=null and endDate!=''">
 			and #{endDate} >= i.`createdate`
 		</if>
+		<if test="id!=null and id!=''">
+			and i.`id`=#{id}
+		</if>
 		<if test="pic!=null and pic!=''">
-			and u.`realname` like concat('%',#{pic},'%')
+			AND  u.`realname` LIKE CONCAT('%', #{pic}, '%')
+			
 		</if>
 		<if test="state!=null and state!=''">
 			and i.`state`=#{state}
@@ -73,8 +77,8 @@
 		<if test="type!=null and type!=''">
 			and i.`type`=#{type}
 		</if>
-		<if test="id!=null and id!=''">
-			and i.`id` like concat('%',#{id},'%')
+		<if test="number!=null and number!=''">
+			and i.`number` like concat('%',#{number},'%')
 		</if>
 	</sql>
 	<sql id="activeInvoice">
@@ -84,7 +88,6 @@
 		<if test="endDate!=null and endDate!=''">
 			and #{endDate} > i.`createdate`
 		</if>
-
 	</sql>
 	<sql id="invoiceQ1">
 		<if test="utype==flag">
@@ -106,9 +109,11 @@
 		select * from mci_invoice where `id`=#{id}
 	</select>
 	<update id="activeInvoice" parameterType="invoice">
-		update mci_invoice i set i.`state`='2' where i.`id`=#{id}
+		update mci_invoice i
+		set i.`state`='2' where i.`id`=#{id}
 	</update>
 	<sql id="updateIn">
+	
 		<if test="client!=null and client!=''">
 			,`client`=#{client}
 		</if>
@@ -120,9 +125,6 @@
 		</if>
 		<if test="pic!=null and pic!=''">
 			,`pic`=#{pic}
-		</if>
-		<if test="pic2!=null and pic2!=''">
-			,`pic2`=#{pic2}
 		</if>
 		<if test="createDate!=null and createDate!=''">
 			,`createdate`=#{createDate}
@@ -196,7 +198,7 @@
 
 	</sql>
 	<update id="updateInvoice" parameterType="invoice">
-		update mci_invoice set `lastdate`=now()
+		update mci_invoice set `lastdate`=now() ,`pic2`=#{pic2}
 		<include refid="updateIn"></include>
 		where `id`=#{id}
 	</update>
@@ -208,8 +210,10 @@
 	<sql id="pic2">
 		<if test="pic2!=null and pic2!=''">
 			,
-			(SELECT user2.realname AS realname2,user2.username as username2 FROM
-			mci_invoice i ,mci_user user2 WHERE user2.id=#{pic2}) r2
+			(SELECT user2.realname AS realname2,user2.username as
+			username2 FROM
+			mci_invoice i ,mci_user user2 WHERE user2.id=#{pic2})
+			r2
 		</if>
 	</sql>
 	<select id="loadInvoice" parameterType="invoiceQuery" resultMap="invoiceAll">
@@ -222,11 +226,13 @@
 		i.id desc
 		limit #{startIndex},#{pageSize}
 	</select>
-	<select id="loadInvoiceForPrint" parameterType="invoiceQuery" resultMap="invoiceAll">
-	SELECT *
+	<select id="loadInvoiceForPrint" parameterType="invoiceQuery"
+		resultMap="invoiceAll">
+		SELECT *
 		FROM (mci_invoice i ,mci_client client
 		)
-		WHERE client.id=i.client
+		WHERE
+		client.id=i.client
 		<include refid="invoiceQ"></include>
 		order by
 		i.id desc
@@ -241,13 +247,14 @@
 		where i.id=#{id}
 	</select>
 	<select id="getaInvoice" parameterType="invoice" resultType="invoice">
-		select * from mci_invoice i where i.`id`=#{id} 
+		select * from mci_invoice i where i.`id`=#{id}
 	</select>
 	<select id="getaInvoiceAll" parameterType="invoice" resultMap="invoiceAll">
-		select * from mci_invoice i,mci_user u,mci_user u1 where i.`id`=#{id} 
-<!-- 		and i.`pic`=u.`id` and i.`pic2`=u1.`id` -->
- 	</select>
-	<select id="loadInvoiceCount" parameterType="invoiceQuery"	resultType="int">
+		select * from mci_invoice i,mci_user u,mci_user u1 where i.`id`=#{id}
+		<!-- and i.`pic`=u.`id` and i.`pic2`=u1.`id` -->
+	</select>
+	<select id="loadInvoiceCount" parameterType="invoiceQuery"
+		resultType="int">
 		select count(*) from
 		mci_invoice i where i.`id`!='0'
 		<include refid="invoiceQ"></include>
@@ -321,7 +328,7 @@
 		`invoice`=#{invoice} where `id`=#{item}
 	</update>
 	<update id="updateItemP" parameterType="itemP">
-		update  mci_item_p  set
+		update mci_item_p set
 		`description`=#{description},`payment`=#{amount},`date`=#{date} where
 		id=#{id}
 	</update>
@@ -406,7 +413,8 @@
 	<select id="getEditInvoice" parameterType="invoice" resultMap="invoiceAll">
 		select * from mci_invoice invoice,mci_client client,mci_user user
 		where invoice.id=#{id}
-		and client.id=invoice.client and invoice.pic=user.id
+		and client.id=invoice.client and
+		invoice.pic=user.id
 	</select>
 	<select id="getEditWorkersC" parameterType="string" resultType="workerC">
 		select * from mci_worker_c where invoice=#{invoiceid} order by id asc
@@ -451,14 +459,16 @@
 		mci_user
 	</select>
 	<select id="searchInvoice" parameterType="invoice" resultMap="invoiceAll">
-		select * from mci_invoice i,mci_user u,mci_client c
-		where i.pic=u.id
+		select * from mci_invoice i,mci_user u,mci_client c,mci_user u2
+		where
+		  (i.pic = u.id  OR i.pic2 = u.id)
 		and i.client=c.id
 		<include refid="QueryInvoice"></include>
 		<include refid="invoiceQ1"></include>
 		order by i.`id` desc
 	</select>
-	<select id="searchInvoiceForPrint" parameterType="invoice" resultType="invoice">
+	<select id="searchInvoiceForPrint" parameterType="invoice"
+		resultType="invoice">
 		select * from mci_invoice i,mci_user u,mci_client c
 		where i.pic=u.id
 		and i.client=c.id
@@ -495,8 +505,10 @@
 		(#{invoice},#{amount},#{bank},#{number})
 	</insert>
 	<insert id="addPayHistory" parameterType="payHistory">
-		insert into mci_pay_history
-		(`invoice`,`amount`,`mode`,`time`,`bank`,`number`) values
+		insert into
+		mci_pay_history
+		(`invoice`,`amount`,`mode`,`time`,`bank`,`number`)
+		values
 		(#{invoice},#{amount},#{mode},now(),#{bank},#{number})
 	</insert>
 	<update id="clearInvoice">
@@ -510,24 +522,34 @@
 		select * from mci_pay_history where invoice=#{id} order by id desc
 	</select>
 	<update id="setCommission" parameterType="invoice">
-		update mci_invoice set `commission`=#{commission} where `id`=#{id}
+		update mci_invoice set
+		`commission`=#{commission} where `id`=#{id}
 	</update>
 	<select id="setItemTotalF" parameterType="ItemTotal" resultType="string">
 		SELECT SUM(`itemRate`)
 		FROM
-		mci_item_f WHERE `invoice`=#{invoiceId} AND `itemName`=#{itemName}
+		mci_item_f WHERE `invoice`=#{invoiceId} AND
+		`itemName`=#{itemName}
 	</select>
 	<select id="setItemTotalC" parameterType="ItemTotal" resultType="string">
 		SELECT SUM(`amount`)
 		FROM
-		mci_item_c WHERE `invoice`=#{invoiceId} AND `desc`=#{itemName}
+		mci_item_c WHERE `invoice`=#{invoiceId} AND
+		`desc`=#{itemName}
 	</select>
 	<select id="setItemTotalT" parameterType="ItemTotal" resultType="string">
 		SELECT SUM(`amount`)
 		FROM
-		mci_item_t WHERE `invoice`=#{invoiceId} AND `desc`=#{itemName}
+		mci_item_t WHERE `invoice`=#{invoiceId} AND
+		`desc`=#{itemName}
 	</select>
 	<select id="getLastIdByType" resultType="string" parameterType="string">
-	   select max(`number`) from mci_invoice where `type`=#{type}
+		select max(`number`) from mci_invoice where `type`=#{type}
+	</select>
+	<select id="getInvoiceOfUser"  parameterType="userQuery" resultMap="invoiceAll">
+	select * from mci_invoice i ,mci_client c where (i.pic=#{userid} or i.pic2=#{userid}) AND i.`client`=c.`id`  ORDER BY i.id desc  limit #{startIndex},#{pageSize}
+	</select>
+	<select id="getInvoiceOfUserCount"  parameterType="client" resultType="invoice">
+	select * from mci_invoice i  where i.pic=#{id} or i.pic2=#{id} 
 	</select>
 </mapper>

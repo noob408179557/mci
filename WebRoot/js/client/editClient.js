@@ -370,6 +370,8 @@ $(document)
 															// remark :
 															// $("#cRemark").val(),
 															trade : $("#cTrade")
+																	.val(),
+																	remark : $("#cRemark")
 																	.val()
 														},
 														error : function(data) {

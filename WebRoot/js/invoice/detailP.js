@@ -38,7 +38,7 @@ function init() {
 			$("#companyAddress").val(data.cpObject.billaddress);
 			$("#companyCountry").val(data.cpObject.country);
 			$("#companyName").val(data.clientObject.companyName);
-			$("#subTotal").val(data.total);
+			$("#subTotal").val(parseFloat(data.total).toFixed(1));
 			$("#gst").val((data.total * 0.07).toFixed(1));
 			$("#totalAmount").val((data.total * 1.07).toFixed(1));
 			$.ajax({
@@ -109,7 +109,7 @@ function showItem() {
 												+ "id='itemTotalAmount"
 												+ data[j].id
 												+ "' value="
-												+ data[j].payment
+												+ parseFloat(data[j].payment).toFixed(1)
 												+" type='text' style='width:80%;border-top:0px ;border-left:0px;border-right:0px;border-bottom:0px;' readOnly='true'/>"
 												+ "</td>"
 												+ "</tr>");

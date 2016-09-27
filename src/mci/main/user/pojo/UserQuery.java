@@ -7,14 +7,23 @@ import mci.main.client.pojo.Client;
 public class UserQuery implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private User user;
-	private int pageIndex;
+	private int pageIndex=1;
 	public static int pageSize = 10;
 	private int startIndex;
 	private int endIndex;
 	private int totalPage;
 	private int totalCount;
-
+    private int userid;
+    
 	
+	public int getUserid() {
+		return userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}
+
 	public User getUser() {
 		return user;
 	}

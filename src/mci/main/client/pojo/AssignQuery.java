@@ -13,6 +13,14 @@ public class AssignQuery implements Serializable {
 	private int endIndex;
 	private int totalPage;
 	private int totalCount;
+	private int client;
+	
+	public int getClient() {
+		return client;
+	}
+	public void setClient(int client) {
+		this.client = client;
+	}
 	public User getUser() {
 		return user;
 	}

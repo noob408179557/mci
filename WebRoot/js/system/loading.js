@@ -82,7 +82,6 @@ function  loadClient(){
 		$("#searchbtn").show();
 	}else if(loadPow==2){
 		console.log("loadClient:2");
-		$("#createClient").show();
 		$("#edit").show();
 		$("#assign").show();
 		$("#account").show();

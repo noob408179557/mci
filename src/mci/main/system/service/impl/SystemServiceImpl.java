@@ -81,7 +81,7 @@ public class SystemServiceImpl implements SystemService {
 		ts.sendMessage(message, message.getAllRecipients());
 		ts.close();
 	}
-	public Message createEmail( String content, String address)
+	public Message createEmail(String content, String address)
 			throws AddressException, MessagingException {
 		
 		prop.setProperty("mail.host", "smtp.163.com");
@@ -99,7 +99,7 @@ public class SystemServiceImpl implements SystemService {
 		 ts = session.getTransport();
 		// 3、使用邮箱的用户名和密码连上邮件服务器，发送邮件时，发件人需要提交邮箱的用户名和密码给smtp服务器，用户名和密码都通过验证之后才能够正常发送邮件给收件人。
 		// connect第三个参数为授权码
-		ts.connect("smtp.163.com", "13262908892@163.com", "ab197015");
+		ts.connect("smtp.163.com", "13262908892@163.com", "hehe123456");
 		
 		// 创建邮件对象
 		Message message = new MimeMessage(session);

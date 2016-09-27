@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import mci.main.client.pojo.Client;
+import mci.main.invoice.pojo.Invoice;
 import mci.main.user.pojo.User;
 import mci.main.user.pojo.UserQuery;
 
@@ -20,6 +22,8 @@ public interface UserService {
 	List<User> getUserList2(UserQuery uq);
 	
 	List<User> getUserList24admin(UserQuery uq);
+	
+	List<Invoice> getInvoiceOfUser(UserQuery uq);
 
 	int getUserPage(UserQuery uq,User user);
 	
@@ -36,5 +40,7 @@ public interface UserService {
 	void resetPassword(@Param("userid")String userid);
 	
 	List<User> getUsers();
+
+	List<Invoice> getInvoiceOfUserCount(Client client);
 
 }

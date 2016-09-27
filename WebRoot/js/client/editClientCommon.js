@@ -1,172 +1,178 @@
-
 $(document)
 		.ready(
 				function() {
-				
+
 					$("#createCP")
-					.click(
-							function() {
-								var actived = "<th style='text-align:left;vertical-align : middle; color:green'><span class='label label-table label-success '>Actived</span></th>";
-								var resigned = "<th style='text-align:left;vertical-align : middle; color:red'><span class='label label-table label-inverse'>Resigned</span></th>";
+							.click(
+									function() {
 
-								if ($("#cpName").val() != ""
-										&& $("#cpEmail").val() != ""
-										&& $("#cpBillAddress").val() != ""
-										&& $("#cpPosition").val() != ""
-										&& $("#cpPostal").val() != ""
-										&& $("#cpTel").val() != "") {
-									if (isNaN($("#cpTel").val())
-											|| isNaN($("#cpPostal")
-													.val())) {
-										swal("Please input in correct format!");
-										return false;
-									}
-									$
-											.ajax({
-												type : "POST",
-												url : "addContactPerson.do",
-												dateType : "json",
-												data : {
-													companyid : $(
-															"#clientId")
-															.val(),
-													name : $("#cpName")
-															.val(),
-													email : $(
-															"#cpEmail")
-															.val(),
-													billaddress : $(
-															"#cpBillAddress")
-															.val(),
-													position : $(
-															"#cpPosition")
-															.val(),
-													postal : $(
-															"#cpPostal")
-															.val(),
-													mobile : $(
-															"#cpMobile")
-															.val(),
-													tel : $("#cpTel")
-															.val(),
-													status : $(
-															"#cpStatus")
-															.val()
+										if(veryfyEmail($("#cpEmail").val())){
+											
+										
+										var actived = "<th style='text-align:left;vertical-align : middle; color:green'><span class='label label-table label-success '>Actived</span></th>";
+										var resigned = "<th style='text-align:left;vertical-align : middle; color:red'><span class='label label-table label-inverse'>Resigned</span></th>";
 
-												},
-												error : function(data) {
-													alert("server error!");
-												},
-												success : function(data) {
-													//addKey(data);
-													// 点击createContactPerson后显示到table
-
-													var head = "<tr id='row"
-															+ data
-															+ "'>"
-															+ "<td style='vertical-align:middle;'>"
-															+ $(
-																	"#cpName")
-																	.val()
-															+ "</td>"
-															+ "<td  style='vertical-align:middle;'>"
-															+ $(
+										if ($("#cpName").val() != ""
+												&& $("#cpEmail").val() != ""
+												&& $("#cpBillAddress").val() != ""
+												&& $("#cpPosition").val() != ""
+												&& $("#cpPostal").val() != ""
+												&& $("#cpTel").val() != "") {
+											if (isNaN($("#cpTel").val())
+													|| isNaN($("#cpPostal")
+															.val())) {
+												swal("Please input in correct format!");
+												return false;
+											}
+											$
+													.ajax({
+														type : "POST",
+														url : "addContactPerson.do",
+														dateType : "json",
+														data : {
+															companyid : $(
+																	"#clientId")
+																	.val(),
+															name : $("#cpName")
+																	.val(),
+															email : $(
 																	"#cpEmail")
-																	.val()
-															+ "</td><td  style='vertical-align:middle;'>"
-															+ $(
+																	.val(),
+															billaddress : $(
 																	"#cpBillAddress")
-																	.val()
-															+ "</td><td  style='vertical-align:middle;'>"
-															+ $(
-																	"#cpPostal")
-																	.val()
-															+ "</td><td  style='vertical-align:middle;'>"
-															+ $(
-																	"#cpTel")
-																	.val()
-															+ "</td><td  style='vertical-align:middle;'>"
-															+ $(
+																	.val(),
+															position : $(
 																	"#cpPosition")
-																	.val()
-															+ "</td>";
-													var status=null;
-													if($("#cpStatus").val()=="active"){
-														status=actived;
-													}else{
-														status=resigned;
-													}
-													var leg ="<td style='vertical-align:middle;'><a title='edit' class='btn btn-primary  btn-lg' onclick='editRow("
-														+ data
-														+ ")' href='javascript:void(0)' id='editRow"
-														+ data
-														+ "'>"
-														+ "<i class='glyphicon glyphicon-edit'></i></a> <a  title='remove' class='btn btn-danger  btn-lg  remove' onclick='removeRow("
-														+ data
-														+ ")' href='javascript:void(0)' id='removeRow"
-														+ data
-														+ "'><i class='glyphicon glyphicon-trash'></i></a><a onclick='addKey("
-														+ data
-														+ ")' class='addKey' style='display:none'></td>"
-														+ "</tr>";
-													
-													var one=head+status+leg;
-													$(
-															"#addContactPerson")
-															.append(one);
-													// 清空modal中的数据
-													x++;
-													$("#cpName")
-															.val("");
-													$("#cpEmail").val(
-															"");
-													$("#cpBillAddress")
-															.val("");
-													$("#cpPosition")
-															.val("");
-													$("#cpState").val(
-															"");
-													$("#cpBlock").val(
-															"");
-													$("#cpLevel").val(
-															"");
-													$("#cpUnit")
-															.val("");
-													$("#cpPostal").val(
-															"");
-													$("#cpMobile").val(
-															"");
-													$("#cpTel").val("");
-													var status = document
-															.getElementById("cpStatus");
-													for (var i = 0; i < status.length; i++) {
-														if (status[i].value == "active") {
-															status[i].selected = true;
-															$(
+																	.val(),
+															postal : $(
+																	"#cpPostal")
+																	.val(),
+															mobile : $(
+																	"#cpMobile")
+																	.val(),
+															tel : $("#cpTel")
+																	.val(),
+															status : $(
 																	"#cpStatus")
-																	.selectpicker(
-																			"refresh");
-														}
-													}
-												}
-											});
-								} else {
-									swal("Required cannot be empty!");
-									return false;
-								}
+																	.val()
 
-							});
-			// 点击save保存cp信息时触发事件
-			$("#saveCP").click(function() {
-				updateContactPerson();
-			});
-			// 点击创建Client时触发事件
-			$("#creatClient").click(function() {
-				createClient();
-			});
+														},
+														error : function(data) {
+															alert("server error!");
+														},
+														success : function(data) {
+															// addKey(data);
+															// 点击createContactPerson后显示到table
+
+															var head = "<tr id='row"
+																	+ data
+																	+ "'>"
+																	+ "<td style='vertical-align:middle;'>"
+																	+ $(
+																			"#cpName")
+																			.val()
+																	+ "</td>"
+																	+ "<td  style='vertical-align:middle;'>"
+																	+ $(
+																			"#cpEmail")
+																			.val()
+																	+ "</td><td  style='vertical-align:middle;'>"
+																	+ $(
+																			"#cpBillAddress")
+																			.val()
+																	+ "</td><td  style='vertical-align:middle;'>"
+																	+ $(
+																			"#cpPostal")
+																			.val()
+																	+ "</td><td  style='vertical-align:middle;'>"
+																	+ $(
+																			"#cpTel")
+																			.val()
+																	+ "</td><td  style='vertical-align:middle;'>"
+																	+ $(
+																			"#cpPosition")
+																			.val()
+																	+ "</td>";
+															var status = null;
+															if ($("#cpStatus")
+																	.val() == "active") {
+																status = actived;
+															} else {
+																status = resigned;
+															}
+															var leg = "<td style='vertical-align:middle;'><a title='edit' class='btn btn-primary  btn-lg' onclick='editRow("
+																	+ data
+																	+ ")' href='javascript:void(0)' id='editRow"
+																	+ data
+																	+ "'>"
+																	+ "<i class='glyphicon glyphicon-edit'></i></a> <a  title='remove' class='btn btn-danger  btn-lg  remove' onclick='removeRow("
+																	+ data
+																	+ ")' href='javascript:void(0)' id='removeRow"
+																	+ data
+																	+ "'><i class='glyphicon glyphicon-trash'></i></a><a onclick='addKey("
+																	+ data
+																	+ ")' class='addKey' style='display:none'></td>"
+																	+ "</tr>";
+
+															var one = head
+																	+ status
+																	+ leg;
+															$(
+																	"#addContactPerson")
+																	.append(one);
+															// 清空modal中的数据
+															x++;
+															$("#cpName")
+																	.val("");
+															$("#cpEmail").val(
+																	"");
+															$("#cpBillAddress")
+																	.val("");
+															$("#cpPosition")
+																	.val("");
+															$("#cpState").val(
+																	"");
+															$("#cpBlock").val(
+																	"");
+															$("#cpLevel").val(
+																	"");
+															$("#cpUnit")
+																	.val("");
+															$("#cpPostal").val(
+																	"");
+															$("#cpMobile").val(
+																	"");
+															$("#cpTel").val("");
+															var status = document
+																	.getElementById("cpStatus");
+															for (var i = 0; i < status.length; i++) {
+																if (status[i].value == "active") {
+																	status[i].selected = true;
+																	$(
+																			"#cpStatus")
+																			.selectpicker(
+																					"refresh");
+																}
+															}
+														}
+													});
+										} else {
+											swal("Required cannot be empty!");
+											return false;
+										}
+										}
+									});
+					// 点击save保存cp信息时触发事件
+					$("#saveCP").click(function() {
+						updateContactPerson();
+					});
+					// 点击创建Client时触发事件
+					$("#creatClient").click(function() {
+						createClient();
+					});
 				});
 
-//删除一个contactPerson
+// 删除一个contactPerson
 function removeRow(i) {
 	$.ajax({
 		type : "POST",
@@ -184,8 +190,8 @@ function removeRow(i) {
 		}
 	});
 }
-//editContactPerson
-//回显ContactPerson的信息
+// editContactPerson
+// 回显ContactPerson的信息
 function editRow(x) {
 	$.ajax({
 		type : "POST",
@@ -223,7 +229,7 @@ function editRow(x) {
 		}
 	});
 }
-//update ContactPerson
+// update ContactPerson
 function updateContactPerson() {
 	if ($("#editName").val() != "" && $("#editEmail").val() != ""
 			&& $("#editBillAddress").val() != ""
@@ -262,61 +268,55 @@ function updateContactPerson() {
 						// 然后写入新的行
 						var actived = "<th style='text-align:left;vertical-align : middle; color:green'><span class='label label-table label-success'>Actived</span></th>";
 						var resigned = "<th style='text-align:left;vertical-align : middle; color:red'><span class='label label-table label-inverse'>Resigned</span></th>";
-					
-						var head=
-										"<tr id='row"
-												+ data
-												+ "'>"
-												+ "<td  style='vertical-align:middle;'>"
-												+ $("#editName").val()
-												+ "</td>"
-												+ "<td  style='vertical-align:middle;'>"
-												+ $("#editEmail").val()
-												+ "</td><td  style='vertical-align:middle;'>"
-												+ $("#editBillAddress").val()
-												+ "</td><td  style='vertical-align:middle;'>"
-												+ $("#editPostal").val()
-												+ "</td><td  style='vertical-align:middle;'>"
-												+ $("#editTel").val()
-												+ "</td><td  style='vertical-align:middle;'>"
-												+ $("#editPosition").val()
-												+ "</td>";
-						
+
+						var head = "<tr id='row" + data + "'>"
+								+ "<td  style='vertical-align:middle;'>"
+								+ $("#editName").val() + "</td>"
+								+ "<td  style='vertical-align:middle;'>"
+								+ $("#editEmail").val()
+								+ "</td><td  style='vertical-align:middle;'>"
+								+ $("#editBillAddress").val()
+								+ "</td><td  style='vertical-align:middle;'>"
+								+ $("#editPostal").val()
+								+ "</td><td  style='vertical-align:middle;'>"
+								+ $("#editTel").val()
+								+ "</td><td  style='vertical-align:middle;'>"
+								+ $("#editPosition").val() + "</td>";
+
 						var status = null;
 						if ($("#editStatus").val() == "active") {
 							status = actived;
 						} else {
 							status = resigned;
 						}
-						if(pow!=1){
-							var leg ="<td style='vertical-align:middle;'><a title='edit' class='btn btn-primary  btn-lg' onclick='editRow("
-								+ data
-								+ ")' href='javascript:void(0)' id='editRow"
-								+ data
-								+ "'>"
-								+ "<i class='glyphicon glyphicon-edit'></i></a> <a  title='remove' class='btn btn-danger  btn-lg  remove' onclick='removeRow("
-								+ data
-								+ ")' href='javascript:void(0)' id='removeRow"
-								+ data
-								+ "'><i class='glyphicon glyphicon-trash'></i></a><a onclick='addKey("
-								+ data
-								+ ")' class='addKey' style='display:none'></td>"
-								+ "</tr>";
-						}else{
-							var leg="<td style='vertical-align:middle;'><a class='btn btn-danger  btn-lg' onclick='editRow("
-								+ data
-								+ ")' href='javascript:void(0)' id='editRow"
-								+ data
-								+ "'>"
-								+ "<i class='glyphicon glyphicon-edit'></i></a> <a onclick='addKey("
-								+ data
-								+ ")' class='addKey' style='display:none'></td>"
-								+ "</tr>";
+						if (pow != 1) {
+							var leg = "<td style='vertical-align:middle;'><a title='edit' class='btn btn-primary  btn-lg' onclick='editRow("
+									+ data
+									+ ")' href='javascript:void(0)' id='editRow"
+									+ data
+									+ "'>"
+									+ "<i class='glyphicon glyphicon-edit'></i></a> <a  title='remove' class='btn btn-danger  btn-lg  remove' onclick='removeRow("
+									+ data
+									+ ")' href='javascript:void(0)' id='removeRow"
+									+ data
+									+ "'><i class='glyphicon glyphicon-trash'></i></a><a onclick='addKey("
+									+ data
+									+ ")' class='addKey' style='display:none'></td>"
+									+ "</tr>";
+						} else {
+							var leg = "<td style='vertical-align:middle;'><a class='btn btn-danger  btn-lg' onclick='editRow("
+									+ data
+									+ ")' href='javascript:void(0)' id='editRow"
+									+ data
+									+ "'>"
+									+ "<i class='glyphicon glyphicon-edit'></i></a> <a onclick='addKey("
+									+ data
+									+ ")' class='addKey' style='display:none'></td>"
+									+ "</tr>";
 						}
-						
-						var one=head+status+leg;
-						$("#addContactPerson")
-						.append(one);
+
+						var one = head + status + leg;
+						$("#addContactPerson").append(one);
 					}
 				});
 	} else {
