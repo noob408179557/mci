@@ -193,7 +193,7 @@
 	<!-- createInvoice -->
 	<select id="loadActivedClient" parameterType="clientQuery" resultMap="clientAll">
 		select * from mci_client c,mci_user user where c.pic=user.id
-		and c.state='2'  
+		and (c.state="2"  OR c.state='3') 
 		<include refid="loadClientQ"></include>
 		order by c.id desc
 		limit #{startIndex},#{pageSize}

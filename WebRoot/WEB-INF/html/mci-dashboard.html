@@ -67,10 +67,10 @@
 
 			<!-- LOGO -->
 			<div class="topbar-left">
-				<div class="text-center" style="background:#594f8d">
+				<div class="text-center" style="background: #594f8d">
 					<a href="#" class="waves-effect"></i><span align="middle"><h1>
-								<font color="#fff">MCI<input type="hidden"  value=""
-										id="clientId">
+								<font color="#fff">MCI<input type="hidden" value=""
+									id="clientId">
 								</font>
 							</h1> </span> </a>
 				</div>
@@ -83,7 +83,7 @@
 
 		<!-- ========== Left Sidebar Start ========== -->
 
-		<div class="left side-menu " style="background:#594f8d">
+		<div class="left side-menu " style="background: #594f8d">
 			<div class="sidebar-inner slimscrollleft">
 				<!--- Divider -->
 				<div id="sidebar-menu">
@@ -99,21 +99,23 @@
 										class="ti-power-off m-r-5"></i>Logout</a></li>
 							</ul></li>
 
-						<li class="" id="dashboard" style="display: none;"><a class="waves-effect "
-							onclick="location.href='mci-dashboard.do'"><font color="#fff">
-									<i class="md md-remove-red-eye"></i><span>Dashboard 
-							</font></span> </a></li>
-					<li class="has_sub" id="invoice" onclick="location.href='mci-staffInvoice.do'" style="display: none;"><a
-							class="waves-effect"><font color="#fff"><i
-									class="md md-event-note"></i>Invoice</font> </a>
-						</li>
-						<li class="has_sub" id="client"  style="display: none;" onclick="location.href='mci-staffClient.do'"><a
+						<li class="" id="dashboard" style="display: none;"><a
+							class="waves-effect active " onclick="location.href='mci-dashboard.do'"><font
+								color="#fff"> <i class="md md-remove-red-eye"></i><span>Dashboard
+								</font></span> </a></li>
+						<li class="has_sub" id="invoice"
+							onclick="location.href='mci-staffInvoice.do'"
+							style="display: none;"><a class="waves-effect"><font
+								color="#fff"><i class="md md-event-note"></i>Invoice</font> </a></li>
+						<li class="has_sub" id="client" style="display: none;"
+							onclick="location.href='mci-staffClient.do'"><a
 							class="waves-effect "> <font color="#fff"><i
 									class="md md-people"></i>Client</font> </span>
 						</a></li>
-						<li class="has_sub" id="register" style="display: none;"><a class="waves-effect"
-							onclick="location.href='mci-register.do'"> <font color="#fff"><i
-									class="glyphicon glyphicon-plus"></i> Register</font>
+						<li class="has_sub" id="register" style="display: none;"><a
+							class="waves-effect" onclick="location.href='mci-register.do'">
+								<font color="#fff"><i class="glyphicon glyphicon-plus"></i>
+									Register</font>
 						</a></li>
 						<li id="user" class="has_sub" style="display: none;"
 							onclick="location.href='mci-user.do'"><a
@@ -127,22 +129,96 @@
 			</div>
 		</div>
 		<!-- Left Sidebar End -->
-        <div class="content-page">
+		<div class="content-page">
 			<!-- Start content -->
 			<div class="content header">
 				<div class="container ">
-				
+				<div class="col-sm-6 col-md-6 col-lg-3">
+						<div class="widget-bg-color-icon card-box">
+							<div class="bg-icon bg-icon-success pull-left">
+								<i class="md md-account-child text-success"></i>
+							</div>
+							<div class="text-right">
+								<h3 class="text-dark">
+									<b class="counter" id="clientQty"></b>
+								</h3>
+								<p class="text-muted">Client Qty</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-6 col-lg-3">
+						<div class="widget-bg-color-icon card-box">
+							<div class="bg-icon bg-icon-purple pull-left">
+								<i class="md  md-event-note text-purple"></i>
+							</div>
+							<div class="text-right">
+								<h3 class="text-dark">
+									<b class="counter" id="invoiceQty"></b>
+								</h3>
+								<p class="text-muted">Invoice Qty</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<!--  -->
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card-box widget-inline">
+								<div class="row">
+									
+
+									<div class="col-lg-3 col-sm-6">
+										<div class="widget-inline-box text-center">
+											<h3>
+												<i class="text-purple md md-attach-money"></i> <b id="totalAmount"></b>
+											</h3>
+											<h4 class="text-muted">Total amount</h4>
+										</div>
+									</div>
+
+									<div class="col-lg-3 col-sm-6">
+										<div class="widget-inline-box text-center">
+											<h3>
+												<i class="text-purple md md-attach-money"></i> <b id="amountPaid"></b>
+											</h3>
+											<h4 class="text-muted">Amount paid</h4>
+										</div>
+									</div>
+
+									<div class="col-lg-3 col-sm-6">
+										<div class="widget-inline-box text-center b-0">
+											<h3>
+												<i class="text-purple md md-attach-money"></i> <b id="unpaidAmount"></b>
+											</h3>
+											<h4 class="text-muted">Unpaid amount</h4>
+										</div>
+									</div>
+                                    <div class="col-lg-3 col-sm-6">
+										<div class="widget-inline-box text-center">
+											<h3>
+												<i class="text-purple md md-attach-money"></i><b id="commission"></b>
+											</h3>
+											<h4 class="text-muted">Commission paid</h4>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
 				</div>
-				</div>
-				</div>
+			</div>
+		</div>
 		<!-- ============================================================== -->
 		<!-- Start right Content here -->
 		<!-- ============================================================== -->
-		
+
 		<!-- content -->
 	</div>
 	<!-- Modal Start-->
-	
+
 	<!-- 修改 -->
 
 	<!-- ============================================================== -->
@@ -202,11 +278,12 @@
 	<script src="assets/pages/datatables.editable.init.js"></script>
 	<script src="assets/plugins/moment/moment.js"></script>
 	<script src="assets/plugins/timepicker/bootstrap-timepicker.min.js"></script>
-	<script src="assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	<script
+		src="assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 	<script src="assets/plugins/custombox/dist/custombox.min.js"></script>
 	<script src="assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="assets/plugins/custombox/dist/legacy.min.js"></script>
 	<script src="js/system/login.js"></script>
-		<script src="js/system/dashBoard.js"></script>
+	<script src="js/system/dashBoard.js"></script>
 </body>
 </html>

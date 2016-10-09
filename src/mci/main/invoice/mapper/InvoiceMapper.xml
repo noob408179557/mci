@@ -29,7 +29,7 @@
 			<result property="realName" column="realname2" />
 			<result property="username" column="username2" />
 		</association>
-	    <association property="clientObject" javaType="mci.main.client.pojo.Client">
+		<association property="clientObject" javaType="mci.main.client.pojo.Client">
 			<id property="id" column="id" />
 			<result property="companyName" column="companyname" />
 		</association>
@@ -65,8 +65,8 @@
 			and i.`id`=#{id}
 		</if>
 		<if test="pic!=null and pic!=''">
-			AND  u.`realname` LIKE CONCAT('%', #{pic}, '%')
-			
+			AND u.`realname` LIKE CONCAT('%', #{pic}, '%')
+
 		</if>
 		<if test="state!=null and state!=''">
 			and i.`state`=#{state}
@@ -113,7 +113,7 @@
 		set i.`state`='2' where i.`id`=#{id}
 	</update>
 	<sql id="updateIn">
-	
+
 		<if test="client!=null and client!=''">
 			,`client`=#{client}
 		</if>
@@ -461,7 +461,7 @@
 	<select id="searchInvoice" parameterType="invoice" resultMap="invoiceAll">
 		select * from mci_invoice i,mci_user u,mci_client c,mci_user u2
 		where
-		  (i.pic = u.id  OR i.pic2 = u.id)
+		(i.pic = u.id OR i.pic2 = u.id)
 		and i.client=c.id
 		<include refid="QueryInvoice"></include>
 		<include refid="invoiceQ1"></include>
@@ -546,10 +546,41 @@
 	<select id="getLastIdByType" resultType="string" parameterType="string">
 		select max(`number`) from mci_invoice where `type`=#{type}
 	</select>
-	<select id="getInvoiceOfUser"  parameterType="userQuery" resultMap="invoiceAll">
-	select * from mci_invoice i ,mci_client c where (i.pic=#{userid} or i.pic2=#{userid}) AND i.`client`=c.`id`  ORDER BY i.id desc  limit #{startIndex},#{pageSize}
+	<select id="getInvoiceOfUser" parameterType="userQuery"
+		resultMap="invoiceAll">
+		select * from mci_invoice i ,mci_client c where (i.pic=#{userid} or
+		i.pic2=#{userid}) AND i.`client`=c.`id` ORDER BY i.id desc limit
+		#{startIndex},#{pageSize}
 	</select>
-	<select id="getInvoiceOfUserCount"  parameterType="client" resultType="invoice">
-	select * from mci_invoice i  where i.pic=#{id} or i.pic2=#{id} 
+	<select id="getInvoiceOfUserCount" parameterType="client"
+		resultType="invoice">
+		select * from mci_invoice i where i.pic=#{id} or i.pic2=#{id}
+	</select>
+	<select id="getUserInfo" parameterType="user" resultType="userInfo">
+		SELECT
+		COUNT(*) AS invoiceQty,
+		SUM(i.`total`) AS totalAmount,
+		SUM(i.`residual`) AS unpaidAmount ,
+		SUM(i.`commission`) AS commission,
+		SUM(i.`total`)-SUM(i.`residual`) AS amountPaid,
+		COUNT(DISTINCT c.id) AS clientQty
+		FROM
+		mci_invoice i,
+		mci_client c
+		WHERE (i.`pic` = #{id}
+		OR i.`pic2` = #{id})
+		AND i.`client` = c.`id`
+	</select>
+	<select id="getUserInfo4Admin" parameterType="user" resultType="userInfo">
+		SELECT
+		COUNT(DISTINCT i.id) AS invoiceQty,
+		SUM(i.`total`) AS totalAmount,
+		SUM(i.`residual`) AS unpaidAmount ,
+		SUM(i.`commission`) AS commission,
+		SUM(i.`total`)-SUM(i.`residual`) AS amountPaid,
+		COUNT(DISTINCT c.id) AS clientQty
+		FROM
+		mci_invoice i,
+		mci_client c
 	</select>
 </mapper>

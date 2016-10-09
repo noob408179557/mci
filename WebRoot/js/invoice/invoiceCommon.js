@@ -349,7 +349,7 @@ $(document)
 														type : "POST",
 														url : "editInvoice.do",
 														dataType : "json",
-
+                                                        async:false,
 														data : {
 															id : $(
 																	"input[name='select']:checked")
@@ -359,19 +359,7 @@ $(document)
 															swal("editInvoice.do Error!");
 														},
 														success : function(data) {
-															if (data.type == "C") {
-																window
-																		.open("mci-detailC.do");
-															} else if (data.type == "F") {
-																window
-																		.open("mci-detailF.do");
-															} else if (data.type == "P") {
-																window
-																		.open("mci-detailP.do");
-															} else if (data.type == "T") {
-																window
-																		.open("mci-detailT.do");
-															}
+															openwindow(data);
 														}
 													})
 										} else {
@@ -1001,4 +989,20 @@ function selectAllItem() {
 		$("#exportModel").modal();
 	}
 	selectItem++;
+}
+function openwindow(data){
+	if (data.type == "C") {
+		window
+				.open("mci-detailC.do");
+	} else if (data.type == "F") {
+		window
+				.open("mci-detailF.do");
+	} else if (data.type == "P") {
+		window
+				.open("mci-detailP.do");
+	} else if (data.type == "T") {
+		window
+				.open("mci-detailT.do");
+		
+	}
 }

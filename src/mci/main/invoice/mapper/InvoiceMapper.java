@@ -16,6 +16,7 @@ import mci.main.invoice.pojo.ItemT;
 import mci.main.invoice.pojo.ItemTotal;
 import mci.main.invoice.pojo.PayHistory;
 import mci.main.invoice.pojo.WorkerC;
+import mci.main.system.pojo.UserInfo;
 import mci.main.user.pojo.User;
 import mci.main.user.pojo.UserQuery;
 
@@ -171,4 +172,8 @@ public interface InvoiceMapper {
 	List<Invoice> getInvoiceOfUser(UserQuery uq);
 	
 	List<Invoice> getInvoiceOfUserCount(Client client);
+	
+	UserInfo getUserInfo(User user);
+	
+	UserInfo getUserInfo4Admin(User user);
 }

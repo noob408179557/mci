@@ -273,7 +273,7 @@ function showWorker() {
 															+ data[j].id
 															+ "'>"
 															+ "<td></td>"
-															+ "<td colspan='2'>"
+															+ "<td colspan='2'  style='vertical-align:middle;'>"
 															+ "<div style='padding-left:0px;width:254px'>"
 															+ "<select class='selectpicker' disabled='disabled' data-style='btn-white' data-live-search='true'  id='desc"
 															+ data[j].id

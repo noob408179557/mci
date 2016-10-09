@@ -1,6 +1,7 @@
 package mci.main.system.controller;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import mci.main.invoice.pojo.Invoice;
 import mci.main.invoice.service.InvoiceService;
+import mci.main.system.pojo.UserInfo;
 import mci.main.system.service.SystemService;
+import mci.main.user.pojo.User;
+import mci.main.user.service.UserService;
 
 @Controller
 public class SystemController {
@@ -20,6 +24,9 @@ public class SystemController {
 	
 	@Autowired
 	private InvoiceService invoiceServiceImpl;
+	
+	@Autowired
+	private UserService userServiceImpl;
 	
 	@ResponseBody
 	@RequestMapping(value = "sendEmailToAdmin", method = RequestMethod.POST)
@@ -41,5 +48,17 @@ public class SystemController {
 		systemServiceImpl.sendCustomMail(mess,id);
 		invoiceServiceImpl.activeInvoice(invoice);
 		return  "0";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getUserInfo", method = RequestMethod.POST)
+	public UserInfo getUserInfo(HttpSession session){
+		User user=(User)session.getAttribute("user");
+		if(user.getType().equals("1")){
+			return systemServiceImpl.getUserInfo(user);
+		}else{
+			return systemServiceImpl.getUserInfo4Admin(user);
+		}
+		
 	}
 }

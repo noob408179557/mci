@@ -68,7 +68,8 @@ function init() {
 };
 // 打印
 function printThisPage() {
-	$("#printPage").click();
+	//$("#printPage").click();
+	window.print();
 }
 // 刷新datepicker
 // edit功能---------------------------------------------------------------------------------------------

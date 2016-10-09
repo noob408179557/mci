@@ -3,8 +3,10 @@ package mci.main.system.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -22,6 +24,7 @@ import mci.main.client.pojo.Client;
 import mci.main.invoice.mapper.InvoiceMapper;
 import mci.main.invoice.pojo.Invoice;
 import mci.main.system.mapper.SystemMapper;
+import mci.main.system.pojo.UserInfo;
 import mci.main.system.service.SystemService;
 import mci.main.user.mapper.UserMapper;
 import mci.main.user.pojo.User;
@@ -44,7 +47,7 @@ public class SystemServiceImpl implements SystemService {
 	@Autowired
 	private Properties prop = new Properties();
 	
-
+    private Set<String> idSet=new HashSet<String>();
 	
 	private static Transport ts;
 	
@@ -52,7 +55,11 @@ public class SystemServiceImpl implements SystemService {
 	@Override
 	public boolean sendEmailToAdmin() throws MessagingException {
 		Client client=clientMapper.getLastClient();
-		
+		if(idSet.contains(client.getId())){
+			return false;
+		}else{
+			idSet.add(client.getId());
+		}
 		List<User> list = systemMapper.getAllAdmin();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
 		String content="A new client  created at "+format.format(new Date())+",Information is id:"+client.getId();
@@ -140,6 +147,18 @@ public class SystemServiceImpl implements SystemService {
 //        	}
         }
 		return false;
+	}
+
+	@Override
+	public UserInfo getUserInfo(User user) {
+
+		return invoiceMapper.getUserInfo(user);
+	}
+
+	@Override
+	public UserInfo getUserInfo4Admin(User user) {
+		
+		return invoiceMapper.getUserInfo4Admin(user);
 	}
 
 	

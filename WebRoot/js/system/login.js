@@ -27,7 +27,7 @@ $(document).ready(function() {
 		 */
 
 		$.ajax({
-			type : "POST",
+			type :"POST",
 			url : "user_login.do",
 			data : {
 				email : name,
@@ -47,7 +47,7 @@ $(document).ready(function() {
 				if (data.i == "0") {
 					swal("Log in fail!");
 				} else if (data.i == "1") {
-					window.location.href = "mci-staffClient.do";
+					window.location.href = "mci-dashboard.do";
 				} else if (data.i == "2") {
 					swal("The account is blocked!");
 				} else if (data.i == "3") {

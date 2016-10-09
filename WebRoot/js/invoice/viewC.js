@@ -247,7 +247,7 @@ function showWorker() {
 														+ data[j].id
 														+ "'>"
 														+ "<td></td>"
-														+ "<td colspan=2'>"
+														+ "<td colspan=2'  style='vertical-align:middle;'>"
 														+ "<div style='padding-left:0px;width:254px'>"
 														+ "<select class='selectpicker' disabled='disabled' data-style='btn-white'  id='desc"
 														+ data[j].id
@@ -285,7 +285,7 @@ function showWorker() {
 														+ "<option value='PaidMedicalLeave'>Paid Medical Leave</option>"
 														+ "<option value='PaidChildcareLeave'>Paid Childcare Leave</option>"
 														+ "<option value='LessMidMonthSalary'>Less: Mid Month Salary</option>"
-														+ "</select></div></td><td>$<input readOnly='true'   "
+														+ "</select></div></td><td style='vertical-align:middle;'>$<input readOnly='true'   "
 														+ "id='itemAmountPayable"
 														+ data[j].id
 														+ "' onkeyup='caculateC("

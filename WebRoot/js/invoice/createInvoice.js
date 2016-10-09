@@ -1,4 +1,4 @@
-window.onload =  search;
+window.onload =  init;
 
 function checkDate(date){
 	 var   re =/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
@@ -21,8 +21,13 @@ function logout(){
 		}
 	})
 }
-function search(i){
+function init(){
 	loadLeft();
+	search();
+}
+
+function search(i){
+	
 	if(isNaN(i)){
 		 i=$("#pageIndex").val();
 	}
