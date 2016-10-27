@@ -78,7 +78,7 @@ function initInvoice() {
 					swal("getCurrentUser.do error!");
 				},
 				success:function(data2){
-					if(data2.id!=data.pic&&pow!=3){
+					if(data2.id!=data.pic&&pow===1){
 						 $("#anotherPIC").attr({ disabled: "disabled" });
 					}
 				}
@@ -358,7 +358,7 @@ function caculateF(id) {
 	
 		$("#FSubTotal").val((subTotal).toFixed(1));
 		$("#gst").val((subTotal * 0.07).toFixed(1));
-		$("#totalAmount").val((subTotal * 1.07).toFixed(1));
+		$("#totalAmount").val((subTotal * 1.07).toFixed(2));
 		}
 	
 }

@@ -393,7 +393,7 @@ public class InvoiceController {
 	public String updateInvoiceC(Invoice invoice, HttpSession session) {
 		try {
 			Invoice in1 = (Invoice) (session.getAttribute("editInvoiceId"));
-			NumberFormat nf=new DecimalFormat("0.0");
+			NumberFormat nf=new DecimalFormat("0.00");
 			in1.setResidual(String.valueOf(nf.format(Double.valueOf(invoice.getTotal())*1.07)));
 			in1.setTotal(invoice.getTotal());
 			in1.setType("C");
@@ -968,7 +968,7 @@ public class InvoiceController {
 		try {
 			Invoice in = (Invoice) session.getAttribute("editInvoiceId");
 			invoice.setId(in.getId());
-			NumberFormat nf=new DecimalFormat("0.0");
+			NumberFormat nf=new DecimalFormat("0.00");
 			in.setResidual(String.valueOf(nf.format(Double.valueOf(invoice.getTotal())*1.07)));
 			if(invoice.getPic2().equals("")){
 				in.setPic2(null);
@@ -1086,7 +1086,7 @@ public class InvoiceController {
 	public String updateInvoiceT(Invoice invoice, HttpSession session) {
 		try {
 			Invoice in1 = (Invoice) (session.getAttribute("editInvoiceId"));
-			NumberFormat nf=new DecimalFormat("0.0");
+			NumberFormat nf=new DecimalFormat("0.00");
 			in1.setResidual(String.valueOf(nf.format(Double.valueOf(invoice.getTotal())*1.07)));
 			in1.setTotal(invoice.getTotal());
 			SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");

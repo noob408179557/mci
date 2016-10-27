@@ -175,5 +175,11 @@ public interface InvoiceMapper {
 	
 	UserInfo getUserInfo(User user);
 	
+	UserInfo getUserCommissionPlus(User user);
+	
+	UserInfo getUserCommission(User user);
+	
+	UserInfo getClientQty(User user);
+	
 	UserInfo getUserInfo4Admin(User user);
 }

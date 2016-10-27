@@ -202,7 +202,7 @@ function getAccountPage(i) {
 						if (data[i].total == null) {
 							data[i].total = "";
 						}
-						var body1 = "<tr><td width='5%'><div class='radio radio-primary radio-single'><input type='radio' name='selectInvoice' value='"
+						var body1= "<tr><td width='5%'><div class='radio radio-primary radio-single'><input type='radio' name='selectInvoice' value='"
 								+ data[i].id
 								+ "'><label></label></div></td><td style='text-align:left;vertical-align : middle; '><div style='cursor:pointer;color:#00F' onclick=searchInvoice("+data[i].id+")>"
 								+ data[i].clientObject.companyName

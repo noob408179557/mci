@@ -1,155 +1,141 @@
+var selectItem = 0;
 $(document)
 		.ready(
 				function() {
 					$(document).keypress(function(e) {
 						if (e.which == 13) {
-							if($("#search").is(":visible")){
+							if ($("#search").is(":visible")) {
 								$("#search").trigger("click");
 							}
-							
+
 						}
 					});
-					$("#blockClient")
+					$("#selectAll").click(function() {
+						var coll = document.getElementsByName("select");
+						if (selectItem % 2 != 0) {
+							for (var i = 0; i < coll.length; i++)
+								coll[i].checked = false;
+						} else {
+							for (var i = 0; i < coll.length; i++)
+								coll[i].checked = true;
+						}
+						selectItem++;
+
+					})
+
+					$("#blockClient").click(function() {
+
+						var obj = document.getElementsByName("select");
+						check_val = [];
+						for (k in obj) {
+							if (obj[k].checked) {
+								check_val.push(obj[k].value);
+								inactiveClient(obj[k].value)
+							}
+
+						}
+						if (obj.length == 0) {
+							swal("You haven't select any client");
+						}
+                        swal("Inactive Complete!");
+						search($("#pageIndex").val());
+
+					});
+					$("#editInvoice")
 							.click(
 									function() {
-										if ($("input[name='select']:checked")
+										if ($(
+												"input[name='selectInvoice']:checked")
 												.val() != null) {
 											$
 													.ajax({
 														type : "POST",
-														url : "blockClient.do",
+														url : "editInvoice.do",
 														dataType : "json",
+														async : false,
 														data : {
 															id : $(
-																	"input[name='select']:checked")
+																	"input[name='selectInvoice']:checked")
 																	.val()
 														},
 														error : function(data) {
-															swal("blockClient error!");
+															swal("editInvoice.do Error!");
 														},
 														success : function(data) {
-															if (data == "1") {
-																swal("This client can't be inactive!");
+															$
+																	.ajax({
+																		type : "POST",
+																		url : "getPow.do",
+																		async : false,
+																		error : function() {
+																			swal("getPow  error!");
+																		},
+																		success : function(
+																				user) {
+																			if (data.state == "1"
+																					|| user.type == "3"
+																					|| (user.type == "2" && data.state == "5")
+																					|| user.type == "3") {
+																				if (data.type == "C") {
+																					window.location.href = "mci-editInvoiceC.do";
+																				} else if (data.type == "F") {
+																					window.location.href = "mci-editInvoiceF.do";
+																				} else if (data.type == "P") {
+																					window.location.href = "mci-editInvoiceP.do";
+																				} else if (data.type == "T") {
+																					window.location.href = "mci-editInvoiceT.do";
+																				}
 
-															} else if (data == "0") {
-																swal("This client is already inactive!");
-																search();
-															}else if(data=="2"){
-																swal("This client is not in active status!");
-															}
-
+																			} else {
+																				swal("You can't edit for this invoice!");
+																			}
+																		}
+																	})
 														}
-													})
-										} else {
-											swal("You haven't select any client!");
-										}
-									});
-					$("#editInvoice")
-							.click(
-									function() {
-										if ($("input[name='selectInvoice']:checked").val() != null) {
-											$.ajax({
-												type : "POST",
-												url : "editInvoice.do",
-												dataType : "json",
-												async:false,
-												data : {
-													id : $("input[name='selectInvoice']:checked").val()
-												},
-												error : function(data) {
-													swal("editInvoice.do Error!");
-												},
-												success : function(data) {
-													$.ajax({
-														type : "POST",
-														url : "getPow.do",
-														async : false,
-														error : function() {
-															swal("getPow  error!");
-														},
-														success : function(user) {
-															if (data.state == "1" || user.type == "3"
-																	|| (user.type == "2" && data.state == "5")||user.type=="3") {
-																if (data.type == "C") {
-																	window.location.href = "mci-editInvoiceC.do";
-																} else if (data.type == "F") {
-																	window.location.href = "mci-editInvoiceF.do";
-																} else if (data.type == "P") {
-																	window.location.href = "mci-editInvoiceP.do";
-																} else if (data.type == "T") {
-																	window.location.href = "mci-editInvoiceT.do";
-																}
 
-															} else {
-																swal("You can't edit for this invoice!");
-															}
-														}
-													})
-												}
-
-											});
+													});
 										} else {
 											swal("You haven't select any invoice!");
 										}
 
-});
-
-					$("#assignTo")
-							.click(
-									function() {
-										if ($("input[name='select1']:checked")
-												.val() != null) {
-											$
-													.ajax({
-														type : "POST",
-														url : "assignToPic.do",
-														dataType : "json",
-														data : {
-															client : $(
-																	"input[name='select']:checked")
-																	.val(),
-															user : $(
-																	"input[name='select1']:checked")
-																	.val(),
-															type : "assign"
-														},
-														error : function(data) {
-															swal("assignToPic.do Error!");
-														},
-														success : function(data) {
-															search($(
-																	"#pageIndex")
-																	.val());
-															swal("assign successful!");
-														}
-													})
-										} else {
-											swal("You haven't select MCI-PIC!");
-											return false;
-										}
-
 									});
+
+					$("#assignTo").click(function() {
+						var obj = document.getElementsByName("select");
+						check_val = [];
+						for (k in obj) {
+							if (obj[k].checked) {
+								check_val.push(obj[k].value);
+								assignTo(obj[k].value)
+							}
+
+						}
+						if (obj.length == 0) {
+							swal("You haven't select any client");
+						}
+
+						search($("#pageIndex").val());
+
+					});
 					// 点击activeClient
 					$("#activeClient").click(function() {
-						$.ajax({
-							type : "POST",
-							url : "activeClient.do",
-							dataType : "json",
-							data : {
-								id : $("input[name='select']:checked").val()
-							},
-							error : function(data) {
-								if (data != "1") {
-									search($("#pageIndex").val());
-								}
-							},
-							success : function(data) {
-								if (data != "1") {
-									search($("#pageIndex").val());
-									swal("Active Success!");
-								}
+
+						var obj = document.getElementsByName("select");
+						check_val = [];
+						for (k in obj) {
+							if (obj[k].checked) {
+								check_val.push(obj[k].value);
+								activeClient(obj[k].value)
 							}
-						});
+
+						}
+						if (obj.length == 0) {
+							swal("You haven't select any client");
+						}
+
+						search($("#pageIndex").val());
+						swal("Active Success!");
+
 					});
 					// 点击search button时
 					$("#searchbtn").click(function() {
@@ -236,63 +222,21 @@ $(document)
 												})
 
 									});
-					$("#delete")
-							.click(
-									function() {
-										$.ajax({
-											type : "POST",
-											url : ".do",
-											dataType : "json",
-											async : false,
-											data : {
-												pageIndex:"1",
-												id:$("input[name='select']:checked").val()
-											},
-											error : function(data) {
-												swal("getaClient.do Error!!");
-											},
-											success:function(data){
-												if(data.length!=0){
-													swal("Please delete the client's invoice！");
-													return false;
-												}
-										
-										if ($("input[name='select']:checked")
-												.val() != null) {
-											swal(
-													{
-														title : "Are you sure?",
-														text : "You will not be able to recover this client!",
-														type : "warning",
-														showCancelButton : true,
-														confirmButtonColor : "#DD6B55",
-														confirmButtonText : "Yes, delete it!",
-														cancelButtonText : "No, wrong click!",
-														closeOnConfirm : false,
-														closeOnCancel : false
-													},
-													function(isConfirm) {
-														if (isConfirm) {
-															deleteClient();
-															swal(
-																	"Deleted!",
-																	"Your client has been deleted.",
-																	"success");
-															search();
-														} else {
-															swal(
-																	"Cancelled",
-																	"Your client still there",
-																	"error");
-														}
-													});
-										} else {
-											swal("You haven't select any client!")
-										}
+					$("#delete").click(
 
-											}
-									});
-									});
+					function() {
+						var obj = document.getElementsByName("select");
+						check_val = [];
+						for (k in obj) {
+							if (obj[k].checked) {
+								check_val.push(obj[k].value);
+								preDelelteClient(obj[k].value)
+							}
+
+						}
+						swal("Delete Complete!");
+						search();
+					});
 					// 查看选中client update history
 					$("#history")
 							.click(
@@ -356,8 +300,11 @@ $(document)
 																		success : function(
 																				pow) {
 
-																			if ((data.state== "2"&&pow.type == "1")||(data.state == "3"&&pow.type == "1")){
-//																					pow.type == "1") {
+																			if ((data.state == "2"||data.state == "3" )&& pow.type == "1") {
+																				// pow.type
+																				// ==
+																				// "1")
+																				// {
 																				swal("You can't edit for this client!");
 																				return false;
 																			} else {
@@ -389,231 +336,292 @@ $(document)
 										} else {
 											swal("You haven't select any client!");
 										}
-										
+
 									});
 				})
-				//分页获取clientHistory
-function getClientHistoryResult(i){
+// 分页获取clientHistory
+function getClientHistoryResult(i) {
 	if (isNaN(i)) {
 		i = $("#historyPageIndex").val();
 	}
-	$.ajax({
-		type:"POST",
-		url:"loadClientHistory.do",
-		dataType:"json",
-		data:{
-			pageIndex:i
-		},
-		error:function(data){
-			swal("loadClientHistory.do error!");
-		},
-		success:function(data){
-			if (data.length != 0) {
-				$(
-						"#historyList")
-						.empty();
-				$(
-						"#clientHistory")
-						.val("");
-				$(
-						"#clientHistory")
-						.val(
+	$
+			.ajax({
+				type : "POST",
+				url : "loadClientHistory.do",
+				dataType : "json",
+				data : {
+					pageIndex : i
+				},
+				error : function(data) {
+					swal("loadClientHistory.do error!");
+				},
+				success : function(data) {
+					if (data.length != 0) {
+						$("#historyList").empty();
+						$("#clientHistory").val("");
+						$("#clientHistory").val(
 								data[0].clientObject.companyName);
-				for ( var i = 0; i < data.length; i++) {
-					if(data[i].editRemark==null||data[i].editRemark==""){
-						$(
-						"#historyList")
-						.append(
-								"<tr><th style='text-align:left;vertical-align : middle; '>"
-										+ (i + 1)
-										+ "</th>"
-										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ data[i].userObject.realName
-										+ "</th>"
-										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ data[i].lastdate
-										+ "</th>"
-										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ data[i].type
-										+ "</th>"
-										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ "</th>"
-										+ "<tr>");
-					}else{
-						$(
-						"#historyList")
-						.append(
-								"<tr height='35'><th style='text-align:left;vertical-align : middle; '>"
-										+ (i + 1)
-										+ "</th>"
-										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ data[i].userObject.realName
-										+ "</th>"
-										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ data[i].lastdate
-										+ "</th>"
-										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ data[i].type
-										+ "</th>"
-										+ "<th style='text-align:left;vertical-align : middle; '>"
-										+ "<a class='btn btn-primary  btn' onclick='getRemark("
-										+ data[i].id
-										+ ")' href='javascript:void(0)' "
-										+ ">"
-										+ "remark</a>"
-										+ "</th>"
-										+ "<tr>");
+						for (var i = 0; i < data.length; i++) {
+							if (data[i].editRemark == null
+									|| data[i].editRemark == "") {
+								$("#historyList")
+										.append(
+												"<tr><th style='text-align:left;vertical-align : middle; '>"
+														+ (i + 1)
+														+ "</th>"
+														+ "<th style='text-align:left;vertical-align : middle; '>"
+														+ data[i].userObject.realName
+														+ "</th>"
+														+ "<th style='text-align:left;vertical-align : middle; '>"
+														+ data[i].lastdate
+														+ "</th>"
+														+ "<th style='text-align:left;vertical-align : middle; '>"
+														+ data[i].type
+														+ "</th>"
+														+ "<th style='text-align:left;vertical-align : middle; '>"
+														+ "</th>" + "<tr>");
+							} else {
+								$("#historyList")
+										.append(
+												"<tr height='35'><th style='text-align:left;vertical-align : middle; '>"
+														+ (i + 1)
+														+ "</th>"
+														+ "<th style='text-align:left;vertical-align : middle; '>"
+														+ data[i].userObject.realName
+														+ "</th>"
+														+ "<th style='text-align:left;vertical-align : middle; '>"
+														+ data[i].lastdate
+														+ "</th>"
+														+ "<th style='text-align:left;vertical-align : middle; '>"
+														+ data[i].type
+														+ "</th>"
+														+ "<th style='text-align:left;vertical-align : middle; '>"
+														+ "<a class='btn btn-primary  btn' onclick='getRemark("
+														+ data[i].id
+														+ ")' href='javascript:void(0)' "
+														+ ">" + "remark</a>"
+														+ "</th>" + "<tr>");
+							}
+
+						}
+						$("#view0").modal();
+					} else {
+						swal("This client's update history is empty!");
 					}
-				
+
 				}
-				$("#view0")
-						.modal();
-			} else {
-				swal("This client's update history is empty!");
-			}
-		
-		}
-		
-	})
-	$.ajax({
-		type:"POST",
-		url:"loadClientHistoryCount.do",
-		dataType:"json",
-		error:function(data){
-			swal("loadClientHistory.do error!");
-		},
-		success:function(data){
-			$("#hisPageIndex").val(i);
-			$("#pageHis").empty();
-			$("#pageHis").append(i + "/" + data);
-			$("#firstHis").attr("onclick", "getClientHistoryResult(1)");
-			$("#lastHis").attr("onclick", "getClientHistoryResult(" + data + ")");
-			if (($("#hisPageIndex").val()) > data - 1) {
-				$("#nextHis").attr("onclick", "getClientHistoryResult(" + data + ")");
-			} else {
-				$("#nextHis").attr(
-						"onclick",
-						"getClientHistoryResult(" + (Number($("#hisPageIndex").val()) + 1)
-								+ ")");
-			}
-			if (($("#hisPageIndex").val() < 2)) {
-				$("#previousHis").attr("onclick", "getClientHistoryResult(1)");
-			} else {
-				$("#previousHis").attr(
-						"onclick",
-						"getClientHistoryResult(" + (Number($("#hisPageIndex").val()) - 1)
-								+ ")");
-			}
-		
-		}
-	})
+
+			})
+	$
+			.ajax({
+				type : "POST",
+				url : "loadClientHistoryCount.do",
+				dataType : "json",
+				error : function(data) {
+					swal("loadClientHistory.do error!");
+				},
+				success : function(data) {
+					$("#hisPageIndex").val(i);
+					$("#pageHis").empty();
+					$("#pageHis").append(i + "/" + data);
+					$("#firstHis").attr("onclick", "getClientHistoryResult(1)");
+					$("#lastHis").attr("onclick",
+							"getClientHistoryResult(" + data + ")");
+					if (($("#hisPageIndex").val()) > data - 1) {
+						$("#nextHis").attr("onclick",
+								"getClientHistoryResult(" + data + ")");
+					} else {
+						$("#nextHis")
+								.attr(
+										"onclick",
+										"getClientHistoryResult("
+												+ (Number($("#hisPageIndex")
+														.val()) + 1) + ")");
+					}
+					if (($("#hisPageIndex").val() < 2)) {
+						$("#previousHis").attr("onclick",
+								"getClientHistoryResult(1)");
+					} else {
+						$("#previousHis")
+								.attr(
+										"onclick",
+										"getClientHistoryResult("
+												+ (Number($("#hisPageIndex")
+														.val()) - 1) + ")");
+					}
+
+				}
+			})
 }
-function getRemark(id){
+function activeClient(id) {
+	$.ajax({
+		type : "POST",
+		url : "activeClient.do",
+		dataType : "json",
+		async : false,
+		data : {
+			id : id
+		},
+		error : function(data) {
+			if (data != "1") {
+				return false;
+			}
+		},
+		success : function(data) {
+			if (data != "1") {
+
+				return true;
+			}
+
+		}
+	});
+}
+function getRemark(id) {
 	$.ajax({
 		type : "POST",
 		url : "getRemark.do",
 		dataType : "json",
 		async : false,
-		data:{
-			id:id
+		data : {
+			id : id
 		},
-		error:function(data){
+		error : function(data) {
 			alert("getRemark.do Error!");
 		},
-		success:function(data){
+		success : function(data) {
 			$("#editRemark").val(data.editRemark);
 			$("#editRemark1").modal();
 		}
-		})
+	})
 }
-
-// 删除一个Client
-function deleteClient() {
-
-	
+function preDelelteClient(id) {
 	$.ajax({
 		type : "POST",
-		url : "getaClient.do",
+		url : "getAccountPage.do",
 		dataType : "json",
 		async : false,
 		data : {
-			id : $("input[name='select']:checked").val()
+			pageIndex : "1",
+			id : id
 		},
 		error : function(data) {
-			swal("getaClient.do Error!!");
+			swal("getInvoiceOfClient  Error!!");
 		},
 		success : function(data) {
-			$.ajax({
-				type : "POST",
-				url : "getPow.do",
-				dataType : "json",
-				async:false,
-                error : function(data) {
-					alert("请求失败~");
-				},
-				success : function(user) {
-					if((data.state=="0"||data.state=="1")&&user.type!="3"){
-						swal("You can't delete this client!");
-						return false;
-					}else{
-						
-						
-						
-						$.ajax({
-							type : "POST",
-							url : "deleteClient.do",
-							dataType : "json",
-							async : false,
-							data : {
-								id : $("input[name='select']:checked").val()
-							},
-							error : function(data) {
-								alert("请求失败~");
-							},
-							success : function(data) {
-								if (data == "0") {
-									swal("Delete Success!");
-									search();
-									return true;
-									} else if(data=="1"){
-										swal("Please delete the client's invoice！");
-										return false;
-									}
-							}
-						});
-						}
-				}
-				});
-			
-			
-			
-			
-			
+			if (data.length != 0) {
+				alert("Please delete the client's invoice！Id:" + id);
+				return false;
 			}
-		
+		}
+
 	});
-	
-	
-	
+	deleteClient(id);
+}
+// 删除一个Client
+function deleteClient(id) {
+
+	$
+			.ajax({
+				type : "POST",
+				url : "getaClient.do",
+				dataType : "json",
+				async : false,
+				data : {
+					id : id
+				},
+				error : function(data) {
+					swal("getaClient.do Error!!");
+				},
+				success : function(data) {
+					$
+							.ajax({
+								type : "POST",
+								url : "getPow.do",
+								dataType : "json",
+								async : false,
+								error : function(data) {
+									alert("请求失败~");
+								},
+								success : function(user) {
+									if (user.type == "1") {
+										swal("You can't delete this client!");
+										return false;
+									} else {
+										$
+												.ajax({
+													type : "POST",
+													url : "deleteClient.do",
+													dataType : "json",
+													async : false,
+													data : {
+														id : id
+													},
+													error : function(data) {
+														alert("请求失败~");
+													},
+													success : function(data) {
+														if (data == "0") {
+
+															return true;
+														} else if (data == "1") {
+															swal("Please delete the client's invoice！");
+															return false;
+														}
+													}
+												});
+									}
+								}
+							});
+
+				}
+
+			});
+
+}
+function assignTo(id) {
+
+	if ($("input[name='select1']:checked").val() != null) {
+		$.ajax({
+			type : "POST",
+			url : "assignToPic.do",
+			dataType : "json",
+			async:false,
+			data : {
+				client : id,
+				user : $("input[name='select1']:checked").val(),
+				type : "assign"
+			},
+			error : function(data) {
+				swal("assignToPic.do Error!");
+			},
+			success : function(data) {
+
+				swal("assign successful!");
+			}
+		})
+	} else {
+		swal("You haven't select MCI-PIC!");
+		return false;
+	}
 }
 // 获取全部user,assign的分页
 function getUser(i) {
 	if ($("input[name='select']:checked").val() != null) {
-		$.ajax({
-			type : "POST",
-			url : "getUserName.do",
-			dataType : "json",
-			data : {
-				id : $("input[name='select']:checked").val()
-			},
-			error : function(data) {
-				swal("getUserName.do Error!");
-			},
-			success : function(data) {
-				$("#picName").val(data.picObject.realName)
-				$("#userName").val(data.companyName);
-			}
-		});
+		// $.ajax({
+		// type : "POST",
+		// url : "getUserName.do",
+		// dataType : "json",
+		// data : {
+		// id : $("input[name='select']:checked").val()
+		// },
+		// error : function(data) {
+		// swal("getUserName.do Error!");
+		// },
+		// success : function(data) {
+		// $("#picName").val(data.picObject.realName)
+		// $("#userName").val(data.companyName);
+		// }
+		// });
 
 		if (isNaN(i)) {
 			i = "1";
@@ -623,6 +631,7 @@ function getUser(i) {
 					type : "POST",
 					url : "getUser.do",
 					dataType : "json",
+					async : false,
 					data : {
 						pageIndex : i
 					},
@@ -631,7 +640,7 @@ function getUser(i) {
 					},
 					success : function(data) {
 						$("#userList").empty();
-						for ( var i = 0; i < data.length; i++) {
+						for (var i = 0; i < data.length; i++) {
 							$("#userList")
 									.append(
 											"<tr><th width='5%'><div class='radio radio-primary radio-single'><input type='radio' name='select1' value='"
@@ -685,6 +694,7 @@ function getAccount() {
 		$.ajax({
 			type : "POST",
 			url : "getAccount.do",
+			async : false,
 			data : {
 				id : $("input[name='select']:checked").val()
 			},
@@ -693,14 +703,14 @@ function getAccount() {
 				swal("Server Fail!");
 			},
 			success : function(data) {
-				if(data=="2"){
+				if (data == "2") {
 					swal("This client haven't any invoice!");
-				}else{
-				if (data == "0") {
-					getAccountPage(1);
 				} else {
-					swal("code Error!");
-				}
+					if (data == "0") {
+						getAccountPage(1);
+					} else {
+						swal("code Error!");
+					}
 				}
 			}
 		});
@@ -708,12 +718,13 @@ function getAccount() {
 		swal("You haven't select any client!");
 	}
 }
-//获取查询account的结果
+// 获取查询account的结果
 function getAccountPage(i) {
 	if (isNaN(i)) {
 		i = $("#accountPageIndex").val();
 	}
-	$.ajax({
+	$
+			.ajax({
 				type : "POST",
 				url : "getAccountPage.do",
 				data : {
@@ -733,7 +744,7 @@ function getAccountPage(i) {
 							+ "<span class='label label-table label-success btn-lg'>Fully Paid</span></th>"
 					$("#accountList").empty();
 					// data类型为invoice
-					for ( var i = 0; i < data.length; i++) {
+					for (var i = 0; i < data.length; i++) {
 						if (data[i].remark == null) {
 							data[i].remark = "";
 						}
@@ -743,8 +754,12 @@ function getAccountPage(i) {
 						var body1 = "<tr><td width='5%'><div class='radio radio-primary radio-single'><input type='radio' name='selectInvoice' value='"
 								+ data[i].id
 								+ "'><label></label></div></td>"
-								+ "<td style='text-align:left;vertical-align : middle; '><div style='cursor:pointer;color:#00F' onclick=searchInvoice("+data[i].id+")>"
-								+ data[i].type+data[i].number+"</td>"
+								+ "<td style='text-align:left;vertical-align : middle; '><div style='cursor:pointer;color:#00F' onclick=searchInvoice("
+								+ data[i].id
+								+ ")>"
+								+ data[i].type
+								+ data[i].number
+								+ "</td>"
 								+ "<td style='text-align:left;vertical-align : middle; '><div >"
 								+ data[i].clientObject.companyName
 								+ "</div></td><td style='text-align:left;vertical-align : middle; '>"
@@ -773,8 +788,8 @@ function getAccountPage(i) {
 		type : "POST",
 		url : "loadClientAccountCount.do",
 		dataType : "json",
-		data:{
-			id:$("input[name='select']:checked").val()
+		data : {
+			id : $("input[name='select']:checked").val()
 		},
 		error : function(data) {
 			alert("请求失败~");
@@ -808,7 +823,7 @@ function getAccountPage(i) {
 		}
 	});
 }
-function logout(){
+function logout() {
 	$.ajax({
 		type : "POST",
 		url : "user_logout.do",
@@ -816,35 +831,68 @@ function logout(){
 		error : function(data) {
 			swal("user_logout.do Error!");
 		},
-		success:function(data){
-			if(data=="0"){
-				window.location.href="login.html";
-			}else{
+		success : function(data) {
+			if (data == "0") {
+				window.location.href = "login.html";
+			} else {
 				swal("user_logout.do 500Error!");
 			}
 		}
 	})
 }
-function searchInvoice(i){
-$.ajax({
-	type : "POST",
-	url : "searchInvoice.do",
-	dataType : "json",
-	data : {
-		id:i
-	},
-	error : function(data) {
-		swal("searchClient.do Error!");
-	},
-	success : function(data) {
-		window.location.href = "mci-searchInvoice.do";
-	}
-})
+function searchInvoice(i) {
+	$.ajax({
+		type : "POST",
+		url : "searchInvoice.do",
+		dataType : "json",
+		data : {
+			id : i
+		},
+		error : function(data) {
+			swal("searchClient.do Error!");
+		},
+		success : function(data) {
+			window.location.href = "mci-searchInvoice.do";
+		}
+	})
 }
-function clearClient(){
-$.ajax({
-	type : "POST",
-	url : "clearClient.do",
-	async:false
-})
+
+function clearClient() {
+	$.ajax({
+		type : "POST",
+		url : "clearClient.do",
+		async : false
+	})
+}
+
+function inactiveClient(id) {
+	if ($("input[name='select']:checked").val() != null) {
+		$
+				.ajax({
+					type : "POST",
+					url : "blockClient.do",
+					dataType : "json",
+					async : false,
+					data : {
+						id : id
+					},
+					error : function(data) {
+						swal("blockClient error!");
+					},
+					success : function(data) {
+						if (data == "1") {
+							swal("This client can't be inactive!Id:"+id);
+
+						} else if (data == "0") {
+							
+							return true;
+						} else if (data == "2") {
+							alert("This client is not in active status!Id:"+id);
+						}
+
+					}
+				})
+	} else {
+		swal("You haven't select any client!");
+	}
 }

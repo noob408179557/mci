@@ -24,6 +24,7 @@ function init() {
 	
 }
 function search(i) {
+	 selectItem1 = 0;
 	if (isNaN(i)) {
 		i = $("#pageIndex").val();
 	}
@@ -46,7 +47,7 @@ function search(i) {
 								+ (i + 1)
 								+ "</th>"
 								+ "<th style='text-align:left;vertical-align : middle; ' width='1%'>"
-								+ "<div class='radio radio-primary radio-single'><input type='radio' name='select' value='"
+								+ "<div class='checkbox checkbox-primary checkbox-single'><input type='checkbox' name='select1' value='"
 								+ data[i].id
 								+ "'><label></label></div>"
 								+ "</th><th style='text-align:left;vertical-align : middle; '>"
@@ -54,23 +55,13 @@ function search(i) {
 								+ "</th><th style='text-align:left;vertical-align : middle; '>"
 								+ data[i].email
 								+ "</th><th style='text-align:left;vertical-align : middle; '>"
-								+ data[i].realName + "</th>";
-
-						var block = "<th style='text-align:left;vertical-align : middle; '>"
-								+ "<span class='label label-table label-danger btn-lg'>Block</span></th>"
-								+ "</tr>";
-						var active = "<th style='text-align:left;vertical-align : middle; '>"
+								+ data[i].realName + "</th>"
+						        +"<th style='text-align:left;vertical-align : middle; '>"
 								+ "<span class='label label-table label-success btn-lg'>Active</span></th>"
 								+ "</tr>";
-						var body2;
-						if (data[i].state == "1") {
-							body2 = active;
-						} else {
-							body2 = block;
-						}
-						var body = body1 + body2;
+						
 
-						$("#userList").append(body);
+						$("#userList").append(body1);
 					}
 				}
 			})
@@ -112,6 +103,7 @@ function search(i) {
 
 }
 function search2(i) {
+	 selectItem2 = 0;
 	if (isNaN(i)) {
 		i = $("#pageIndex1").val();
 	}
@@ -134,7 +126,7 @@ function search2(i) {
 								+ (i + 1)
 								+ "</th>"
 								+ "<th style='text-align:left;vertical-align : middle; ' width='1%'>"
-								+ "<div class='radio radio-primary radio-single'><input type='radio' name='select' value='"
+								+ "<div class='checkbox checkbox-primary checkbox-single'><input type='checkbox' name='select2' value='"
 								+ data[i].id
 								+ "'><label></label></div>"
 								+ "</th><th style='text-align:left;vertical-align : middle; '>"
@@ -142,23 +134,11 @@ function search2(i) {
 								+ "</th><th style='text-align:left;vertical-align : middle; '>"
 								+ data[i].email
 								+ "</th><th style='text-align:left;vertical-align : middle; '>"
-								+ data[i].realName + "</th>";
-
-						var block = "<th style='text-align:left;vertical-align : middle; '>"
+								+ data[i].realName + "</th>"
+								+"<th style='text-align:left;vertical-align : middle; '>"
 								+ "<span class='label label-table label-danger btn-lg'>Block</span></th>"
 								+ "</tr>";
-						var active = "<th style='text-align:left;vertical-align : middle; '>"
-								+ "<span class='label label-table label-success btn-lg'>Active</span></th>"
-								+ "</tr>";
-						var body2;
-						if (data[i].state == "1") {
-							body2 = active;
-						} else {
-							body2 = block;
-						}
-						var body = body1 + body2;
-
-						$("#userList1").append(body);
+						$("#userList1").append(body1);
 					}
 				}
 			})
@@ -223,46 +203,50 @@ $(function() {
 		}
 	});
 	$("#delete").click(function() {
-		if ($("input[name='select']:checked").val() != null) {
-			$.ajax({
-				type : "POST",
-				url : "blockUser.do",
-				dataType : "json",
-				data : {
-					id : $("input[name='select']:checked").val()
-				},
-				error : function(data) {
-					alert("请求失败~");
-				},
-				success : function(data) {
-					search();
-					search2();
-				}
-			})
-		} else {
-			swal("You haven't select any user!");
+
+
+		var obj = document.getElementsByName("select1");
+		check_val = [];
+		for (k in obj) {
+			if (obj[k].checked) {
+				check_val.push(obj[k].value);
+				blockUser(obj[k].value)
+			}
+
 		}
+		if (obj.length == 0) {
+			swal("You haven't select any user");
+			return false;
+		}
+        swal("Block Complete!");
+		search(1);
+		search2(1);
+	
+		
+		
+		
+		
 	})
 	$("#active").click(function() {
-		if ($("input[name='select']:checked").val() != null) {
-			$.ajax({
-				type : "POST",
-				url : "activeUser.do",
-				dataType : "json",
-				data : {
-					id : $("input[name='select']:checked").val()
-				},
-				error : function(data) {
-					alert("请求失败~");
-				},
-				success : function(data) {
-					search2();
-					search();
-				}
-			})
-		} else {
-			swal("You haven't select any user!");
+
+
+
+		var obj = document.getElementsByName("select2");
+		check_val = [];
+		for (k in obj) {
+			if (obj[k].checked) {
+				check_val.push(obj[k].value);
+				activeUser(obj[k].value)
+			}
+
 		}
+		if (obj.length == 0) {
+			swal("You haven't select any user");
+			return false;
+		}
+        swal("Active Complete!");
+		search(1);
+		search2(1);
 	})
 	$("#reset").click(function() {
 		if ($("input[name='select']:checked").val() != null) {
@@ -270,6 +254,7 @@ $(function() {
 				type : "POST",
 				url : "resetPassword.do",
 				dataType : "json",
+				async : false,
 				data : {
 					userid : $("input[name='select']:checked").val()
 				},
@@ -285,3 +270,38 @@ $(function() {
 		}
 	});
 });
+function blockUser(id){
+	$.ajax({
+		type : "POST",
+		url : "blockUser.do",
+		dataType : "json",
+		async:false,
+		data : {
+			id : id
+		},
+		error : function(data) {
+			alert("请求失败~");
+		},
+		success : function(data) {
+		return true;
+		}
+	})
+}
+
+function activeUser(id){
+		$.ajax({
+			type : "POST",
+			url : "activeUser.do",
+			dataType : "json",
+			async:false,
+			data : {
+				id : id
+			},
+			error : function(data) {
+				alert("请求失败~");
+			},
+			success : function(data) {
+				return true;
+			}
+		})
+}

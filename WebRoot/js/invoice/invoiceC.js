@@ -463,7 +463,7 @@ function caculateC(i) {
 	if (!isNaN(totalAmount)) {
 		$("#subTotal").val((totalAmount).toFixed(1));
 		$("#gst").val((totalAmount * 0.07).toFixed(1));
-		$("#totalAmount").val((totalAmount * 1.07).toFixed(1));
+		$("#totalAmount").val((totalAmount * 1.07).toFixed(2));
 	}
 }
 function updateInvoiceC() {

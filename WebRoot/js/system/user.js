@@ -4,8 +4,6 @@ function init() {
 }
 $(document).ready(function() {
 	$("#createUser").click(function(){
-		
-			
 		if(veryfyEmail($("#email").val())){
 		if($("#email").val()==""){
 			swal("Email can't be empty!");

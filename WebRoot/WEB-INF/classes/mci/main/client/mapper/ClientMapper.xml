@@ -245,8 +245,8 @@
 		 and c.`pic`=#{pic}
 	     order by c.`id` desc
 	</select>
-	<select id="autoClientList" resultType="client">
-	select * from mci_client
+	<select id="autoClientList" resultType="client" parameterType="string">
+	select * from mci_client where pic=#{id}
 	</select>
 	<select id="autoCPList" resultType="contactPerson">
 	select * from mci_contactperson

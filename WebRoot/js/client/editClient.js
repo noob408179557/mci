@@ -1,3 +1,4 @@
+//editClient页面除contactperson操作外的所有操作
 window.onload = editClient;
 var pow=1;
 
@@ -30,6 +31,15 @@ function editClient() {
 		success : function(data) {
 //			$("#currUser").append(data.realName);
 			pow=data.type;
+			if(data.type=="1"){
+				$("#cName").attr("disabled","disabled");
+				$("#cWebsite").attr("disabled","disabled");
+				$("#cDays").attr("disabled","disabled");
+				$("#cTerm").attr("disabled","disabled");
+				$("#cSize").attr("disabled","disabled");
+				$("#cTrade").attr("disabled","disabled");
+				$("#cRemark").attr("disabled","disabled");
+			}
 		}
 	});
 	$.ajax({

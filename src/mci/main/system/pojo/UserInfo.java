@@ -1,13 +1,13 @@
 package mci.main.system.pojo;
 
 public class UserInfo {
-	private String invoiceQty;
-	private String totalAmount;
-	private String amountPaid;
-	private String unpaidAmount;
-	private String clientQty;
-	private String commission;
-	private String userQty;
+	private String invoiceQty="0";
+	private String totalAmount="0";
+	private String amountPaid="0";
+	private String unpaidAmount="0";
+	private String clientQty="0";
+	private String commission="0";
+	private String userQty="0";
 
 	public String getInvoiceQty() {
 		return invoiceQty;

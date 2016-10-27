@@ -1,7 +1,35 @@
+var selectItem1 = 0;
+var selectItem2 = 0;
 $(function() {
+	$("#selectAll1").click(function() {
+		var coll = document.getElementsByName("select1");
+		if (selectItem1 % 2 != 0) {
+			for (var i = 0; i < coll.length; i++)
+				coll[i].checked = false;
+		} else {
+			for (var i = 0; i < coll.length; i++)
+				coll[i].checked = true;
+		}
+		selectItem1++;
+
+	})
+	$("#selectAll2").click(function() {
+			var coll = document.getElementsByName("select2");
+			if (selectItem2 % 2 != 0) {
+				for (var i = 0; i < coll.length; i++)
+					coll[i].checked = false;
+			} else {
+				for (var i = 0; i < coll.length; i++)
+					coll[i].checked = true;
+			}
+			selectItem2++;
+
+		})
+	
 	$("#editInvoice")
 	.click(
 			function() {
+				
 				if ($("input[name='selectInvoice']:checked").val() != null) {
 					$.ajax({
 						type : "POST",

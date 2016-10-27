@@ -151,8 +151,19 @@ public class SystemServiceImpl implements SystemService {
 
 	@Override
 	public UserInfo getUserInfo(User user) {
-
-		return invoiceMapper.getUserInfo(user);
+		  UserInfo ui1=invoiceMapper.getUserInfo(user);
+          UserInfo ui2=invoiceMapper.getUserCommission(user);
+          UserInfo ui3=invoiceMapper.getUserCommissionPlus(user);
+          UserInfo clientQty=invoiceMapper.getClientQty(user);
+          if(null==ui2){
+        	  ui2=new UserInfo();
+          }
+          if(null==ui3){
+        	  ui3=new UserInfo();
+          }
+          ui1.setClientQty(clientQty.getClientQty());
+          ui1.setCommission(String.valueOf(Double.valueOf(ui2.getCommission())+(Double.valueOf(ui3.getCommission()))));
+		return ui1;
 	}
 
 	@Override

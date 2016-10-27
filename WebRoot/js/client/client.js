@@ -88,6 +88,7 @@ function init() {
 
 }
 function search(i) {
+	selectItem = 0;
 	clearClient();
 	if (isNaN(i)) {
 		i = $("#pageIndex").val();
@@ -125,7 +126,7 @@ function search(i) {
 								+ (i + 1)
 								+ "</th>"
 								+ "<th style='text-align:left;vertical-align : middle; ' width='1%'>"
-								+ "<div class='radio radio-primary radio-single'><input type='radio' name='select' value='"
+								+ "<div class='checkbox checkbox-primary checkbox-single'><input type='checkbox' name='select' value='"
 								+ data[i].id
 								+ "'><label></label></div></th>"
 								// + "<th style='text-align:left;vertical-align

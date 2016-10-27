@@ -128,6 +128,7 @@ function init() {
 	});
 }
 function search(i) {
+	selectItem = 0;
 	$("#invoiceList").empty();
 	if (isNaN(i)) {
 		i = $("#pageIndex").val();
@@ -254,7 +255,7 @@ function search(i) {
 											+ (i + 1)
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; '>"
-											+ "<div class='radio radio-primary radio-single' width='64px'><input type='radio' name='select' value='"
+											+ "<div class='checkbox checkbox-primary checkbox-single' width='64px'><input type='checkbox' name='select' value='"
 											+ data[i].id
 											+ "'><label></label></div></th>"
 											+ "<th style='text-align:left;vertical-align : middle; '>"
@@ -262,7 +263,7 @@ function search(i) {
 											+ data[i].number
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; ' >"
-											+ (data[i].total*1.07).toFixed(1)+"/"+(data[i].total*1.0).toFixed(1)
+											+ (data[i].total*1.07).toFixed(2)+"/"+(data[i].total*1.0).toFixed(1)
 											+ "</th>"
 											+ "<th style='text-align:left;vertical-align : middle; '>"
 											+ (data[i].creditNotes*1.0).toFixed(1)

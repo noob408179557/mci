@@ -31,7 +31,7 @@ function loadUserInfo(){
 		},
 		success:function(data){
 			$("#invoiceQty").html(data.invoiceQty);
-			$("#totalAmount").html(parseFloat(data.totalAmount).toFixed(1));
+			$("#totalAmount").html((parseFloat(data.totalAmount)).toFixed(1));
 			$("#amountPaid").html(parseFloat(data.amountPaid).toFixed(1));
 			$("#unpaidAmount").html(parseFloat(data.unpaidAmount).toFixed(1));
 			$("#commission").html(parseFloat(data.commission).toFixed(1));

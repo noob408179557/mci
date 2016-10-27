@@ -186,8 +186,8 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Client> autoClientList() {
-		return clientMapper.autoClientList();
+	public List<Client> autoClientList(String id) {
+		return clientMapper.autoClientList(id);
 	}
 
 	@Override

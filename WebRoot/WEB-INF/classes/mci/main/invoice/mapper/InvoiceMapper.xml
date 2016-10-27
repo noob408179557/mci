@@ -557,30 +557,40 @@
 		select * from mci_invoice i where i.pic=#{id} or i.pic2=#{id}
 	</select>
 	<select id="getUserInfo" parameterType="user" resultType="userInfo">
-		SELECT
-		COUNT(*) AS invoiceQty,
-		SUM(i.`total`) AS totalAmount,
-		SUM(i.`residual`) AS unpaidAmount ,
-		SUM(i.`commission`) AS commission,
-		SUM(i.`total`)-SUM(i.`residual`) AS amountPaid,
-		COUNT(DISTINCT c.id) AS clientQty
-		FROM
-		mci_invoice i,
-		mci_client c
-		WHERE (i.`pic` = #{id}
-		OR i.`pic2` = #{id})
-		AND i.`client` = c.`id`
+	  SELECT 
+   COUNT(DISTINCT i.id) AS invoiceQty,
+  SUM(i.`total`)*1.07 AS totalAmount,
+  SUM(i.`residual`) AS unpaidAmount,
+  SUM(i.`total`)*1.07 - SUM(i.`residual`) AS amountPaid
+  FROM mci_invoice i 
+  WHERE  i.pic=#{id} or i.pic2=#{id}
+	</select>
+	<select id="getUserCommission" parameterType="user" resultType="userInfo">
+	  SELECT 
+  SUM(i.`commission`) AS commission
+  FROM mci_invoice i 
+  WHERE  i.pic=#{id} and i.pic2 is null
+	</select>
+	<select id="getUserCommissionPlus" parameterType="user" resultType="userInfo">
+		  SELECT 
+  SUM(i.`commission`)/2 AS commission
+  FROM
+      mci_invoice i 
+  WHERE  (i.pic2=#{id} and i.pic is not null) or (i.pic=#{id} and i.pic2 is not null)
 	</select>
 	<select id="getUserInfo4Admin" parameterType="user" resultType="userInfo">
 		SELECT
 		COUNT(DISTINCT i.id) AS invoiceQty,
-		SUM(i.`total`) AS totalAmount,
+		SUM(i.`total`)*1.07 AS totalAmount,
 		SUM(i.`residual`) AS unpaidAmount ,
 		SUM(i.`commission`) AS commission,
-		SUM(i.`total`)-SUM(i.`residual`) AS amountPaid,
+		SUM(i.`total`)*1.07-SUM(i.`residual`) AS amountPaid,
 		COUNT(DISTINCT c.id) AS clientQty
 		FROM
 		mci_invoice i,
 		mci_client c
+	</select>
+	<select id="getClientQty" parameterType="user" resultType="userInfo">
+	select count(client.id) as clientQty  from mci_client client where client.pic=#{id}
 	</select>
 </mapper>

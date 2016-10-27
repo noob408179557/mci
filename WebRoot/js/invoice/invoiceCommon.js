@@ -53,7 +53,7 @@ function confirmPayment(i) {
 		},
 		success : function(data) {
 			var num = parseFloat(data.residual);
-			$("#remainingAmount").val(num.toFixed(1));
+			$("#remainingAmount").val(num.toFixed(2));
 		}
 	});
 }
@@ -79,28 +79,29 @@ function payit() {
 	if ($("#payMode1").val() == "cheque") {
 		if ($("#paymentNum").val() != "" && $("#bankName").val() != ""
 				&& $("#chequeNumber").val() != "") {
-			if(parseFloat($("#paymentNum").val())>$("#remainingAmount").val()){
+			if (parseFloat($("#paymentNum").val()) > $("#remainingAmount")
+					.val()) {
 				swal("You pay too much!");
 				return false;
-			}else{
-			$.ajax({
-				type : "POST",
-				url : "payForInvoice3.do",
-				dataType : "json",
-				data : {
-					amount : $("#paymentNum").val(),
-					bank : $("#bankName").val(),
-					number : $("#chequeNumber").val()
-				},
-				error : function(data) {
-					alert("请求失败~");
-				},
-				success : function(data) {
-					if (data != "1") {
-						search($("#pageIndex").val());
+			} else {
+				$.ajax({
+					type : "POST",
+					url : "payForInvoice3.do",
+					dataType : "json",
+					data : {
+						amount : $("#paymentNum").val(),
+						bank : $("#bankName").val(),
+						number : $("#chequeNumber").val()
+					},
+					error : function(data) {
+						alert("请求失败~");
+					},
+					success : function(data) {
+						if (data != "1") {
+							search($("#pageIndex").val());
+						}
 					}
-				}
-			});
+				});
 			}
 		} else {
 			swal("Required cannot be empty!");
@@ -108,26 +109,27 @@ function payit() {
 		}
 	} else if ($("#payMode1").val() == "creditNotes") {
 		if ($("#creditNumber").val() != "") {
-			if(parseFloat($("#creditNumber").val())>$("#remainingAmount").val()){
+			if (parseFloat($("#creditNumber").val()) > $("#remainingAmount")
+					.val()) {
 				swal("You pay too much!");
 				return false;
-			}else{
-			$.ajax({
-				type : "POST",
-				url : "payForInvoice2.do",
-				dataType : "json",
-				data : {
-					str : $("#creditNumber").val()
-				},
-				error : function(data) {
-					alert("请求失败~");
-				},
-				success : function(data) {
-					if (data != "1") {
-						search($("#pageIndex").val());
+			} else {
+				$.ajax({
+					type : "POST",
+					url : "payForInvoice2.do",
+					dataType : "json",
+					data : {
+						str : $("#creditNumber").val()
+					},
+					error : function(data) {
+						alert("请求失败~");
+					},
+					success : function(data) {
+						if (data != "1") {
+							search($("#pageIndex").val());
+						}
 					}
-				}
-			});
+				});
 			}
 		} else {
 			swal("Required cannot be empty!");
@@ -135,26 +137,27 @@ function payit() {
 		}
 	} else if ($("#payMode1").val() == "cash") {
 		if ($("#paymentNum").val() != "") {
-			if(parseFloat($("#paymentNum").val())>$("#remainingAmount").val()){
+			if (parseFloat($("#paymentNum").val()) > $("#remainingAmount")
+					.val()) {
 				swal("You pay too much!");
 				return false;
-			}else{
-			$.ajax({
-				type : "POST",
-				url : "payForInvoice.do",
-				dataType : "json",
-				data : {
-					str : $("#paymentNum").val()
-				},
-				error : function(data) {
-					alert("请求失败~");
-				},
-				success : function(data) {
-					if (data != "1") {
-						search($("#pageIndex").val());
+			} else {
+				$.ajax({
+					type : "POST",
+					url : "payForInvoice.do",
+					dataType : "json",
+					data : {
+						str : $("#paymentNum").val()
+					},
+					error : function(data) {
+						alert("请求失败~");
+					},
+					success : function(data) {
+						if (data != "1") {
+							search($("#pageIndex").val());
+						}
 					}
-				}
-			});
+				});
 			}
 		} else {
 			swal("Required cannot be empty!");
@@ -182,7 +185,9 @@ function getInvoiceHistoryResult(i) {
 					if (data.length != 0) {
 						$("#historyList").empty();
 						$("#invoiceHistory").val("");
-						$("#invoiceHistory").val(data[0].invoiceObject.type+data[0].invoiceObject.number);
+						$("#invoiceHistory").val(
+								data[0].invoiceObject.type
+										+ data[0].invoiceObject.number);
 						for (var i = 0; i < data.length; i++) {
 							$("#historyList")
 									.append(
@@ -252,11 +257,23 @@ $(document)
 				function() {
 					$(document).keypress(function(e) {
 						if (e.which == 13) {
-							if($("#search").is(":visible")){
-							$("#search").trigger("click");
-						}}
+							if ($("#search").is(":visible")) {
+								$("#search").trigger("click");
+							}
+						}
 					});
-					
+					$("#selectAll").click(function() {
+						var coll = document.getElementsByName("select");
+						if (selectItem % 2 != 0) {
+							for (var i = 0; i < coll.length; i++)
+								coll[i].checked = false;
+						} else {
+							for (var i = 0; i < coll.length; i++)
+								coll[i].checked = true;
+						}
+						selectItem++;
+
+					})
 					$("#detail")
 							.click(
 									function() {
@@ -287,22 +304,42 @@ $(document)
 																		},
 																		success : function(
 																				user) {
-//																			if (user.type == "1"
-//																					|| user.type == "3"
-//																					|| (user.type == "2" && data.state == "5")) {
-																				if (data.type == "C") {
-																					window.location.href = "mci-viewC.do";
-																				} else if (data.type == "F") {
-																					window.location.href = "mci-viewF.do";
-																				} else if (data.type == "P") {
-																					window.location.href = "mci-viewP.do";
-																				} else if (data.type == "T") {
-																					window.location.href = "mci-viewT.do";
-																				}
+																			// if
+																			// (user.type
+																			// ==
+																			// "1"
+																			// ||
+																			// user.type
+																			// ==
+																			// "3"
+																			// ||
+																			// (user.type
+																			// ==
+																			// "2"
+																			// &&
+																			// data.state
+																			// ==
+																			// "5"))
+																			// {
+																			if (data.type == "C") {
+																				window.location.href = "mci-viewC.do";
+																			} else if (data.type == "F") {
+																				window.location.href = "mci-viewF.do";
+																			} else if (data.type == "P") {
+																				window.location.href = "mci-viewP.do";
+																			} else if (data.type == "T") {
+																				window.location.href = "mci-viewT.do";
+																			}
 
-//																			} else {
-//																				swal("You can't check more details!");
-//																			}
+																			// }
+																			// else
+																			// {
+																			// swal("You
+																			// can't
+																			// check
+																			// more
+																			// details!");
+																			// }
 																		}
 																	})
 														}
@@ -349,7 +386,7 @@ $(document)
 														type : "POST",
 														url : "editInvoice.do",
 														dataType : "json",
-                                                        async:false,
+														async : false,
 														data : {
 															id : $(
 																	"input[name='select']:checked")
@@ -371,7 +408,9 @@ $(document)
 						$.ajax({
 							type : "POST",
 							url : "getCommission.do",
-							data: {commission:$("#cmAmount").val()},
+							data : {
+								commission : $("#cmAmount").val()
+							},
 							dataType : "json",
 							error : function(data) {
 								swal("getCommission.do error");
@@ -381,141 +420,181 @@ $(document)
 							}
 						})
 					});
-					$("#cancel")
-							.click(
-									function() {
-										if ($("input[name='select']:checked")
-												.val() != null) {
+					function cancelInvoice(id) {
+						$.ajax({
+							type : "POST",
+							url : "cancelInvoice.do",
+							data : {
+								id : id
+							},
+							dataType : "json",
+							async:false,
+							error : function(data) {
+								alert("请求失败~");
+							},
+							success : function(data) {
+								if (data == "0") {
+									//swal("This invoice is already canceled.");
+								} else if (data == "1") {
+								//	swal("Server Error!");
+								} else if (data == "2") {
+									//alert("This invoice can not be canceled!");
+								}
+							}
+						})
+					}
+					$("#cancel").click(function() {
+
+						var obj = document.getElementsByName("select");
+						if ($("input[type='checkbox'][name='select']:checked").length == 0) {
+							swal("You haven't select any client");
+							return false;
+						}
+						check_val = [];
+						for (k in obj) {
+							if (obj[k].checked) {
+								check_val.push(obj[k].value);
+								cancelInvoice(obj[k].value)
+							}
+
+						}
+
+						search($("#pageIndex").val());
+						swal("Cancel Complete!");
+
+					});
+
+					function confirmInvoice(id) {
+						$.ajax({
+							type : "POST",
+							url : "confirmInvoice.do",
+							data : {
+								id : id
+							},
+							async:false,
+							dataType : "json",
+							error : function(data) {
+								swal("Server Error!!");
+							},
+							success : function(data) {
+								if (data == "2") {
+									//swal("This invoice can't be confirm!");
+								} else if (data == "0") {
+									//swal("Confirm Success!");
+								} else if (data == "1") {
+									//swal("Server Error!");
+								}
+
+							}
+						});
+					}
+					$("#confirm").click(function() {
+						var obj = document.getElementsByName("select");
+						if ($("input[type='checkbox'][name='select']:checked").length == 0) {
+							swal("You haven't select any client");
+							return false;
+						}
+						check_val = [];
+						for (k in obj) {
+							if (obj[k].checked) {
+								check_val.push(obj[k].value);
+								confirmInvoice(obj[k].value)
+							}
+
+						}
+
+						search($("#pageIndex").val());
+						swal("Confirm Complete!");
+
+					});
+					function preDeleteInvoice(id){
+							$
+									.ajax({
+										type : "POST",
+										url : "getPow.do",
+										dataType : "json",
+										async : false,
+										error : function(data) {
+											alert("请求失败~");
+										},
+										success : function(data) {
 											$
 													.ajax({
 														type : "POST",
-														url : "cancelInvoice.do",
-														data : {
-															id : $(
-																	"input[name='select']:checked")
-																	.val()
-														},
+														url : "getaInvoice.do",
 														dataType : "json",
-														error : function(data) {
+														async : false,
+														data : {
+															id : id
+														},
+														error : function(
+																data) {
 															alert("请求失败~");
 														},
-														success : function(data) {
-															if (data == "0") {
-																swal("This invoice is already canceled.");
-																search();
-															} else if (data == "1") {
-																swal("Server Error!");
-															} else if (data == "2") {
-																swal("This invoice can not be canceled!");
+														success : function(
+																invoice) {
+															if ((invoice.state == "1" && data.type == "1")
+																	|| data.type == "3"
+																	|| (data.type == "2" && (invoice.state == "1" || invoice.state == "5"))) {
+//																swal(
+//																		{
+//																			title : "Are you sure?",
+//																			text : "You will not be able to recover this client!",
+//																			type : "warning",
+//																			showCancelButton : true,
+//																			confirmButtonColor : "#DD6B55",
+//																			confirmButtonText : "Yes, delete it!",
+//																			cancelButtonText : "No,cancel it!",
+//																			closeOnConfirm : false,
+//																			closeOnCancel : false
+//																		},
+//																		function(
+//																				isConfirm) {
+//																			if (isConfirm) {
+//																			
+//
+//																			} else {
+//																				swal(
+//																						"Cancelled",
+//																						"Your invoice still there.",
+//																						"error");
+//																			}
+//																		});
+																deleteInvoice(id);
+															} else {
+																//swal("You just can delete the invoice in current status.");
 															}
-														}
-													})
-										} else {
-											swal("You haven't select any invoice!")
-										}
-									});
-					$("#confirm")
-							.click(
-									function() {
-										if ($("input[name='select']:checked")
-												.val() != null) {
-											$
-													.ajax({
-														type : "POST",
-														url : "confirmInvoice.do",
-														data : {
-															id : $(
-																	"input[name='select']:checked")
-																	.val()
-														},
-														dataType : "json",
-														error : function(data) {
-															swal("Server Error!!");
-														},
-														success : function(data) {
-															if (data == "2") {
-																swal("This invoice can't be confirm!");
-															} else if (data == "0") {
-																swal("Confirm Success!");
-																search();
-															} else if (data == "1") {
-																swal("Server Error!");
-															}
-
 														}
 													});
-										} else {
-											swal("You haven't select any invoice!")
+
 										}
-									});
+									})
+
+						
+					}
 					$("#delete")
 							.click(
 									function() {
-										if ($("input[name='select']:checked")
-												.val() != null) {
-											$
-													.ajax({
-														type : "POST",
-														url : "getPow.do",
-														dataType : "json",
-														async : false,
-														error : function(data) {
-															alert("请求失败~");
-														},
-														success : function(data) {
-															$.ajax({
-																type : "POST",
-																url : "getaInvoice.do",
-																dataType : "json",
-																async : false,
-																data : {
-																	id : $(
-																			"input[name='select']:checked")
-																			.val()
-																},
-																error : function(
-																		data) {
-																	alert("请求失败~");
-																},
-																success : function(invoice) {
-																	if ((invoice.state == "1"&&data.type=="1")||data.type=="3"||
-																			(data.type=="2"&&(invoice.state=="1"||invoice.state=="5"))) {
-																		swal(
-																				{
-																					title : "Are you sure?",
-																					text : "You will not be able to recover this client!",
-																					type : "warning",
-																					showCancelButton : true,
-																					confirmButtonColor : "#DD6B55",
-																					confirmButtonText : "Yes, delete it!",
-																					cancelButtonText : "No,cancel it!",
-																					closeOnConfirm : false,
-																					closeOnCancel : false
-																				},
-																				function(
-																						isConfirm) {
-																					if (isConfirm) {
-																						deleteInvoice();
-																						
-																					} else {
-																						swal(
-																								"Cancelled",
-																								"Your invoice still there.",
-																								"error");
-																					}
-																				});
-																	} else {
-																		swal("You just can delete the invoice in current status.");
-																	}
-																}
-															});
-															
-														}
-													})
-
-										} else {
-											swal("You haven't select any invoice!")
+										var obj = document.getElementsByName("select");
+										if ($("input[type='checkbox'][name='select']:checked").length == 0) {
+											swal("You haven't select any client");
+											return false;
 										}
+										check_val = [];
+										for (k in obj) {
+											if (obj[k].checked) {
+												check_val.push(obj[k].value);
+												preDeleteInvoice(obj[k].value)
+											}
+
+										}
+
+										search($("#pageIndex").val());
+										swal("Delete Complete!");
+
+										
+										
+										
 									});
 					$("#search")
 							.click(
@@ -597,156 +676,158 @@ $(document)
 												})
 
 									});
-					$("#activeInvoice")
-							.click(	
-									
+					$("#activeInvoice").click(
+
+					function() {
+						if ($("input[name='select']:checked").val() != null) {
+							$("#emailContent").modal();
+						} else {
+							swal("You haven't select any invoice!");
+						}
+					});
+					$("#sendMail")
+							.click(
 									function() {
-										if ($("input[name='select']:checked").val() != null) {
-										$("#emailContent").modal();
-										}else{
-											swal("You haven't select any invoice!");
-										}
-									}
-									);
-					$("#sendMail").click(
-						function(){
-							$
-							.ajax({
-								type : "POST",
-								url : "sendCustomMail.do",
-								dataType : "json",
-								async:false,
-								data : {
-									id : $("input[name='select']:checked")
-											.val(),
-									content:$("#emailContentText").val()
-								},
-								success:function(data){
-									if(data=="1"){
-										swal("The invoice is not in create status！");
-									}else{
-										swal("Active Success!");
-										$("#emailContentText").val("");
-										search();	
-									}
-									
-								},
-								error:function(data){
-									swal("Send Email Error!");
-								}
-							});
-						}	
-					);
-					
-					$("#1")
-					.click(
-							function() {
-								if ($("input[name='select']:checked")
-										.val() != null) {
-									$
-											.ajax({
-												type : "POST",
-												url : "getPow.do",
-												dataType : "json",
-												async : false,
-												error : function(data) {
-													alert("请求失败~");
-												},
-												success : function(data) {
-													if (data.type != "1") {
-														swal(
-																{
-																	title : "Are you sure?",
-																	text : "You will send an email to client!",
-																	type : "warning",
-																	showCancelButton : true,
-																	confirmButtonColor : "#DD6B55",
-																	confirmButtonText : "Yes, send it!",
-																	cancelButtonText : "No,don't send!",
-																	closeOnConfirm : false,
-																	closeOnCancel : false
-																},
-																function(
-																		isConfirm) {
-																	if (isConfirm) {
-																		swal(
-																				"Success",
-																				"The email will be send!",
-																				"success");
-																		$
-																				.ajax({
-																					type : "POST",
-																					url : "activeInvoice.do",
-																					dataType : "json",
-																					data : {
-																						id : $(
-																								"input[name='select']:checked")
-																								.val()
-																					},
-																					error : function(
-																							data) {
-																						if (data == "0") {
-																							search($(
-																									"#pageIndex")
-																									.val());
-																						}
-																					},
-																					success : function(
-																							data) {
-																						// 根据不同返回值做出不同处理
-																						if (data == "3") {
-																							swal("The invoice has no item,it can't be actived!");
-																						}
-																						if (data == "2") {
-																							swal("The invoice is not created status!");
-																						}
-																						if (data == "0") {
-																							$
-																									.ajax({
-																										type : "POST",
-																										url : "getCPOI.do",
-																										dataType : "json",
-																										async : false,
-																										data : {
-																											id : $(
-																													"input[name='select']:checked")
-																													.val()
-																										},
-																										error : function(
-																												data) {
-																											swal("getCPOI.do Error!!");
-																										},
-																										success : function(
-																												data) {
-																											window.location.href = "mailto:"
-																													+ data.email;
-																											search($(
-																													"#pageIndex")
-																													.val());
-																										}
-																									})
+										$
+												.ajax({
+													type : "POST",
+													url : "sendCustomMail.do",
+													dataType : "json",
+													async : false,
+													data : {
+														id : $(
+																"input[name='select']:checked")
+																.val(),
+														content : $(
+																"#emailContentText")
+																.val()
+													},
+													success : function(data) {
+														if (data == "1") {
+															swal("The invoice is not in create status！");
+														} else {
+															swal("Active Success!");
+															$(
+																	"#emailContentText")
+																	.val("");
+															search();
+														}
 
-																						}
-																					}
-																				});
-																	} else {
-																		swal(
-																				"Cancelled",
-																				"Your haven't send the email.",
-																				"error");
-																	}
-																});
-													} else {
-														swal("error!");
+													},
+													error : function(data) {
+														swal("Send Email Error!");
 													}
-												}
-											})
+												});
+									});
 
-								} else {
-									swal("You haven't select any invoice!")
-								}
-							});
-					
+					$("#1")
+							.click(
+									function() {
+										if ($("input[name='select']:checked")
+												.val() != null) {
+											$
+													.ajax({
+														type : "POST",
+														url : "getPow.do",
+														dataType : "json",
+														async : false,
+														error : function(data) {
+															alert("请求失败~");
+														},
+														success : function(data) {
+															if (data.type != "1") {
+																swal(
+																		{
+																			title : "Are you sure?",
+																			text : "You will send an email to client!",
+																			type : "warning",
+																			showCancelButton : true,
+																			confirmButtonColor : "#DD6B55",
+																			confirmButtonText : "Yes, send it!",
+																			cancelButtonText : "No,don't send!",
+																			closeOnConfirm : false,
+																			closeOnCancel : false
+																		},
+																		function(
+																				isConfirm) {
+																			if (isConfirm) {
+																				swal(
+																						"Success",
+																						"The email will be send!",
+																						"success");
+																				$
+																						.ajax({
+																							type : "POST",
+																							url : "activeInvoice.do",
+																							dataType : "json",
+																							data : {
+																								id : $(
+																										"input[name='select']:checked")
+																										.val()
+																							},
+																							error : function(
+																									data) {
+																								if (data == "0") {
+																									search($(
+																											"#pageIndex")
+																											.val());
+																								}
+																							},
+																							success : function(
+																									data) {
+																								// 根据不同返回值做出不同处理
+																								if (data == "3") {
+																									swal("The invoice has no item,it can't be actived!");
+																								}
+																								if (data == "2") {
+																									swal("The invoice is not created status!");
+																								}
+																								if (data == "0") {
+																									$
+																											.ajax({
+																												type : "POST",
+																												url : "getCPOI.do",
+																												dataType : "json",
+																												async : false,
+																												data : {
+																													id : $(
+																															"input[name='select']:checked")
+																															.val()
+																												},
+																												error : function(
+																														data) {
+																													swal("getCPOI.do Error!!");
+																												},
+																												success : function(
+																														data) {
+																													window.location.href = "mailto:"
+																															+ data.email;
+																													search($(
+																															"#pageIndex")
+																															.val());
+																												}
+																											})
+
+																								}
+																							}
+																						});
+																			} else {
+																				swal(
+																						"Cancelled",
+																						"Your haven't send the email.",
+																						"error");
+																			}
+																		});
+															} else {
+																swal("error!");
+															}
+														}
+													})
+
+										} else {
+											swal("You haven't select any invoice!")
+										}
+									});
 
 					// 点击search button时
 					$("#searchbtn").click(function() {
@@ -764,7 +845,7 @@ function editInvoice() {
 			type : "POST",
 			url : "editInvoice.do",
 			dataType : "json",
-			async:false,
+			async : false,
 			data : {
 				id : $("input[name='select']:checked").val()
 			},
@@ -781,7 +862,8 @@ function editInvoice() {
 					},
 					success : function(user) {
 						if (data.state == "1" || user.type == "3"
-								|| (user.type == "2" && data.state == "5")||user.type=="3") {
+								|| (user.type == "2" && data.state == "5")
+								|| user.type == "3") {
 							if (data.type == "C") {
 								window.location.href = "mci-editInvoiceC.do";
 							} else if (data.type == "F") {
@@ -805,66 +887,64 @@ function editInvoice() {
 	}
 
 }
-function deleteInvoice() {
-	$.ajax({
-		type : "POST",
-		url : "editInvoice.do",
-		dataType : "json",
-		async : false,
-		data : {
-			id : $("input[name='select']:checked").val()
-		},
-		error : function(data) {
-			if (data.state != "1") {
-				swal("The invoice can not be delete!");
-				return false;
-			}
-			swal("editInvoice.do Error!");
-		},
-		success : function(data) {
-			// alert($("input[name='select']:checked").val());
-
-			$.ajax({
+function deleteInvoice(id) {
+	$
+			.ajax({
 				type : "POST",
-				url : "getPow.do",
+				url : "editInvoice.do",
+				dataType : "json",
 				async : false,
-				error : function() {
-					swal("getPow  error!");
+				data : {
+					id : id
 				},
-				success : function(user) {
-					if ((data.state == "1"&& user.type=="1")|| user.type == "3"
-							|| (user.type == "2" && (data.state == "5"||data.state=="1"))) {
-						$.ajax({
-							type : "POST",
-							url : "deleteInvoice.do",
-							dataType : "json",
-							async : false,
-							data : {
-								id : $("input[name='select']:checked").val()
-							},
-							error : function(data) {
-								swal("deleteInvoice.do Error!!");
-							},
-							success : function(data) {
-								swal(
-										"Deleted!",
-										"Your invoice has been deleted.",
-										"success");
-								search($(
-										"#pageIndex")
-										.val());
-							}
-						});
-					}else{
-						swal("You can't delete this invoice!");
+				error : function(data) {
+					if (data.state != "1") {
+						swal("The invoice can not be delete!");
 						return false;
 					}
+					swal("editInvoice.do Error!");
+				},
+				success : function(data) {
+					// alert($("input[name='select']:checked").val());
+
+					$
+							.ajax({
+								type : "POST",
+								url : "getPow.do",
+								async : false,
+								error : function() {
+									swal("getPow  error!");
+								},
+								success : function(user) {
+									if ((data.state == "1" && user.type == "1")
+											|| user.type == "3"
+											|| (user.type == "2" && (data.state == "5" || data.state == "1"))) {
+										$
+												.ajax({
+													type : "POST",
+													url : "deleteInvoice.do",
+													dataType : "json",
+													async : false,
+													data : {
+														id : id
+													},
+													error : function(data) {
+														swal("deleteInvoice.do Error!!");
+													},
+													success : function(data) {
+														return true;
+													}
+												});
+									} else {
+//										swal("You can't delete this invoice!");
+										return false;
+									}
+								}
+							})
+
 				}
-			})
-			
-		}
-	
-	});
+
+			});
 	return true;
 }
 function getCommission(i) {
@@ -990,19 +1070,15 @@ function selectAllItem() {
 	}
 	selectItem++;
 }
-function openwindow(data){
+function openwindow(data) {
 	if (data.type == "C") {
-		window
-				.open("mci-detailC.do");
+		window.open("mci-detailC.do");
 	} else if (data.type == "F") {
-		window
-				.open("mci-detailF.do");
+		window.open("mci-detailF.do");
 	} else if (data.type == "P") {
-		window
-				.open("mci-detailP.do");
+		window.open("mci-detailP.do");
 	} else if (data.type == "T") {
-		window
-				.open("mci-detailT.do");
-		
+		window.open("mci-detailT.do");
+
 	}
 }

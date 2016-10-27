@@ -68,7 +68,7 @@ public interface ClientService {
 	
 	List<Client> staffSearchClient(Client client);
 	
-	List<Client> autoClientList();
+	List<Client> autoClientList(@Param("id")String id);
 	
 	List<ContactPerson> autoCPList();
 	

@@ -462,14 +462,14 @@ public class ClientController {
 	@RequestMapping(value = "getUser", method = RequestMethod.POST)
 	public List<User> getUser(AssignQuery aq,HttpSession session) {
 		 List<User> list=clientServiceImpl.getUser(aq);
-		 String clientid=(String)session.getAttribute("editClientId");
-		 Client client=(Client)clientServiceImpl.getaClient(clientid);
-		 User user=userServiceImpl.getaUser(client.getPic());
-		 for(int i=0;i<list.size();i++){
-			 if(list.get(i).getEmail().equals(user.getEmail())){
-				 list.remove(i);
-			 }
-		 }
+//		 String clientid=(String)session.getAttribute("editClientId");
+//		 Client client=(Client)clientServiceImpl.getaClient(clientid);
+//		 User user=userServiceImpl.getaUser(client.getPic());
+//		 for(int i=0;i<list.size();i++){
+//			 if(list.get(i).getEmail().equals(user.getEmail())){
+//				 list.remove(i);
+//			 }
+//		 }
 		return list;
 	}
 
@@ -542,10 +542,11 @@ public class ClientController {
 	@ResponseBody
 	@RequestMapping(value = "getAccountPage", method = RequestMethod.POST)
 	public List<Invoice> getAccountPage(ClientQuery cq, HttpSession session) {
-		Client query = (Client) session.getAttribute("clientAccountQuery");
-		if(null==query){
-		 query=new Client();
+		
+		Client query=new Client();
 		 query.setId(cq.getId());
+		if(null==query.getId()){
+			query = (Client) session.getAttribute("clientAccountQuery");
 		}
 		query.setStartIndex(cq.getPageIndex());
 		List<Invoice> list1 = clientServiceImpl.getAccount(query);
@@ -612,8 +613,8 @@ public class ClientController {
 
 	@ResponseBody
 	@RequestMapping(value = "autoClientList", method = RequestMethod.POST)
-	public List<Client> autoClientList() {
-		return clientServiceImpl.autoClientList();
+	public List<Client> autoClientList(HttpSession session ) {
+		return clientServiceImpl.autoClientList(((User)session.getAttribute("user")).getId());
 	}
 
 	// search client部分
@@ -693,11 +694,11 @@ public class ClientController {
 
 	@ResponseBody
 	@RequestMapping(value = "clearClient", method = RequestMethod.POST)
-	public String clearClient() throws NullPointerException {
+	public String clearClient(HttpSession session) throws NullPointerException {
 		// 清除公司名为空的client
 		clientServiceImpl.clearClient();
 		// 将三个月未创建invoice的client的状态改为inactive
-		List<Client> list = clientServiceImpl.autoClientList();
+		List<Client> list = clientServiceImpl.autoClientList(((User)session.getAttribute("user")).getId());
 		Mss ms = new Mss();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String currDate = ms.dqsj();

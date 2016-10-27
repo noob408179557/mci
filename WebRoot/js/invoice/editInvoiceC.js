@@ -82,7 +82,7 @@ function initInvoice() {
 					swal("getCurrentUser.do error!");
 				},
 				success : function(data2) {
-					if (data2.id != data.pic&&pow!=3) {
+					if (data2.id != data.pic&&pow===1) {
 						$("#anotherPIC").attr({
 							disabled : "disabled"
 						});
@@ -691,7 +691,7 @@ function caculateC(i) {
 	if (!isNaN(totalAmount)) {
 		$("#subTotal").val((totalAmount).toFixed(1));
 		$("#gst").val((totalAmount * 0.07).toFixed(1));
-		$("#totalAmount").val((totalAmount * 1.07).toFixed(1));
+		$("#totalAmount").val((totalAmount * 1.07).toFixed(2));
 	}
 }
 function updateInvoiceC() {
