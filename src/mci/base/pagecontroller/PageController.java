@@ -9,6 +9,7 @@ public class PageController {
 	public String editUser() {
 		return "mci-editUser";
 	}
+	
 	@RequestMapping("mci-editMyAccount")
 	public String editMyAccount() {
 		return "mci-editMyAccount";
@@ -186,5 +187,29 @@ public class PageController {
 	@RequestMapping("newLogin")
 	public String newlogin() {
 		return "newLogin";
+	}
+	@RequestMapping("egg-register")
+	public String eggregister() {
+		return "egg-register";
+	}
+	@RequestMapping("egg-login")
+	public String egglogin() {
+		return "egg-login";
+	}
+	@RequestMapping("egg-selectProduct")
+	public String select() {
+		return "egg-selectProduct";
+	}
+	@RequestMapping("egg-showproduct")
+	public String showproduct() {
+		return "egg-showproduct";
+	}
+	@RequestMapping("egg-profile")
+	public String eggprofile() {
+		return "egg-profile";
+	}
+	@RequestMapping("egg-edit")
+	public String eggeditprofile() {
+		return "egg-edit";
 	}
 }
